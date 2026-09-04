@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>PetAgenda — Novo Pet</title>
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <aside class="sidebar">
+
+        <div class="logo">
+            <div class="logo-icon">🐾</div>
+
+            <div class="logo-text">
+                <h1>PetAgenda</h1>
+                <span>Gestão de cuidados para pets</span>
+            </div>
+        </div>
+
+        <nav class="menu">
+            <a href="#" class="menu-item">Dashboard</a>
+            <a href="#" class="menu-item">Meus pets</a>
+            <a href="#" class="menu-item">Agenda</a>
+            <a href="#" class="menu-item">Histórico</a>
+            <a href="#" class="menu-item">Serviços</a>
+            <a href="#" class="menu-item">Perfil</a>
+        </nav>
+
+
+    </aside>
+
+
+    <main class="main-content">
+
+        <header class="header">
+
+            <div>
+                <h2>Novo pet</h2>
+                <span>PetAgenda / Novo pet</span>
+            </div>
+
+            <button class="user-button">
+                <span class="user-icon"></span>
+                <span>Tutor</span>
+                <span class="arrow">⌄</span>
+            </button>
+
+        </header>
+
+
+        <section class="pet-form">
+
+            <h3>Cadastro do animal</h3>
+
+            <form id="petForm">
+
+                <div class="form-group">
+                    <label for="nome">Nome</label>
+                    <input
+                        type="text"
+                        id="nome"
+                        name="nome"
+                        value="Luna"
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="especie">Espécie</label>
+                    <input
+                        type="text"
+                        id="especie"
+                        name="especie"
+                        value="Cachorro"
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="raca">Raça</label>
+                    <input
+                        type="text"
+                        id="raca"
+                        name="raca"
+                        value="Golden Retriever"
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="nascimento">Nascimento</label>
+                    <input
+                        type="text"
+                        id="nascimento"
+                        name="nascimento"
+                        value="03/05/2021"
+                    >
+                </div>
+
+                <button type="submit" class="save-button">
+                    Salvar pet
+                </button>
+
+            </form>
+
+        </section>
+
+
+        <footer class="footer">
+
+            <span>
+                Feito com carinho para quem cuida de quem ama.
+            </span>
+
+            <span>🐾</span>
+
+        </footer>
+
+    </main>
+
+
+    <script src="js/script.js"></script>
+
+</body>
+</html>
