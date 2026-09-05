@@ -34,7 +34,7 @@ export class AuthService {
       },
       env.JWT_SECRET,
       {
-        expiresIn: '7d',
+        expiresIn: env.JWT_EXPIRES_IN as jwt.SignOptions['expiresIn'],
       }
     );
 

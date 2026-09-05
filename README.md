@@ -1,64 +1,45 @@
-# PetAgenda
+# PetAgenda API — integração US01 + US02
 
-O **PetAgenda** é uma aplicação para centralizar a rotina de cuidados dos animais, ajudando tutores a organizar vacinas, medicamentos, banhos, consultas e outros compromissos recorrentes.
+Backend do PetAgenda com cadastro e autenticação de tutor e cadastro de pets.
 
-## Problema
+## Requisitos
 
-Tutores frequentemente dependem de alarmes, calendários genéricos e conversas espalhadas, o que aumenta o risco de esquecer cuidados importantes dos pets.
+Node.js 20+, PostgreSQL 14+ e npm.
 
-## Proposta de valor
+## Configuração e execução
 
-Oferecer uma agenda centralizada por pet, com lembretes, histórico de cuidados e uma futura conexão com prestadores de serviços não emergenciais.
+Copie `.env.example` para `.env`, preencha `DATABASE_URL` e configure `JWT_SECRET` com pelo menos 32 caracteres.
 
-## Público inicial
+```bash
+npm install
+npm run prisma:generate
+npm run prisma:deploy
+npm run dev
+```
 
-- Tutores de pets.
-- Pet shops.
-- Pequenos prestadores autônomos.
+A API fica em `http://127.0.0.1:3000`. Use `docker compose up -d` para subir o PostgreSQL local. A tela de cadastro/login fica em `/` e a tela autenticada de pets em `/pets.html`.
 
-## Persona principal
+## Rotas
 
-Mariana, 29 anos, é tutora de dois pets, trabalha em horário comercial e usa principalmente o celular. Ela precisa de uma agenda simples, separada por pet, com lembretes antecipados e histórico dos cuidados realizados.
+`GET /api/health`, `POST /api/tutores`, `POST /api/auth/login`, `GET/PUT /api/tutores/me` e CRUD em `/api/pets`.
 
-## Critérios do MVP
+As rotas de pets exigem `Authorization: Bearer <token>`, validam a existência do tutor e filtram cada operação pelo tutor autenticado. O `tutorId` enviado no corpo é ignorado.
 
-1. Resolver diretamente o problema de esquecimento e organização dos cuidados.
-2. Ser demonstrável de ponta a ponta dentro das sete semanas da disciplina.
-3. Poder ser validado com tutores sem depender de pagamento integrado ou de pet shops reais.
+## Persistência e validação
 
-## Escopo do MVP
+A migration `20260905000100_add_pet` cria `pet`, o enum `PetSex`, a chave estrangeira `pet.tutor_id → tutor.id` e exclusão em cascata. `dataNascimento` é armazenada como `data_nascimento`. Nome e espécie são obrigatórios; raça é opcional; sexo aceita `MACHO`, `FEMEA` ou `NAO_INFORMADO`; a data deve ser `AAAA-MM-DD` e não pode ser futura.
 
-- US01 — Cadastro de Tutor.
-- US02 — Cadastro de Pets.
-- US03 — Agenda de Cuidados e Compromissos.
-- US04 — Lembretes e Notificações Simuladas.
-- US05 — Histórico de Cuidados Realizados.
+## Testes
 
-As US06 a US10 ficam planejadas para fases posteriores e monetização.
+```bash
+npm run typecheck
+npm test
+npm run build
+npm run prisma:deploy
+```
 
-## Hipótese de monetização
-
-- **Freemium Tutor:** um pet e histórico limitado.
-- **Tutor Premium:** pets ilimitados, histórico vitalício, exportação em PDF e alertas avançados; hipótese inicial de R$ 9,90/mês.
-- **Parceiro Pro:** perfil destacado, painel de agendamentos e métricas; hipótese inicial de R$ 49,90/mês.
-
-## Stack técnica proposta
-
-- Backend: Node.js com TypeScript.
-- Framework HTTP: Express ou Fastify — decisão pendente.
-- Banco de dados: pendente de decisão da equipe.
-- Frontend: pendente de confirmação.
+Os testes cobrem US01 e US02 com repositórios isolados e mocks. A validação contra PostgreSQL exige um banco de teste com a migration aplicada.
 
 ## Evidências
 
-- [Trello](https://trello.com/b/L9EDbail/meu-quadro-do-trello)
-- [Protótipo no Figma](https://www.figma.com/design/zoITse6XFyAo9WH8bKd7kW/PetAgenda-%E2%80%94-Prot%C3%B3tipo-MVP)
-- [Repositório atual](https://github.com/ArielFernando24/PetAgenda-)
-
-## Situação da Semana 1
-
-- Visão do produto definida.
-- Backlog com dez histórias de usuário.
-- Persona e critérios do MVP documentados.
-- Protótipo registrado como 90% concluído no formulário da equipe.
-- Estrutura inicial do backend ainda não implementada no repositório.
+[Trello](https://trello.com/b/L9EDbail/meu-quadro-do-trello) · [Figma](https://www.figma.com/design/zoITse6XFyAo9WH8bKd7kW/PetAgenda-%E2%80%94-Protótipo-MVP) · [Repositório](https://github.com/ArielFernando24/PetAgenda-)

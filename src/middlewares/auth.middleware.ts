@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 import { env } from '../config/env';
+import { z } from 'zod';
 
 interface JwtPayload {
   tutor_id: string;
@@ -33,9 +34,9 @@ export const authMiddleware = (req: Request, res: Response, next: NextFunction):
   const token = parts[1];
 
   try {
-    const decoded = jwt.verify(token, env.JWT_SECRET) as JwtPayload;
+    const decoded = jwt.verify(token, env.JWT_SECRET, { algorithms: ['HS256'] }) as JwtPayload;
 
-    if (!decoded || !decoded.tutor_id) {
+    if (!decoded || !z.string().uuid().safeParse(decoded.tutor_id).success) {
       res.status(401).json({
         status: 'error',
         message: 'Token inválido ou expirado',

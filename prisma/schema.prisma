@@ -13,6 +13,29 @@ model Tutor {
   email        String   @unique @db.VarChar(150)
   senha_hash   String   @db.VarChar(255)
   data_criacao DateTime @default(now()) @map("data_criacao")
+  pets         Pet[]
 
   @@map("tutor")
+}
+
+enum PetSex {
+  MACHO
+  FEMEA
+  NAO_INFORMADO
+}
+
+model Pet {
+  id             String   @id @default(uuid()) @db.Uuid
+  tutorId        String   @map("tutor_id") @db.Uuid
+  nome           String   @db.VarChar(80)
+  especie        String   @db.VarChar(50)
+  raca           String?  @db.VarChar(80)
+  sexo           PetSex   @default(NAO_INFORMADO)
+  dataNascimento DateTime @map("data_nascimento") @db.Date
+  createdAt      DateTime @default(now()) @map("data_criacao")
+  updatedAt      DateTime @updatedAt @map("data_atualizacao")
+  tutor          Tutor    @relation(fields: [tutorId], references: [id], onDelete: Cascade)
+
+  @@index([tutorId])
+  @@map("pet")
 }

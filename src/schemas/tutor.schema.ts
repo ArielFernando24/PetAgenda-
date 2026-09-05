@@ -3,6 +3,7 @@ import { z } from 'zod';
 export const createTutorSchema = z.object({
   nome: z
     .string({ required_error: 'O nome é obrigatório' })
+    .trim()
     .min(2, 'O nome deve ter no mínimo 2 caracteres')
     .max(100, 'O nome não pode exceder 100 caracteres')
     .trim(),
@@ -21,6 +22,7 @@ export const createTutorSchema = z.object({
 export const updateTutorSchema = z.object({
   nome: z
     .string()
+    .trim()
     .min(2, 'O nome deve ter no mínimo 2 caracteres')
     .max(100, 'O nome não pode exceder 100 caracteres')
     .trim()
