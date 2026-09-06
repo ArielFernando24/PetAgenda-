@@ -5,7 +5,7 @@ import CadastroUsuario from "./pages/CadastroUsuario";
 import Agendamento from "./pages/Agendamento";
 import Historico from "./pages/Historico";
 import CadastroPet from "./pages/CadastroPet";
-import NovoServico from "./pages/NovoServico";
+import Servico from "./pages/Servico";
 
 function App() {
   return (
@@ -21,7 +21,7 @@ function App() {
             <Route path="/meus-pets" element={<CadastroPet />} />
             <Route path="/agenda" element={<Agendamento />} />
             <Route path="/historico" element={<Historico />} />
-            <Route path="/servicos" element={<NovoServico />} />
+            <Route path="/servicos" element={<Servico />} />
             <Route path="/perfil" element={<CadastroUsuario />} />
           </Routes>
         </main>
