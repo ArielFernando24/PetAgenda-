@@ -6,6 +6,7 @@ import Agendamento from "./pages/Agendamento";
 import Historico from "./pages/Historico";
 import CadastroPet from "./pages/CadastroPet";
 import Servico from "./pages/Servico";
+import NovoServico from "./pages/NovoServico";
 import LoginUsuario from "./pages/LoginUsuario";
 import Dashboard from "./pages/Dashboard";
 import Perfil from "./pages/Perfil";
@@ -98,6 +99,15 @@ function App() {
             </LayoutComSidebar>
           }
         />
+
+        <Route
+  path="/novo-servico"
+  element={
+    <LayoutComSidebar>
+      <NovoServico />
+    </LayoutComSidebar>
+  }
+/>
 
         {/* Perfil */}
         <Route

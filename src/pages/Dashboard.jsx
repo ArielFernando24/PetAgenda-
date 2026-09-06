@@ -69,7 +69,6 @@ function Dashboard() {
         </div>
 
         <div className="dashboard-mensagem">
-          <span className="dashboard-quadrado"></span>
           <h3>Cuidado em cada detalhe.</h3>
           <p>
             Seu pet merece uma rotina organizada e cheia

@@ -1,10 +1,12 @@
 import { useState } from "react";
-import gato from "../assets/gato-petagenda.png";
-import bolinha from "../assets/bolinha-petagenda.png";
+import { useNavigate } from "react-router-dom";
+import cachorroBanho from "../assets/cachorrobanho-petagenda.png";
 
 function Servicos() {
+
+  const navigate = useNavigate();
+
   const [busca, setBusca] = useState("");
-  const [animacao, setAnimacao] = useState(false);
 
   const servicos = [
     {
@@ -24,15 +26,11 @@ function Servicos() {
   );
 
   function solicitarServico() {
-    setAnimacao(true);
-
-    setTimeout(() => {
-      setAnimacao(false);
-    }, 1200);
-  }
+  navigate("/novo-servico");
+}
 
   return (
-    <div className={`servicos-page ${animacao ? "animando" : ""}`}>
+    <div className="servicos-page">
       <div className="servicos-top">
         <div>
           <h1>Serviços</h1>
@@ -72,25 +70,24 @@ function Servicos() {
         ))}
       </div>
 
-      <button
-        className="solicitar-servico"
-        type="button"
-        onClick={solicitarServico}
-      >
-        Solicitar serviço
-      </button>
+  <button
+  className="solicitar-servico"
+  type="button"
+  onClick={() => navigate("/novo-servico")}
+  style={{
+    position: "relative",
+    zIndex: 9999,
+    pointerEvents: "auto",
+  }}
+>
+  Solicitar serviço
+</button>
 
-      <div className="servicos-cena">
+<div className="servicos-cena">
   <img
-    src={gato}
-    alt="Gato do PetAgenda"
-    className="gato-servicos"
-  />
-
-  <img
-    src={bolinha}
-    alt="Bolinha"
-    className="bolinha-servicos"
+    src={cachorroBanho}
+    alt="Cachorro tomando banho"
+    className="cachorro-banho-servicos"
   />
 </div>
 
