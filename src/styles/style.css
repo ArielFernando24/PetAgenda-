@@ -1802,3 +1802,225 @@ button:hover {
     transform: translateX(0) rotate(0);
   }
 }
+
+/* =========================
+   Meus Pets
+========================= */
+
+.meus-pets-page {
+  width: 100%;
+  max-width: 1020px;
+  min-height: 900px;
+  position: relative;
+  color: #14211a;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* =========================
+   Cabeçalho
+========================= */
+
+.meus-pets-topo {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.meus-pets-topo h1 {
+  font-size: 30px;
+  line-height: 1;
+  font-weight: 700;
+}
+
+.meus-pets-topo p {
+  margin-top: 9px;
+  color: #6b7870;
+  font-size: 12px;
+  line-height: 1;
+}
+
+/* =========================
+   Usuário
+========================= */
+
+.meus-pets-usuario {
+  width: 205px;
+  height: 34px;
+  margin-top: -17px;
+  padding: 0 15px 0 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #ffffff;
+  border-radius: 17px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.meus-pets-avatar {
+  width: 20px;
+  height: 20px;
+  flex: 0 0 20px;
+  border-radius: 50%;
+  background: #dff1df;
+}
+
+.meus-pets-seta {
+  margin-left: auto;
+  color: #6f7b73;
+  font-size: 12px;
+}
+
+/* =========================
+   Conteúdo
+========================= */
+
+.meus-pets-conteudo {
+  margin-top: 52px;
+}
+
+.meus-pets-conteudo h2 {
+  font-size: 22px;
+  line-height: 1;
+  font-weight: 700;
+}
+
+/* =========================
+   Cards dos pets
+========================= */
+
+.meus-pets-lista {
+  margin-top: 33px;
+  display: grid;
+  grid-template-columns: 470px 470px;
+  gap: 30px;
+}
+
+.meus-pets-card {
+  width: 470px;
+  height: 115px;
+  padding: 18px 20px;
+  background: #ffffff;
+  border-radius: 14px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+}
+
+.meus-pets-card h3 {
+  font-size: 16px;
+  line-height: 1;
+  font-weight: 700;
+}
+
+.meus-pets-card p {
+  color: #6b7870;
+  font-size: 12px;
+  line-height: 1;
+}
+
+/* =========================
+   Botões
+========================= */
+
+.meus-pets-acoes {
+  display: flex;
+  gap: 20px;
+  margin-top: 40px;
+}
+
+.meus-pets-acoes button {
+  height: 44px;
+  margin: 0;
+  border-radius: 9px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.meus-pets-botao-cadastrar {
+  width: 210px;
+  background: #004a7c;
+}
+
+.meus-pets-botao-premium {
+  width: 210px;
+  background: #14211a;
+}
+
+/* =========================
+   Rodapé
+========================= */
+
+.meus-pets-footer {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 60px;
+}
+
+.meus-pets-linha {
+  width: 100%;
+  height: 1px;
+  background: #e0e5de;
+}
+
+.meus-pets-rodape-conteudo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 20px;
+}
+
+.meus-pets-rodape-conteudo p {
+  color: #6b7870;
+  font-size: 11px;
+  line-height: 1;
+}
+
+.meus-pets-rodape-conteudo span {
+  font-size: 16px;
+}
+
+/* =========================
+   Responsividade
+========================= */
+
+@media (max-width: 1100px) {
+  .meus-pets-lista {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .meus-pets-card {
+    width: 100%;
+  }
+}
+
+@media (max-width: 700px) {
+  .meus-pets-topo {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .meus-pets-usuario {
+    margin-top: 0;
+  }
+
+  .meus-pets-lista {
+    grid-template-columns: 1fr;
+  }
+
+  .meus-pets-acoes {
+    flex-direction: column;
+  }
+
+  .meus-pets-acoes button {
+    width: 100%;
+  }
+
+  .meus-pets-footer {
+    position: static;
+    margin-top: 80px;
+  }
+}

@@ -10,12 +10,14 @@ import LoginUsuario from "./pages/LoginUsuario";
 import Dashboard from "./pages/Dashboard";
 import Perfil from "./pages/Perfil";
 import Premium from "./pages/Premium";
+import MeusPets from "./pages/MeusPets";
 
 // Layout que inclui a barra lateral para as telas internas
 function LayoutComSidebar({ children }) {
   return (
     <div className="app">
       <Sidebar />
+
       <main className="main-content">
         {children}
       </main>
@@ -27,16 +29,17 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
+
         {/* Rota raiz abre direto a tela de Login (sem Sidebar) */}
         <Route path="/" element={<LoginUsuario />} />
-        
+
         {/* Caso queira uma rota explícita /login também */}
         <Route path="/login" element={<LoginUsuario />} />
-        
-        {/* Tela de cadastro de usuário separada se precisar */}
+
+        {/* Tela de cadastro de usuário */}
         <Route path="/cadastro" element={<CadastroUsuario />} />
 
-        {/* Telas internas do sistema (com Sidebar) */}
+        {/* Dashboard */}
         <Route
           path="/dashboard"
           element={
@@ -46,8 +49,19 @@ function App() {
           }
         />
 
+        {/* Lista de pets */}
         <Route
           path="/meus-pets"
+          element={
+            <LayoutComSidebar>
+              <MeusPets />
+            </LayoutComSidebar>
+          }
+        />
+
+        {/* Cadastro de um novo pet */}
+        <Route
+          path="/cadastro-pet"
           element={
             <LayoutComSidebar>
               <CadastroPet />
@@ -55,6 +69,7 @@ function App() {
           }
         />
 
+        {/* Agenda */}
         <Route
           path="/agenda"
           element={
@@ -64,6 +79,7 @@ function App() {
           }
         />
 
+        {/* Histórico */}
         <Route
           path="/historico"
           element={
@@ -73,6 +89,7 @@ function App() {
           }
         />
 
+        {/* Serviços */}
         <Route
           path="/servicos"
           element={
@@ -82,6 +99,7 @@ function App() {
           }
         />
 
+        {/* Perfil */}
         <Route
           path="/perfil"
           element={
@@ -91,6 +109,7 @@ function App() {
           }
         />
 
+        {/* Premium */}
         <Route
           path="/premium"
           element={
@@ -99,6 +118,7 @@ function App() {
             </LayoutComSidebar>
           }
         />
+
       </Routes>
     </BrowserRouter>
   );
