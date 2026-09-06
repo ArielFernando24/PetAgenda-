@@ -8,6 +8,7 @@ body {
   font-family: Arial, Helvetica, sans-serif;
   background: #f5f7f2;
   color: #1c2b21;
+  cursor: url("/src/assets/pata-cursor.png"), auto;
 }
 
 .app {
@@ -15,7 +16,9 @@ body {
   display: flex;
 }
 
-/* Sidebar */
+/* =========================
+   Sidebar
+========================= */
 
 .sidebar {
   width: 250px;
@@ -31,7 +34,29 @@ body {
   color: white;
   font-size: 27px;
   font-weight: 700;
-  margin: 0 0 50px 20px;
+  margin: 0 0 50px 0;
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.logo-image-container {
+  width: 42px;
+  height: 42px;
+  overflow: hidden;
+  border-radius: 8px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.logo-image {
+  width: 42px;
+  height: 42px;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
 }
 
 .menu {
@@ -46,6 +71,7 @@ body {
   padding: 14px 18px;
   border-radius: 9px;
   font-size: 15px;
+  cursor: url("/src/assets/pata-cursor.png"), auto;
 }
 
 .menu a:hover,
@@ -62,10 +88,13 @@ body {
   font-size: 14px;
 }
 
-/* Conteúdo principal */
+/* =========================
+   Conteúdo principal
+========================= */
 
 .main-content {
   flex: 1;
+  min-width: 0;
   min-height: 100vh;
   position: relative;
   padding: 55px 80px;
@@ -82,7 +111,9 @@ body {
   font-weight: 700;
 }
 
-/* Formulário */
+/* =========================
+   Formulário
+========================= */
 
 .form-container {
   width: 500px;
@@ -126,7 +157,7 @@ button {
   color: white;
   font-size: 15px;
   font-weight: 600;
-  cursor: pointer;
+  cursor: url("/src/assets/pata-cursor.png"), auto;
   margin-top: 5px;
 }
 
@@ -134,7 +165,9 @@ button:hover {
   opacity: 0.9;
 }
 
-/* Rodapé */
+/* =========================
+   Rodapé
+========================= */
 
 .footer {
   position: absolute;
@@ -147,7 +180,360 @@ button:hover {
   font-size: 14px;
 }
 
-/* Responsividade */
+/* =========================
+   Agenda
+========================= */
+
+.agenda-page {
+  width: 100%;
+  max-width: 1020px;
+  margin-left: 0;
+  position: relative;
+}
+
+.agenda-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.agenda-top h1 {
+  font-size: 30px;
+  color: #14211a;
+}
+
+.agenda-top p {
+  color: #6b7870;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+.tutor {
+  width: 145px;
+  height: 34px;
+  background: white;
+  border-radius: 17px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 12px;
+  font-size: 11px;
+  color: #141f1a;
+}
+
+.tutor-icon {
+  color: #e5f5e3;
+  font-size: 18px;
+}
+
+.agenda-header {
+  margin-top: 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.agenda-header h2 {
+  font-size: 22px;
+  color: #14211a;
+}
+
+.agenda-actions {
+  display: flex;
+  gap: 14px;
+  flex-shrink: 0;
+}
+
+.agenda-actions button {
+  height: 44px;
+  margin: 0;
+  border-radius: 9px;
+}
+
+.filter-button {
+  width: 180px !important;
+  background: #14211a;
+}
+
+.new-service-button {
+  width: 160px !important;
+  background: #004a7c;
+}
+
+/* =========================
+   Dias da semana
+========================= */
+
+.calendar-days {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 18px;
+  margin-top: 20px;
+}
+
+.day-card {
+  width: 100%;
+  height: 68px;
+  margin: 0;
+  background: white;
+  border: none;
+  border-radius: 14px;
+  padding: 14px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  cursor: url("/src/assets/pata-cursor.png"), auto;
+  text-align: left;
+  font-family: inherit;
+}
+
+.day-card:hover {
+  opacity: 0.9;
+}
+
+.day-card.selected {
+  background: #a2a8d3;
+}
+
+.day-card strong {
+  font-size: 15px;
+  color: #14211a;
+}
+
+.day-card span {
+  font-size: 12px;
+  color: #6b7870;
+}
+
+/* =========================
+   Compromissos
+========================= */
+
+.appointments {
+  display: grid;
+  grid-template-columns: 1fr 1fr 220px;
+  gap: 18px;
+  margin-top: 27px;
+}
+
+.appointment {
+  height: 90px;
+  background: white;
+  border-radius: 14px;
+  padding: 15px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.appointment.selected {
+  background: #a2a8d3;
+}
+
+.appointment strong {
+  font-size: 15px;
+  color: #14211a;
+}
+
+.appointment span {
+  font-size: 12px;
+  color: #6b7870;
+}
+
+/* =========================
+   Lembretes
+========================= */
+
+.reminders-header {
+  margin-top: 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.reminders-header h2 {
+  font-size: 30px;
+  color: #14211a;
+}
+
+.reminders-header h3 {
+  font-size: 22px;
+  color: #14211a;
+  margin-top: 22px;
+}
+
+.reminder-button {
+  width: 190px;
+  height: 44px;
+  margin: 0;
+  background: #004a7c;
+  border-radius: 9px;
+}
+
+.reminders {
+  width: 700px;
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.reminder {
+  height: 95px;
+  background: white;
+  border-radius: 14px;
+  padding: 15px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.reminder.selected {
+  background: #a2a8d3;
+}
+
+.reminder strong {
+  font-size: 15px;
+  color: #14211a;
+}
+
+.reminder span {
+  font-size: 12px;
+  color: #6b7870;
+}
+
+/* =========================
+   Coelhinho dos lembretes
+========================= */
+
+.reminder-bunny-container {
+  position: absolute;
+  top: 470px;
+  right: 20px;
+  width: 180px;
+  margin: 0;
+  text-align: center;
+}
+
+.reminder-bunny {
+  width: 150px;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
+.reminder-bunny.jump {
+  animation: bunnyJump 0.8s ease;
+}
+
+@keyframes bunnyJump {
+  0% {
+    transform: translateY(0) rotate(0);
+  }
+
+  35% {
+    transform: translateY(-55px) rotate(-5deg);
+  }
+
+  60% {
+    transform: translateY(-65px) rotate(5deg);
+  }
+
+  80% {
+    transform: translateY(0) rotate(-2deg);
+  }
+
+  100% {
+    transform: translateY(0) rotate(0);
+  }
+}
+
+/* =========================
+   Mascote do cadastro
+========================= */
+
+.pet-register {
+  display: flex;
+  align-items: flex-start;
+  gap: 90px;
+}
+
+.pet-mascot {
+  width: 280px;
+  margin-top: 35px;
+  text-align: center;
+}
+
+.pet-mascot img {
+  width: 230px;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
+.pet-mascot p {
+  margin-top: 10px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #6b7870;
+}
+
+.pet-mascot.jump {
+  animation: dogJump 0.8s ease;
+}
+
+@keyframes dogJump {
+  0% {
+    transform: translateY(0) rotate(0);
+  }
+
+  35% {
+    transform: translateY(-55px) rotate(-5deg);
+  }
+
+  60% {
+    transform: translateY(-65px) rotate(5deg);
+  }
+
+  80% {
+    transform: translateY(0) rotate(-2deg);
+  }
+
+  100% {
+    transform: translateY(0) rotate(0);
+  }
+}
+
+/* =========================
+   Responsividade (Agenda)
+========================= */
+
+@media (max-width: 1100px) {
+  .agenda-page {
+    margin-left: 0;
+    max-width: 100%;
+  }
+
+  .calendar-days {
+    gap: 12px;
+  }
+
+  .appointments {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .reminders {
+    width: 100%;
+  }
+
+  .reminder-bunny-container {
+    right: 0;
+  }
+}
+
+/* =========================
+   Responsividade geral
+========================= */
 
 @media (max-width: 900px) {
   .sidebar {
@@ -196,9 +582,44 @@ button:hover {
     position: static;
     margin-top: 50px;
   }
+
+  .agenda-top,
+  .agenda-header,
+  .reminders-header {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .agenda-actions {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .agenda-actions button,
+  .filter-button,
+  .new-service-button,
+  .reminder-button {
+    width: 100% !important;
+  }
+
+  .calendar-days {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .appointments {
+    grid-template-columns: 1fr;
+  }
+
+  .reminder-bunny-container {
+    position: static;
+    width: 100%;
+    margin-top: 20px;
+  }
 }
 
-/* Cadastro de usuário */
+/* =========================
+   Cadastro de usuário
+========================= */
 
 .cadastro-usuario-page {
   min-height: 100vh;
@@ -355,7 +776,9 @@ button:hover {
   }
 }
 
-/* Tela de login */
+/* =========================
+   Tela de login
+========================= */
 
 .login-page {
   width: 100%;
@@ -496,7 +919,9 @@ button:hover {
   }
 }
 
-/* Dashboard */
+/* =========================
+   Dashboard
+========================= */
 
 .dashboard-page {
   width: 1190px;
@@ -726,7 +1151,9 @@ button:hover {
   line-height: 1.35;
 }
 
-/* Perfil */
+/* =========================
+   Perfil
+========================= */
 
 .perfil-page {
   position: relative;
@@ -881,7 +1308,9 @@ button:hover {
   background: #2D774C;
 }
 
-/* Premium */
+/* =========================
+   Premium
+========================= */
 
 .premium-page {
   position: relative;
@@ -1109,4 +1538,267 @@ button:hover {
   height: 16px;
   margin-right: 29px;
   background: #2D774C;
+}
+
+/* =========================
+   Serviços
+========================= */
+
+.servicos-page {
+  width: 100%;
+  max-width: 1020px;
+  position: relative;
+  margin-left: -40px;
+  margin-top: 0;
+}
+
+.servicos-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.servicos-top h1 {
+  font-size: 30px;
+  color: #14211a;
+}
+
+.servicos-top p {
+  color: #6b7870;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+.servicos-page .tutor {
+  width: 205px;
+  height: 34px;
+  margin: 0;
+  border-radius: 17px;
+  background: white;
+}
+
+/* =========================
+   Título e busca
+========================= */
+
+.servicos-header {
+  margin-top: 68px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.servicos-header h2 {
+  font-size: 22px;
+  color: #14211a;
+}
+
+.servicos-search {
+  display: flex;
+  gap: 19px;
+  align-items: center;
+}
+
+.servicos-search input {
+  width: 379px;
+  height: 39px;
+  border: none;
+  border-radius: 14px;
+  background: white;
+  padding: 0 16px;
+  font-size: 18px;
+  color: #6b7870;
+  outline: none;
+}
+
+.servicos-search input::placeholder {
+  color: #6b7870;
+}
+
+.servicos-search button {
+  width: 59px;
+  height: 39px;
+  margin: 0;
+  border-radius: 14px;
+  background: #004a7c;
+  font-size: 0;
+}
+
+/* lupa */
+.servicos-search button {
+  position: relative;
+}
+
+.servicos-search button::before {
+  content: "";
+  position: absolute;
+  width: 13px;
+  height: 13px;
+  border: 2px solid #000;
+  border-radius: 50%;
+  left: 21px;
+  top: 10px;
+}
+
+.servicos-search button::after {
+  content: "";
+  position: absolute;
+  width: 7px;
+  height: 2px;
+  background: #000;
+  border-radius: 2px;
+  transform: rotate(45deg);
+  left: 34px;
+  top: 24px;
+}
+
+/* =========================
+   Cards
+========================= */
+
+.servicos-lista {
+  margin-top: 16px;
+  display: grid;
+  grid-template-columns: 500px 500px;
+  gap: 30px;
+}
+
+.servico-card {
+  width: 500px;
+  height: 105px;
+  background: white;
+  border-radius: 14px;
+  padding: 17px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+  border: 1px solid #e8ece7;
+  box-shadow: 0 4px 14px rgba(20, 33, 26, 0.04);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.servico-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 7px 18px rgba(20, 33, 26, 0.08);
+}
+
+.servico-card strong {
+  font-size: 15px;
+  color: #14211a;
+}
+
+.servico-card span {
+  font-size: 12px;
+  color: #6b7870;
+}
+
+/* =========================
+   Solicitar serviço
+========================= */
+
+.solicitar-servico {
+  width: 170px;
+  height: 44px;
+  margin: 33px 0 0 auto;
+  border-radius: 9px;
+  background: #14211a;
+  font-size: 13px;
+}
+
+/* =========================
+   Rodapé da página
+========================= */
+
+.servicos-footer {
+  margin-top: 300px;
+  padding-top: 19px;
+  border-top: 1px solid #e0e5de;
+  color: #6b7870;
+  font-size: 11px;
+  position: relative;
+}
+
+.servicos-footer::after {
+  content: "🐾";
+  position: absolute;
+  right: 0;
+  top: 9px;
+  font-size: 16px;
+}
+
+/* =========================
+   Cena do gato e da bolinha
+========================= */
+
+.servicos-cena {
+  position: relative;
+  width: 100%;
+  height: 220px;
+  margin-top: 5px;
+  overflow: hidden;
+}
+
+.gato-servicos {
+  position: absolute;
+  width: 170px;
+  height: auto;
+  right: 25px;
+  bottom: 95px;
+}
+
+.bolinha-servicos {
+  position: absolute;
+  width: 35px;
+  height: auto;
+  left: 180px;
+  bottom: 120px;
+}
+
+/* =========================
+   Animação da bolinha
+========================= */
+
+.servicos-page.animando .bolinha-servicos {
+  animation: bolaVai 0.8s linear forwards;
+}
+
+@keyframes bolaVai {
+  from {
+    left: 180px;
+  }
+
+  to {
+    left: calc(100% - 95px);
+  }
+}
+
+/* =========================
+   Reação do gato
+========================= */
+
+.servicos-page.animando .gato-servicos {
+  animation: gatoImpacto 0.5s ease 0.75s both;
+}
+
+@keyframes gatoImpacto {
+  0% {
+    transform: translateX(0) rotate(0);
+  }
+
+  25% {
+    transform: translateX(8px) rotate(4deg);
+  }
+
+  50% {
+    transform: translateX(-6px) rotate(-3deg);
+  }
+
+  75% {
+    transform: translateX(4px) rotate(2deg);
+  }
+
+  100% {
+    transform: translateX(0) rotate(0);
+  }
 }

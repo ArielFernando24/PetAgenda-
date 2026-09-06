@@ -1,9 +1,12 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function CadastroUsuario() {
   const [senha, setSenha] = useState("");
   const [confirmar, setConfirmar] = useState("");
   const [mensagemSenha, setMensagemSenha] = useState("");
+  
+  const navigate = useNavigate();
 
   function handleSubmit(event) {
     event.preventDefault();
@@ -12,6 +15,8 @@ function CadastroUsuario() {
       setMensagemSenha("As senhas não são correspondentes.");
     } else {
       setMensagemSenha("");
+      // Se as senhas baterem, redireciona direto para o dashboard!
+      navigate("/dashboard");
     }
   }
 
@@ -32,12 +37,12 @@ function CadastroUsuario() {
             <div className="cadastro-row">
               <div className="cadastro-field">
                 <label htmlFor="nome">Nome</label>
-                <input id="nome" type="text" placeholder="nome" />
+                <input id="nome" type="text" placeholder="nome" required />
               </div>
 
               <div className="cadastro-field">
                 <label htmlFor="sobrenome">Sobrenome</label>
-                <input id="sobrenome" type="text" placeholder="sobrenome" />
+                <input id="sobrenome" type="text" placeholder="sobrenome" required />
               </div>
             </div>
 
@@ -47,6 +52,7 @@ function CadastroUsuario() {
                 id="email"
                 type="email"
                 placeholder="tutor@petagenda.com"
+                required
               />
             </div>
 
@@ -59,6 +65,7 @@ function CadastroUsuario() {
                   placeholder="••••••••"
                   value={senha}
                   onChange={(event) => setSenha(event.target.value)}
+                  required
                 />
               </div>
 
@@ -70,6 +77,7 @@ function CadastroUsuario() {
                   placeholder="••••••••"
                   value={confirmar}
                   onChange={(event) => setConfirmar(event.target.value)}
+                  required
                 />
               </div>
             </div>

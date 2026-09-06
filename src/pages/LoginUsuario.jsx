@@ -1,9 +1,6 @@
-import { useNavigate } from "react-router-dom";
-
-
+import { useNavigate, Link } from "react-router-dom";
 
 function Login() {
-
   const navigate = useNavigate();
 
   function entrar(event) {
@@ -54,9 +51,10 @@ function Login() {
             Esqueci minha senha
           </a>
 
-          <a className="login-link" href="#">
+          {/* Alterado para usar o Link do react-router-dom */}
+          <Link className="login-link" to="/cadastro">
             Cadastre-se
-          </a>
+          </Link>
         </section>
       </main>
     </div>

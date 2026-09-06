@@ -5,17 +5,17 @@ import CadastroUsuario from "./pages/CadastroUsuario";
 import Agendamento from "./pages/Agendamento";
 import Historico from "./pages/Historico";
 import CadastroPet from "./pages/CadastroPet";
-import NovoServico from "./pages/NovoServico";
-import LoginUsuario from "./pages/LoginUsuario"
-import Dashboard from "./pages/Dashboard"
-import Perfil from "./pages/Perfil"
-import Premium from "./pages/Premium"
+import Servico from "./pages/Servico";
+import LoginUsuario from "./pages/LoginUsuario";
+import Dashboard from "./pages/Dashboard";
+import Perfil from "./pages/Perfil";
+import Premium from "./pages/Premium";
 
+// Layout que inclui a barra lateral para as telas internas
 function LayoutComSidebar({ children }) {
   return (
     <div className="app">
       <Sidebar />
-
       <main className="main-content">
         {children}
       </main>
@@ -27,9 +27,16 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
+        {/* Rota raiz abre direto a tela de Login (sem Sidebar) */}
+        <Route path="/" element={<LoginUsuario />} />
         
-        <Route path="/" element={<LayoutComSidebar> <Premium /> </LayoutComSidebar>} />
+        {/* Caso queira uma rota explícita /login também */}
+        <Route path="/login" element={<LoginUsuario />} />
+        
+        {/* Tela de cadastro de usuário separada se precisar */}
+        <Route path="/cadastro" element={<CadastroUsuario />} />
 
+        {/* Telas internas do sistema (com Sidebar) */}
         <Route
           path="/dashboard"
           element={
@@ -70,13 +77,13 @@ function App() {
           path="/servicos"
           element={
             <LayoutComSidebar>
-              <NovoServico />
+              <Servico />
             </LayoutComSidebar>
           }
         />
 
         <Route
-          path="/Perfil"
+          path="/perfil"
           element={
             <LayoutComSidebar>
               <Perfil />
@@ -85,7 +92,7 @@ function App() {
         />
 
         <Route
-          path="/Premium"
+          path="/premium"
           element={
             <LayoutComSidebar>
               <Premium />
