@@ -6,12 +6,6 @@ function Historico() {
           <h1>Histórico</h1>
           <p>PetAgenda / Histórico</p>
         </div>
-
-        <div className="historico-usuario">
-          <span className="historico-avatar"></span>
-          <span>Tutor</span>
-          <span className="historico-seta">⌄</span>
-        </div>
       </header>
 
       <section className="historico-conteudo">

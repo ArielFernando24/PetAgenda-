@@ -1,7 +1,10 @@
 import { useState } from "react";
 import coelho from "../assets/coelho-petagenda.png";
+import { useNavigate } from "react-router-dom";
 
 function Agendamento() {
+
+  const navigate = useNavigate();
   const [diaSelecionado, setDiaSelecionado] = useState(0);
   const [lembreteAdicionado, setLembreteAdicionado] = useState(false);
 
@@ -28,12 +31,6 @@ function Agendamento() {
           <h1>Agenda</h1>
           <p>PetAgenda / Agenda</p>
         </div>
-
-        <button className="tutor" type="button">
-          <span className="tutor-icon">●</span>
-          <span>Tutor</span>
-          <span>⌄</span>
-        </button>
       </div>
 
       <div className="agenda-header">
@@ -41,7 +38,7 @@ function Agendamento() {
 
         <div className="agenda-actions">
           <button className="filter-button">Filtrar por...</button>
-          <button className="new-service-button">+ Novo serviço</button>
+          <button className="new-service-button" type="button" onClick={() => navigate("/novo-servico")}>+ Novo serviço</button>
         </div>
       </div>
 

@@ -10,12 +10,6 @@ function NovoServico() {
           <h1>Novo serviço</h1>
           <p>PetAgenda / Novo cuidado</p>
         </div>
-
-        <div className="novo-servico-usuario">
-          <span className="novo-servico-avatar"></span>
-          <span>Tutor</span>
-          <span className="novo-servico-seta">⌄</span>
-        </div>
       </header>
 
       <section className="novo-servico-conteudo">

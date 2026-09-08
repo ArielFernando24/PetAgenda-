@@ -1,16 +1,15 @@
+import { useNavigate } from "react-router-dom";
+
 function Dashboard() {
+
+  const navigate = useNavigate();
+
   return (
     <main className="dashboard-page">
       <section className="dashboard-topo">
         <div>
           <h1>Dashboard</h1>
           <p>PetAgenda / Dashboard</p>
-        </div>
-
-        <div className="dashboard-usuario">
-          <span className="dashboard-avatar"></span>
-          <span>Tutor</span>
-          <span className="dashboard-seta">⌄</span>
         </div>
       </section>
 
@@ -62,9 +61,9 @@ function Dashboard() {
           <h2>Ações rápidas</h2>
 
           <div className="dashboard-botoes">
-            <button className="dashboard-botao dashboard-botao-azul">+ Novo serviço</button>
-            <button className="dashboard-botao">Cadastrar pet</button>
-            <button className="dashboard-botao">Buscar serviços</button>
+            <button className="dashboard-botao dashboard-botao-azul" type="button" onClick={() => navigate("/novo-servico")}>+ Novo serviço</button>
+            <button className="dashboard-botao " type="button" onClick={() => navigate("/cadastro-pet")}>Cadastrar pet</button>
+            <button className="dashboard-botao" type="button" onClick={() => navigate("/Servicos")}>Buscar serviços</button>
           </div>
         </div>
 

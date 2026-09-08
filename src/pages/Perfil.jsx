@@ -18,12 +18,6 @@ function Perfil() {
           <h1>Perfil</h1>
           <p>PetAgenda / Perfil</p>
         </div>
-
-        <div className="perfil-usuario">
-          <span className="perfil-avatar"></span>
-          <span>Tutor</span>
-          <span className="perfil-seta">⌄</span>
-        </div>
       </header>
 
       <section className="perfil-cartao perfil-cartao-tutor">

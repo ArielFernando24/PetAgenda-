@@ -36,12 +36,6 @@ function Servicos() {
           <h1>Serviços</h1>
           <p>PetAgenda / Serviços</p>
         </div>
-
-        <button className="tutor servicos-tutor" type="button">
-          <span className="tutor-icon">●</span>
-          <span>Tutor</span>
-          <span>⌄</span>
-        </button>
       </div>
 
       <div className="servicos-header">

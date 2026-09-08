@@ -1,8 +1,28 @@
+import { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import logo from "../assets/logo-petagenda.png";
 
 function Sidebar() {
   const location = useLocation();
+  const [menuContasAberto, setMenuContasAberto] = useState(false);
+  const menuContasRef = useRef(null);
+
+  useEffect(() => {
+    function fecharAoClicarFora(event) {
+      if (
+        menuContasRef.current &&
+        !menuContasRef.current.contains(event.target)
+      ) {
+        setMenuContasAberto(false);
+      }
+    }
+
+    document.addEventListener("mousedown", fecharAoClicarFora);
+
+    return () => {
+      document.removeEventListener("mousedown", fecharAoClicarFora);
+    };
+  }, []);
 
   return (
     <aside className="sidebar">
@@ -58,7 +78,34 @@ function Sidebar() {
         </Link>
       </nav>
 
-      <div className="user">👤 Usuário</div>
+      <div
+        ref={menuContasRef}
+        className={`menu-contas ${menuContasAberto ? "aberto" : ""}`}
+      >
+        {menuContasAberto && (
+          <>
+            <Link to="/login" className="item-conta item-conta-adicionar">
+              <span className="icone"></span>
+              <span>Adicionar conta</span>
+            </Link>
+
+            <Link to="/dashboard" className="item-conta item-conta-secundario">
+              <span className="icone"></span>
+              <span>Usuário</span>
+            </Link>
+          </>
+        )}
+
+        <button
+          type="button"
+          className="item-conta item-conta-principal"
+          onClick={() => setMenuContasAberto((aberto) => !aberto)}
+          aria-expanded={menuContasAberto}
+        >
+          <span className="icone"></span>
+          <span>Usuário</span>
+        </button>
+      </div>
     </aside>
   );
 }

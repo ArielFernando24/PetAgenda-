@@ -7,11 +7,6 @@ function Premium() {
           <p>PetAgenda / Premium</p>
         </div>
 
-        <div className="premium-usuario">
-          <span className="premium-avatar"></span>
-          <span>Tutor</span>
-          <span className="premium-seta">⌄</span>
-        </div>
       </header>
 
       <section className="premium-card-page">

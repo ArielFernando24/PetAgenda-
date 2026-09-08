@@ -9,12 +9,6 @@ function MeusPets() {
           <h1>Meus pets</h1>
           <p>PetAgenda / Meus pets</p>
         </div>
-
-        <div className="meus-pets-usuario">
-          <span className="meus-pets-avatar"></span>
-          <span>Tutor</span>
-          <span className="meus-pets-seta">⌄</span>
-        </div>
       </header>
 
       <section className="meus-pets-conteudo">
