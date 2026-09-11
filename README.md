@@ -47,7 +47,38 @@ As US06 a US10 ficam planejadas para fases posteriores e monetização.
 - Backend: Node.js com TypeScript.
 - Framework HTTP: Express ou Fastify — decisão pendente.
 - Banco de dados: pendente de decisão da equipe.
-- Frontend: pendente de confirmação.
+- Frontend: React com Vite.
+
+## Como Executar o Projeto
+
+### Pré-requisitos
+- [Node.js](https://nodejs.org/) (versão LTS recomendada, inclui o `npm`)
+- [Git](https://git-scm.com/) (opcional, para clonagem)
+
+### Passo a Passo
+
+1. **Clonar o repositório:**
+   ```bash
+   git clone https://github.com/ArielFernando24/PetAgenda-.git
+   cd PetAgenda-
+   ```
+
+2. **Instalar as dependências:**
+   ```bash
+   npm install
+   ```
+
+3. **Iniciar o servidor de desenvolvimento:**
+   ```bash
+   npm run dev
+   ```
+
+4. **Acessar a aplicação:**
+   Abra no seu navegador o endereço fornecido pelo Vite (normalmente `http://localhost:5173/`).
+
+### Outros Scripts Úteis
+- `npm run build`: gera a versão otimizada para produção na pasta `dist/`.
+- `npm run preview`: inicia um servidor local para testar a versão gerada pelo `build`.
 
 ## Evidências
 
@@ -55,10 +86,3 @@ As US06 a US10 ficam planejadas para fases posteriores e monetização.
 - [Protótipo no Figma](https://www.figma.com/design/zoITse6XFyAo9WH8bKd7kW/PetAgenda-%E2%80%94-Prot%C3%B3tipo-MVP)
 - [Repositório atual](https://github.com/ArielFernando24/PetAgenda-)
 
-## Situação da Semana 1
-
-- Visão do produto definida.
-- Backlog com dez histórias de usuário.
-- Persona e critérios do MVP documentados.
-- Protótipo registrado como 90% concluído no formulário da equipe.
-- Estrutura inicial do backend ainda não implementada no repositório.

@@ -1499,11 +1499,303 @@ button:hover {
 }
 
 /* =========================
+   Banner de Monetização - Anuncie Aqui
+========================= */
+
+.servicos-banner-anuncio {
+  width: 100%;
+  max-width: 1030px;
+  margin-top: 24px;
+  background: linear-gradient(135deg, #162c46 0%, #38598b 100%);
+  border-radius: 16px;
+  padding: 22px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 20px;
+  box-shadow: 0 8px 24px rgba(22, 44, 70, 0.18);
+  color: #ffffff;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(56, 89, 139, 0.2);
+}
+
+.servicos-banner-anuncio::before {
+  content: "";
+  position: absolute;
+  top: -40px;
+  right: -40px;
+  width: 130px;
+  height: 130px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.banner-anuncio-conteudo {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  z-index: 1;
+}
+
+.banner-anuncio-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  width: fit-content;
+  color: #e4effb;
+}
+
+.banner-anuncio-titulo {
+  font-size: 20px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.banner-anuncio-descricao {
+  font-size: 13px;
+  color: #dbe7f5;
+  max-width: 620px;
+  line-height: 1.4;
+}
+
+.banner-anuncio-botao {
+  background: #f4c430;
+  color: #14211a;
+  border: none;
+  padding: 13px 24px;
+  font-size: 14px;
+  font-weight: 700;
+  border-radius: 12px;
+  cursor: pointer;
+  white-space: nowrap;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+  z-index: 1;
+}
+
+.banner-anuncio-botao:hover {
+  background: #ffd659;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* =========================
+   Modal de Anúncio / Monetização
+========================= */
+
+.anuncio-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 28, 48, 0.65);
+  backdrop-filter: blur(4px);
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.anuncio-modal-container {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 32px 28px;
+  max-width: 490px;
+  width: 100%;
+  position: relative;
+  box-shadow: 0 20px 45px rgba(22, 44, 70, 0.25);
+  animation: modalEntrada 0.22s ease-out;
+  border: 1px solid #e3ecf6;
+}
+
+@keyframes modalEntrada {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.anuncio-modal-fechar {
+  position: absolute;
+  top: 16px;
+  right: 18px;
+  background: transparent;
+  border: none;
+  font-size: 24px;
+  line-height: 1;
+  color: #8896a8;
+  cursor: pointer;
+  padding: 4px;
+  transition: color 0.2s ease;
+}
+
+.anuncio-modal-fechar:hover {
+  color: #162c46;
+}
+
+.anuncio-modal-topo {
+  margin-bottom: 18px;
+}
+
+.anuncio-destaque-tag {
+  display: inline-block;
+  background: #eaf1fb;
+  color: #2b4c7e;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 20px;
+  margin-bottom: 8px;
+  border: 1px solid #d2e2f7;
+}
+
+.anuncio-modal-topo h3 {
+  font-size: 20px;
+  color: #162c46;
+  margin-bottom: 6px;
+}
+
+.anuncio-modal-topo p {
+  font-size: 13px;
+  color: #5d6f85;
+  line-height: 1.4;
+}
+
+.anuncio-vantagens {
+  background: #f4f8fd;
+  border: 1px solid #dbe6f5;
+  border-radius: 12px;
+  padding: 12px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+.anuncio-vantagem {
+  font-size: 12px;
+  color: #334862;
+  line-height: 1.4;
+}
+
+.anuncio-vantagem strong {
+  color: #162c46;
+}
+
+.anuncio-campos {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.anuncio-campo {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.anuncio-campo label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #162c46;
+}
+
+.anuncio-campo input {
+  height: 40px;
+  border: 1px solid #cbd8e8;
+  border-radius: 10px;
+  padding: 0 14px;
+  font-size: 14px;
+  color: #162c46;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.anuncio-campo input:focus {
+  border-color: #38598b;
+  box-shadow: 0 0 0 3px rgba(56, 89, 139, 0.15);
+}
+
+.anuncio-btn-enviar {
+  width: 100%;
+  height: 44px;
+  background: #38598b;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(56, 89, 139, 0.2);
+  transition: all 0.2s ease;
+}
+
+.anuncio-btn-enviar:hover {
+  background: #2b456d;
+  box-shadow: 0 6px 16px rgba(56, 89, 139, 0.28);
+}
+
+.anuncio-modal-sucesso {
+  text-align: center;
+  padding: 20px 10px;
+}
+
+.anuncio-sucesso-icone {
+  font-size: 40px;
+  margin-bottom: 12px;
+}
+
+.anuncio-modal-sucesso h3 {
+  font-size: 20px;
+  color: #162c46;
+  margin-bottom: 8px;
+}
+
+.anuncio-modal-sucesso p {
+  font-size: 13px;
+  color: #5d6f85;
+  line-height: 1.5;
+  margin-bottom: 22px;
+}
+
+.anuncio-btn-concluir {
+  background: #38598b;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 26px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.anuncio-btn-concluir:hover {
+  background: #2b456d;
+}
+
+/* =========================
    Título e busca
 ========================= */
 
 .servicos-header {
-  margin-top: 68px;
+  margin-top: 36px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -1577,7 +1869,8 @@ button:hover {
    Cards
 ========================= */
 
-.servicos-lista {
+.servicos-lista,
+.servicos-list {
   margin-top: 16px;
   display: grid;
   grid-template-columns: 500px 500px;
