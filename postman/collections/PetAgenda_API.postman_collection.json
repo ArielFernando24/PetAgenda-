@@ -1,0 +1,388 @@
+{
+  "info": {
+    "_postman_id": "petagenda-api-v1",
+    "name": "PetAgenda API (US01 + US02 + US03)",
+    "description": "Coleção completa da PetAgenda API para testes de US01 (Tutor/Auth), US02 (Pets) e US03 (Agenda de Cuidados).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://127.0.0.1:3000",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "petId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "eventoId",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/health",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "health"]
+        }
+      }
+    },
+    {
+      "name": "US01 - Autenticação e Tutor",
+      "item": [
+        {
+          "name": "1. Cadastrar Tutor",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Mariana Silva\",\n  \"email\": \"mariana@exemplo.com\",\n  \"senha\": \"senhaSegura123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/tutores",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "tutores"]
+            }
+          }
+        },
+        {
+          "name": "2. Login Tutor (Salva Token)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.data && res.data.token) {",
+                  "    pm.collectionVariables.set('token', res.data.token);",
+                  "    console.log('Token JWT salvo com sucesso!');",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"mariana@exemplo.com\",\n  \"senha\": \"senhaSegura123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "login"]
+            }
+          }
+        },
+        {
+          "name": "3. Obter Perfil do Tutor (Me)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/tutores/me",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "tutores", "me"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "US02 - Pets",
+      "item": [
+        {
+          "name": "1. Cadastrar Pet (Salva petId)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.data && res.data.id) {",
+                  "    pm.collectionVariables.set('petId', res.data.id);",
+                  "    console.log('Pet ID salvo:', res.data.id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Thor\",\n  \"especie\": \"Cachorro\",\n  \"raca\": \"Golden Retriever\",\n  \"sexo\": \"MACHO\",\n  \"dataNascimento\": \"2022-05-10\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/pets",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "pets"]
+            }
+          }
+        },
+        {
+          "name": "2. Listar Pets do Tutor",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/pets",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "pets"]
+            }
+          }
+        },
+        {
+          "name": "3. Obter Pet por ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/pets/{{petId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "pets", "{{petId}}"]
+            }
+          }
+        },
+        {
+          "name": "4. Atualizar Pet",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"raca\": \"Golden Retriever Puro\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/pets/{{petId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "pets", "{{petId}}"]
+            }
+          }
+        },
+        {
+          "name": "5. Deletar Pet",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/pets/{{petId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "pets", "{{petId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "US03 - Agenda de Cuidados",
+      "item": [
+        {
+          "name": "1. Agendar Cuidado (Salva eventoId)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.data && res.data.id) {",
+                  "    pm.collectionVariables.set('eventoId', res.data.id);",
+                  "    console.log('Evento ID salvo:', res.data.id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"pet_id\": \"{{petId}}\",\n  \"tipo_cuidado\": \"Vacina\",\n  \"data_hora\": \"2026-10-15T10:00:00.000Z\",\n  \"recorrencia\": \"Anual\",\n  \"descricao\": \"Vacina V10 anual e antirrábica\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/agenda",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "agenda"]
+            }
+          }
+        },
+        {
+          "name": "2. Listar Todos os Eventos da Agenda",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/agenda",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "agenda"]
+            }
+          }
+        },
+        {
+          "name": "3. Filtrar Agenda por Pet",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/agenda?petId={{petId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "agenda"],
+              "query": [
+                {
+                  "key": "petId",
+                  "value": "{{petId}}"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "4. Obter Evento por ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/agenda/{{eventoId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "agenda", "{{eventoId}}"]
+            }
+          }
+        },
+        {
+          "name": "5. Atualizar Evento / Concluir Cuidado",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"Concluído\",\n  \"descricao\": \"Vacina aplicada com sucesso na clínica Veterinária Central.\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/agenda/{{eventoId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "agenda", "{{eventoId}}"]
+            }
+          }
+        },
+        {
+          "name": "6. Deletar Evento da Agenda",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/agenda/{{eventoId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "agenda", "{{eventoId}}"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

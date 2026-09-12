@@ -35,7 +35,48 @@ model Pet {
   createdAt      DateTime @default(now()) @map("data_criacao")
   updatedAt      DateTime @updatedAt @map("data_atualizacao")
   tutor          Tutor    @relation(fields: [tutorId], references: [id], onDelete: Cascade)
+  eventos        Evento[]
 
   @@index([tutorId])
   @@map("pet")
+}
+
+enum TipoCuidado {
+  VACINA
+  VERMIFUGO
+  BANHO_E_TOSA
+  CONSULTA
+  REMEDIO
+}
+
+enum Recorrencia {
+  NENHUMA
+  SEMANAL
+  MENSAL
+  ANUAL
+  PERSONALIZADA
+}
+
+enum StatusEvento {
+  PENDENTE
+  CONCLUIDO
+  CANCELADO
+}
+
+model Evento {
+  id          String        @id @default(uuid()) @db.Uuid
+  petId       String        @map("pet_id") @db.Uuid
+  tipoCuidado TipoCuidado   @map("tipo_cuidado")
+  dataHora    DateTime      @map("data_hora")
+  recorrencia Recorrencia   @default(NENHUMA) @map("recorrencia")
+  status      StatusEvento  @default(PENDENTE) @map("status")
+  descricao   String?       @db.VarChar(255) @map("descricao")
+  createdAt   DateTime      @default(now()) @map("data_criacao")
+  updatedAt   DateTime      @updatedAt @map("data_atualizacao")
+
+  pet         Pet           @relation(fields: [petId], references: [id], onDelete: Cascade)
+
+  @@index([petId])
+  @@index([dataHora])
+  @@map("evento")
 }
