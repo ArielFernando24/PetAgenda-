@@ -66,6 +66,7 @@ enum StatusEvento {
 model Evento {
   id          String        @id @default(uuid()) @db.Uuid
   petId       String        @map("pet_id") @db.Uuid
+  clinicaId   String?       @map("clinica_id") @db.Uuid
   tipoCuidado TipoCuidado   @map("tipo_cuidado")
   dataHora    DateTime      @map("data_hora")
   recorrencia Recorrencia   @default(NENHUMA) @map("recorrencia")
@@ -75,8 +76,31 @@ model Evento {
   updatedAt   DateTime      @updatedAt @map("data_atualizacao")
 
   pet         Pet           @relation(fields: [petId], references: [id], onDelete: Cascade)
+  clinica     Clinica?      @relation(fields: [clinicaId], references: [id], onDelete: SetNull)
 
   @@index([petId])
+  @@index([clinicaId])
   @@index([dataHora])
   @@map("evento")
 }
+
+model Clinica {
+  id                  String    @id @default(uuid()) @db.Uuid
+  nome                String    @db.VarChar(120)
+  telefone            String    @db.VarChar(25)
+  email               String?   @db.VarChar(150)
+  endereco            String    @db.VarChar(255)
+  cidade              String    @db.VarChar(100)
+  estado              String    @db.VarChar(2)
+  horarioFuncionamento String?  @map("horario_funcionamento") @db.VarChar(150)
+  servicos            String[]  @default([])
+  descricao           String?   @db.VarChar(500)
+  createdAt           DateTime  @default(now()) @map("data_criacao")
+  updatedAt           DateTime  @updatedAt @map("data_atualizacao")
+  eventos             Evento[]
+
+  @@index([cidade])
+  @@index([nome])
+  @@map("clinica")
+}
+

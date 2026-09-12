@@ -29,6 +29,7 @@ export type StatusEvento = (typeof STATUS_EVENTO_VALUES)[number];
 export interface Evento {
   id: string;
   petId: string;
+  clinicaId?: string | null;
   tipoCuidado: TipoCuidado;
   dataHora: string;
   recorrencia: Recorrencia;
@@ -40,6 +41,7 @@ export interface Evento {
 
 export interface CreateEventoData {
   petId: string;
+  clinicaId?: string | null;
   tipoCuidado: TipoCuidado;
   dataHora: string;
   recorrencia?: Recorrencia;

@@ -25,6 +25,7 @@ export class InMemoryAgendaRepository implements AgendaRepository {
     const evento: Evento = {
       id: this.generateId(),
       petId: data.petId,
+      clinicaId: data.clinicaId ?? null,
       tipoCuidado: data.tipoCuidado,
       dataHora: data.dataHora,
       recorrencia: data.recorrencia ?? "NENHUMA",

@@ -95,6 +95,7 @@ export const createEventoSchema = z.preprocess(
       const raw = arg as Record<string, unknown>;
       return {
         petId: raw.petId ?? raw.pet_id,
+        clinicaId: raw.clinicaId ?? raw.clinica_id ?? null,
         tipoCuidado: raw.tipoCuidado ?? raw.tipo_cuidado,
         dataHora: raw.dataHora ?? raw.data_hora,
         recorrencia: raw.recorrencia ?? "NENHUMA",
@@ -106,6 +107,7 @@ export const createEventoSchema = z.preprocess(
   },
   z.object({
     petId: z.string().uuid("pet_id deve ser um UUID valido."),
+    clinicaId: z.string().uuid("clinica_id deve ser um UUID valido.").nullable().optional().default(null),
     tipoCuidado: tipoCuidadoSchema,
     dataHora: dataHoraSchema,
     recorrencia: recorrenciaSchema.default("NENHUMA"),
@@ -119,6 +121,9 @@ export const updateEventoSchema = z.preprocess(
     if (arg && typeof arg === "object") {
       const raw = arg as Record<string, unknown>;
       const res: Record<string, unknown> = {};
+      if ("clinicaId" in raw || "clinica_id" in raw) {
+        res.clinicaId = raw.clinicaId ?? raw.clinica_id ?? null;
+      }
       if ("tipoCuidado" in raw || "tipo_cuidado" in raw) {
         res.tipoCuidado = raw.tipoCuidado ?? raw.tipo_cuidado;
       }
@@ -134,6 +139,7 @@ export const updateEventoSchema = z.preprocess(
   },
   z
     .object({
+      clinicaId: z.string().uuid("clinica_id deve ser um UUID valido.").nullable().optional(),
       tipoCuidado: tipoCuidadoSchema.optional(),
       dataHora: dataHoraSchema.optional(),
       recorrencia: recorrenciaSchema.optional(),

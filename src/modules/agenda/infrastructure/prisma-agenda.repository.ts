@@ -17,6 +17,7 @@ export class PrismaAgendaRepository implements AgendaRepository {
     const evento = await this.client.evento.create({
       data: {
         petId: data.petId,
+        clinicaId: data.clinicaId ?? null,
         tipoCuidado: data.tipoCuidado,
         dataHora: new Date(data.dataHora),
         recorrencia: data.recorrencia ?? "NENHUMA",
@@ -65,6 +66,7 @@ export class PrismaAgendaRepository implements AgendaRepository {
     const updated = await this.client.evento.update({
       where: { id },
       data: {
+        clinicaId: data.clinicaId !== undefined ? data.clinicaId : undefined,
         tipoCuidado: data.tipoCuidado,
         dataHora: data.dataHora ? new Date(data.dataHora) : undefined,
         recorrencia: data.recorrencia,

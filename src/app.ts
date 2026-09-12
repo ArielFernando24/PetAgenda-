@@ -11,12 +11,17 @@ import type { AgendaRepository } from './modules/agenda/application/agenda.repos
 import { AgendaService } from './modules/agenda/application/agenda.service';
 import { createAgendaRouter } from './modules/agenda/http/agenda.routes';
 import { PrismaAgendaRepository } from './modules/agenda/infrastructure/prisma-agenda.repository';
+import type { ClinicaRepository } from './modules/clinicas/application/clinica.repository';
+import { ClinicaService } from './modules/clinicas/application/clinica.service';
+import { createClinicaRouter } from './modules/clinicas/http/clinica.routes';
+import { PrismaClinicaRepository } from './modules/clinicas/infrastructure/prisma-clinica.repository';
 import { petTutorAuth } from './shared/auth/pet-tutor-auth.middleware';
 import { appErrorMiddleware } from './shared/http/app-error.middleware';
 
 interface AppOptions {
   petRepository?: PetRepository;
   agendaRepository?: AgendaRepository;
+  clinicaRepository?: ClinicaRepository;
   authenticate?: RequestHandler;
 }
 export function createApp(options: AppOptions = {}) {
@@ -29,6 +34,7 @@ export function createApp(options: AppOptions = {}) {
 
   const petRepository = options.petRepository ?? new PrismaPetRepository();
   const agendaRepository = options.agendaRepository ?? new PrismaAgendaRepository();
+  const clinicaRepository = options.clinicaRepository ?? new PrismaClinicaRepository();
   const authMiddleware = options.authenticate ?? petTutorAuth;
 
   app.use('/api/pets', createPetRouter(
@@ -37,6 +43,10 @@ export function createApp(options: AppOptions = {}) {
   ));
   app.use('/api/agenda', createAgendaRouter(
     new AgendaService(agendaRepository, petRepository),
+    authMiddleware,
+  ));
+  app.use('/api/clinicas', createClinicaRouter(
+    new ClinicaService(clinicaRepository),
     authMiddleware,
   ));
   app.use(express.static(path.resolve(__dirname, '../public')));
