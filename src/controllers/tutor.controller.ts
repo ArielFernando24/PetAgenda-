@@ -22,7 +22,7 @@ export class TutorController {
         throw new AppError('Usuário não autenticado', 401);
       }
 
-      const tutor = await tutorService.getTutorById(req.user.tutor_id);
+      const tutor = await tutorService.getTutorById(req.user.tutor_id, req.user.token_version);
       res.status(200).json({
         status: 'success',
         data: tutor,

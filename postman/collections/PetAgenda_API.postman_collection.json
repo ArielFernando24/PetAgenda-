@@ -580,6 +580,55 @@
           }
         }
       ]
+    },
+    {
+      "name": "US04 - Recuperação Segura de Senha",
+      "item": [
+        {
+          "name": "1. Solicitar Recuperação de Senha (Forgot Password)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"mariana@exemplo.com\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/forgot-password",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "forgot-password"]
+            },
+            "description": "Gera token criptográfico com TTL de 30 minutos e dispara e-mail. Responde com feedback neutro para mitigar enumeração de contas."
+          }
+        },
+        {
+          "name": "2. Redefinir Senha com Token (Reset Password)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"token\": \"COLE_AQUI_O_TOKEN_RECEBIDO\",\n  \"novaSenha\": \"NovaSenhaSegura@123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/reset-password",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "reset-password"]
+            },
+            "description": "Valida expiração e unicidade do token, hasheia a nova senha com bcrypt, inutiliza o token descartável e revoga todas as sessões ativas existentes."
+          }
+        }
+      ]
     }
   ]
 }

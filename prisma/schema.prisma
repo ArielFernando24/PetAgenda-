@@ -8,14 +8,30 @@ datasource db {
 }
 
 model Tutor {
-  id           String   @id @default(uuid()) @db.Uuid
-  nome         String   @db.VarChar(100)
-  email        String   @unique @db.VarChar(150)
-  senha_hash   String   @db.VarChar(255)
-  data_criacao DateTime @default(now()) @map("data_criacao")
-  pets         Pet[]
+  id                  String               @id @default(uuid()) @db.Uuid
+  nome                String               @db.VarChar(100)
+  email               String               @unique @db.VarChar(150)
+  senha_hash          String               @db.VarChar(255)
+  tokenVersion        Int                  @default(1) @map("token_version")
+  data_criacao        DateTime             @default(now()) @map("data_criacao")
+  pets                Pet[]
+  passwordResetTokens PasswordResetToken[]
 
   @@map("tutor")
+}
+
+model PasswordResetToken {
+  id        String    @id @default(uuid()) @db.Uuid
+  tutorId   String    @map("tutor_id") @db.Uuid
+  tokenHash String    @unique @map("token_hash") @db.VarChar(255)
+  expiresAt DateTime  @map("expires_at")
+  usedAt    DateTime? @map("used_at")
+  createdAt DateTime  @default(now()) @map("data_criacao")
+
+  tutor     Tutor     @relation(fields: [tutorId], references: [id], onDelete: Cascade)
+
+  @@index([tutorId])
+  @@map("password_reset_token")
 }
 
 enum PetSex {
