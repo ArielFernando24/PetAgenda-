@@ -39,13 +39,17 @@ export class TutorService {
     };
   }
 
-  public async getTutorById(id: string): Promise<TutorResponse> {
+  public async getTutorById(id: string, tokenVersion?: number): Promise<TutorResponse> {
     const tutor = await prisma.tutor.findUnique({
       where: { id },
     });
 
     if (!tutor) {
       throw new AppError('Tutor não encontrado', 404);
+    }
+
+    if (tokenVersion !== undefined && (tutor as any).tokenVersion !== undefined && tokenVersion !== (tutor as any).tokenVersion) {
+      throw new AppError('Sessão expirada ou revogada. Faça login novamente.', 401);
     }
 
     return {

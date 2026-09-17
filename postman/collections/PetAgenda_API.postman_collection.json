@@ -1,0 +1,634 @@
+{
+  "info": {
+    "_postman_id": "petagenda-api-v1",
+    "name": "PetAgenda API (US01 + US02 + US03)",
+    "description": "Coleção completa da PetAgenda API para testes de US01 (Tutor/Auth), US02 (Pets) e US03 (Agenda de Cuidados).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://127.0.0.1:3000",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "petId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "eventoId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "clinicaId",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/health",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "health"]
+        }
+      }
+    },
+    {
+      "name": "US01 - Autenticação e Tutor",
+      "item": [
+        {
+          "name": "1. Cadastrar Tutor",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Mariana Silva\",\n  \"email\": \"mariana@exemplo.com\",\n  \"senha\": \"senhaSegura123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/tutores",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "tutores"]
+            }
+          }
+        },
+        {
+          "name": "2. Login Tutor (Salva Token)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.data && res.data.token) {",
+                  "    pm.collectionVariables.set('token', res.data.token);",
+                  "    console.log('Token JWT salvo com sucesso!');",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"mariana@exemplo.com\",\n  \"senha\": \"senhaSegura123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "login"]
+            }
+          }
+        },
+        {
+          "name": "3. Obter Perfil do Tutor (Me)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/tutores/me",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "tutores", "me"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "US02 - Pets",
+      "item": [
+        {
+          "name": "1. Cadastrar Pet (Salva petId)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.data && res.data.id) {",
+                  "    pm.collectionVariables.set('petId', res.data.id);",
+                  "    console.log('Pet ID salvo:', res.data.id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Thor\",\n  \"especie\": \"Cachorro\",\n  \"raca\": \"Golden Retriever\",\n  \"sexo\": \"MACHO\",\n  \"dataNascimento\": \"2022-05-10\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/pets",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "pets"]
+            }
+          }
+        },
+        {
+          "name": "2. Listar Pets do Tutor",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/pets",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "pets"]
+            }
+          }
+        },
+        {
+          "name": "3. Obter Pet por ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/pets/{{petId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "pets", "{{petId}}"]
+            }
+          }
+        },
+        {
+          "name": "4. Atualizar Pet",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"raca\": \"Golden Retriever Puro\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/pets/{{petId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "pets", "{{petId}}"]
+            }
+          }
+        },
+        {
+          "name": "5. Deletar Pet",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/pets/{{petId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "pets", "{{petId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "US03 - Agenda de Cuidados",
+      "item": [
+        {
+          "name": "1. Agendar Cuidado (Salva eventoId)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.data && res.data.id) {",
+                  "    pm.collectionVariables.set('eventoId', res.data.id);",
+                  "    console.log('Evento ID salvo:', res.data.id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"pet_id\": \"{{petId}}\",\n  \"tipo_cuidado\": \"Vacina\",\n  \"data_hora\": \"2026-10-15T10:00:00.000Z\",\n  \"recorrencia\": \"Anual\",\n  \"descricao\": \"Vacina V10 anual e antirrábica\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/agenda",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "agenda"]
+            }
+          }
+        },
+        {
+          "name": "2. Listar Todos os Eventos da Agenda",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/agenda",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "agenda"]
+            }
+          }
+        },
+        {
+          "name": "3. Filtrar Agenda por Pet",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/agenda?petId={{petId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "agenda"],
+              "query": [
+                {
+                  "key": "petId",
+                  "value": "{{petId}}"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "4. Obter Evento por ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/agenda/{{eventoId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "agenda", "{{eventoId}}"]
+            }
+          }
+        },
+        {
+          "name": "5. Atualizar Evento / Concluir Cuidado",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"Concluído\",\n  \"descricao\": \"Vacina aplicada com sucesso na clínica Veterinária Central.\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/agenda/{{eventoId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "agenda", "{{eventoId}}"]
+            }
+          }
+        },
+        {
+          "name": "6. Deletar Evento da Agenda",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/agenda/{{eventoId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "agenda", "{{eventoId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Módulo - Clínicas Veterinárias",
+      "item": [
+        {
+          "name": "1. Cadastrar Clínica (Salva clinicaId)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.data && res.data.id) {",
+                  "    pm.collectionVariables.set('clinicaId', res.data.id);",
+                  "    console.log('Clinica ID salvo:', res.data.id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Hospital Veterinário São Francisco\",\n  \"telefone\": \"(11) 98765-4321\",\n  \"email\": \"contato@saofrancisco.vet.br\",\n  \"endereco\": \"Av. Paulista, 1000\",\n  \"cidade\": \"São Paulo\",\n  \"estado\": \"SP\",\n  \"horarioFuncionamento\": \"24 horas\",\n  \"servicos\": [\"Cirurgia\", \"Internação\", \"Vacinação\", \"Plantão 24h\"],\n  \"descricao\": \"Atendimento completo para cães e gatos com UTI e exames laboratoriais.\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/clinicas",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "clinicas"]
+            }
+          }
+        },
+        {
+          "name": "2. Listar Todas as Clínicas",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/clinicas",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "clinicas"]
+            }
+          }
+        },
+        {
+          "name": "3. Filtrar Clínicas (por Cidade / Serviço / Busca)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/clinicas?cidade=São Paulo&servico=Vacinação",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "clinicas"],
+              "query": [
+                {
+                  "key": "cidade",
+                  "value": "São Paulo"
+                },
+                {
+                  "key": "servico",
+                  "value": "Vacinação"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "4. Obter Perfil Detalhado da Clínica",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/clinicas/{{clinicaId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "clinicas", "{{clinicaId}}"]
+            }
+          }
+        },
+        {
+          "name": "5. Atualizar Perfil da Clínica",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"horarioFuncionamento\": \"Seg a Sex 08h-20h, Sáb 08h-14h\",\n  \"descricao\": \"Instalações modernizadas com novos equipamentos de ultrassom e raio-x.\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/clinicas/{{clinicaId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "clinicas", "{{clinicaId}}"]
+            }
+          }
+        },
+        {
+          "name": "6. Deletar Clínica",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/clinicas/{{clinicaId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "clinicas", "{{clinicaId}}"]
+            }
+          }
+        },
+        {
+          "name": "7. Painel de Atendimentos Agendados para a Clínica",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/clinicas/{{clinicaId}}/atendimentos",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "clinicas", "{{clinicaId}}", "atendimentos"]
+            }
+          }
+        },
+        {
+          "name": "8. Atualizar Atendimento / Concluir pela Clínica",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"Concluído\",\n  \"descricao\": \"Procedimento realizado com sucesso pelo Dr. Roberto (CRMV 12345). Paciente liberado com receita.\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/clinicas/{{clinicaId}}/atendimentos/{{eventoId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "clinicas", "{{clinicaId}}", "atendimentos", "{{eventoId}}"]
+            }
+          }
+        },
+        {
+          "name": "9. Resumo do Painel de Gestão da Clínica (Dashboard)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/clinicas/{{clinicaId}}/resumo",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "clinicas", "{{clinicaId}}", "resumo"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "US04 - Recuperação Segura de Senha",
+      "item": [
+        {
+          "name": "1. Solicitar Recuperação de Senha (Forgot Password)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"mariana@exemplo.com\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/forgot-password",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "forgot-password"]
+            },
+            "description": "Gera token criptográfico com TTL de 30 minutos e dispara e-mail. Responde com feedback neutro para mitigar enumeração de contas."
+          }
+        },
+        {
+          "name": "2. Redefinir Senha com Token (Reset Password)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"token\": \"COLE_AQUI_O_TOKEN_RECEBIDO\",\n  \"novaSenha\": \"NovaSenhaSegura@123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/reset-password",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "reset-password"]
+            },
+            "description": "Valida expiração e unicidade do token, hasheia a nova senha com bcrypt, inutiliza o token descartável e revoga todas as sessões ativas existentes."
+          }
+        }
+      ]
+    }
+  ]
+}

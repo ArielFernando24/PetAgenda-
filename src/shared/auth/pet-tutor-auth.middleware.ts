@@ -8,9 +8,13 @@ export const petTutorAuth: RequestHandler = (req, res, next) => {
     if (error) { next(error); return; }
     const tutorId = req.user?.tutor_id;
     if (!tutorId) { res.status(401).json({ message: 'Tutor nao autenticado.' }); return; }
-    void prisma.tutor.findUnique({ where: { id: tutorId }, select: { id: true } })
+    void prisma.tutor.findUnique({ where: { id: tutorId }, select: { id: true, tokenVersion: true } })
       .then(tutor => {
         if (!tutor) { res.status(401).json({ message: 'Tutor nao encontrado. Entre novamente.' }); return; }
+        if (req.user?.token_version !== undefined && tutor.tokenVersion !== undefined && req.user.token_version !== tutor.tokenVersion) {
+          res.status(401).json({ status: 'error', message: 'Sessão revogada. Faça login novamente.' });
+          return;
+        }
         req.auth = { tutorId: tutor.id };
         next();
       })

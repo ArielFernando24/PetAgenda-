@@ -6,6 +6,7 @@ import { z } from 'zod';
 interface JwtPayload {
   tutor_id: string;
   email: string;
+  token_version?: number;
   iat?: number;
   exp?: number;
 }
@@ -47,6 +48,7 @@ export const authMiddleware = (req: Request, res: Response, next: NextFunction):
     req.user = {
       tutor_id: decoded.tutor_id,
       email: decoded.email,
+      token_version: decoded.token_version,
     };
 
     next();

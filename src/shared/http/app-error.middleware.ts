@@ -1,6 +1,14 @@
 import type { ErrorRequestHandler } from "express";
 import { ZodError } from "zod";
 import { PetNotFoundError } from "../../modules/pets/domain/pet.errors";
+import {
+  EventoNotFoundError,
+  PetForbiddenOrNotFoundError,
+} from "../../modules/agenda/domain/agenda.errors";
+import {
+  AtendimentoNotFoundError,
+  ClinicaNotFoundError,
+} from "../../modules/clinicas/domain/clinica.errors";
 import { AppError } from "../../middlewares/error.middleware";
 import { Prisma } from "@prisma/client";
 
@@ -47,10 +55,40 @@ export const appErrorMiddleware: ErrorRequestHandler = (error, _req, res, _next)
     return;
   }
 
-  if (error instanceof PetNotFoundError) {
+  if (error instanceof PetNotFoundError || error instanceof PetForbiddenOrNotFoundError) {
     res.status(404).json({
       error: {
         code: "PET_NOT_FOUND",
+        message: error.message,
+      },
+    });
+    return;
+  }
+
+  if (error instanceof EventoNotFoundError) {
+    res.status(404).json({
+      error: {
+        code: "EVENTO_NOT_FOUND",
+        message: error.message,
+      },
+    });
+    return;
+  }
+
+  if (error instanceof ClinicaNotFoundError) {
+    res.status(404).json({
+      error: {
+        code: "CLINICA_NOT_FOUND",
+        message: error.message,
+      },
+    });
+    return;
+  }
+
+  if (error instanceof AtendimentoNotFoundError) {
+    res.status(404).json({
+      error: {
+        code: "ATENDIMENTO_NOT_FOUND",
         message: error.message,
       },
     });
