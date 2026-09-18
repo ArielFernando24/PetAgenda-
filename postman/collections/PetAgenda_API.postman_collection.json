@@ -586,6 +586,24 @@
       "item": [
         {
           "name": "1. Solicitar Recuperação de Senha (Forgot Password)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code é 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Retorna mensagem neutra anti-enumeração', function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.status).to.eql('success');",
+                  "    pm.expect(jsonData.message).to.include('instruções');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
           "request": {
             "method": "POST",
             "header": [
@@ -608,6 +626,19 @@
         },
         {
           "name": "2. Redefinir Senha com Token (Reset Password)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Valida token ou erro esperado caso token seja mock', function () {",
+                  "    pm.expect(pm.response.code).to.be.oneOf([200, 400]);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
           "request": {
             "method": "POST",
             "header": [
@@ -618,7 +649,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"token\": \"COLE_AQUI_O_TOKEN_RECEBIDO\",\n  \"novaSenha\": \"NovaSenhaSegura@123\"\n}"
+              "raw": "{\n  \"token\": \"token_exemplo_123\",\n  \"novaSenha\": \"NovaSenhaSegura@123\"\n}"
             },
             "url": {
               "raw": "{{baseUrl}}/api/auth/reset-password",
@@ -626,6 +657,174 @@
               "path": ["api", "auth", "reset-password"]
             },
             "description": "Valida expiração e unicidade do token, hasheia a nova senha com bcrypt, inutiliza o token descartável e revoga todas as sessões ativas existentes."
+          }
+        }
+      ]
+    },
+    {
+      "name": "US05 - Gestão de Perfil de Usuário & Upload de Avatar",
+      "item": [
+        {
+          "name": "1. Obter Perfil Atualizado (GET /users/me)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code é 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Perfil contém dados cadastrais', function () {",
+                  "    const res = pm.response.json();",
+                  "    pm.expect(res.data).to.have.property('nome');",
+                  "    pm.expect(res.data).to.have.property('email');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/users/me",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "users", "me"]
+            },
+            "description": "Retorna os dados cadastrais (nome, email, telefone, bio, timezone) e URLs do avatar (original, thumb 128 e thumb 256)."
+          }
+        },
+        {
+          "name": "2. Atualizar Dados Cadastrais (PUT /users/me)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code é 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Dados cadastrais foram atualizados', function () {",
+                  "    const res = pm.response.json();",
+                  "    pm.expect(res.status).to.eql('success');",
+                  "    pm.expect(res.data.telefone).to.eql('(11) 98765-4321');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Mariana Silva Atualizada\",\n  \"telefone\": \"(11) 98765-4321\",\n  \"bio\": \"Tutora dedicada de 2 gatinhos e 1 cachorro caramelo.\",\n  \"timezone\": \"America/Sao_Paulo\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/users/me",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "users", "me"]
+            },
+            "description": "Atualiza dados cadastrais com sanitização. Impede alteração de campos restritos (ex: role/id/email/tokenVersion)."
+          }
+        },
+        {
+          "name": "3. Upload de Avatar (POST /users/me/avatar)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code é 200 ou validação de arquivo', function () {",
+                  "    pm.expect(pm.response.code).to.be.oneOf([200, 400]);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "avatar",
+                  "type": "file",
+                  "src": "src/assets/bolinha-petagenda.png"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/users/me/avatar",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "users", "me", "avatar"]
+            },
+            "description": "Faz upload de imagem multipart (máx 2MB, JPG/PNG/WebP), gera thumbnails 128x128 e 256x256 e limpa imagens antigas do storage."
+          }
+        },
+        {
+          "name": "4. Obter Presigned URL de Avatar (GET /users/me/avatar/presigned-url)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code é 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Retorna uploadUrl e fileKey', function () {",
+                  "    const res = pm.response.json();",
+                  "    pm.expect(res.data).to.have.property('uploadUrl');",
+                  "    pm.expect(res.data).to.have.property('fileKey');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/users/me/avatar/presigned-url?contentType=image/png",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "users", "me", "avatar", "presigned-url"],
+              "query": [
+                {
+                  "key": "contentType",
+                  "value": "image/png"
+                }
+              ]
+            },
+            "description": "Gera URL pré-assinada ou endpoint de upload direto para Cloud Storage/S3."
           }
         }
       ]

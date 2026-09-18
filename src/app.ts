@@ -49,6 +49,7 @@ export function createApp(options: AppOptions = {}) {
     new ClinicaService(clinicaRepository),
     authMiddleware,
   ));
+  app.use('/uploads', express.static(path.resolve(__dirname, '../public/uploads')));
   app.use(express.static(path.resolve(__dirname, '../public')));
   app.use((_req, res) => {
     res.status(404).json({ error: { code: 'ROUTE_NOT_FOUND', message: 'Rota nao encontrada.' } });

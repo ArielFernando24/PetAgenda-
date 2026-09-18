@@ -16,4 +16,6 @@ export const env = {
   CORS_ORIGINS: (process.env.CORS_ORIGINS ?? '').split(',').map(s => s.trim()).filter(Boolean),
   FRONTEND_URL: process.env.FRONTEND_URL || 'http://localhost:5173',
   MAIL_PROVIDER: process.env.MAIL_PROVIDER || 'console',
+  STORAGE_PROVIDER: process.env.STORAGE_PROVIDER || 'local',
+  STORAGE_BASE_URL: process.env.STORAGE_BASE_URL || `http://${process.env.HOST || '127.0.0.1'}:${process.env.PORT || 3000}/uploads/avatars`,
 };

@@ -3,10 +3,18 @@ import { prisma } from '../config/prisma';
 import { AppError } from '../middlewares/error.middleware';
 import { CreateTutorInput, UpdateTutorInput } from '../schemas/tutor.schema';
 
+import { storageService } from './storage.service';
+
 export interface TutorResponse {
   id: string;
   nome: string;
   email: string;
+  telefone?: string | null;
+  bio?: string | null;
+  timezone?: string | null;
+  avatarUrl?: string | null;
+  avatarThumb128?: string | null;
+  avatarThumb256?: string | null;
   data_criacao: Date;
 }
 
@@ -35,6 +43,12 @@ export class TutorService {
       id: tutor.id,
       nome: tutor.nome,
       email: tutor.email,
+      telefone: (tutor as any).telefone ?? null,
+      bio: (tutor as any).bio ?? null,
+      timezone: (tutor as any).timezone ?? 'America/Sao_Paulo',
+      avatarUrl: (tutor as any).avatarUrl ?? null,
+      avatarThumb128: (tutor as any).avatarThumb128 ?? null,
+      avatarThumb256: (tutor as any).avatarThumb256 ?? null,
       data_criacao: tutor.data_criacao,
     };
   }
@@ -56,6 +70,12 @@ export class TutorService {
       id: tutor.id,
       nome: tutor.nome,
       email: tutor.email,
+      telefone: (tutor as any).telefone ?? null,
+      bio: (tutor as any).bio ?? null,
+      timezone: (tutor as any).timezone ?? 'America/Sao_Paulo',
+      avatarUrl: (tutor as any).avatarUrl ?? null,
+      avatarThumb128: (tutor as any).avatarThumb128 ?? null,
+      avatarThumb256: (tutor as any).avatarThumb256 ?? null,
       data_criacao: tutor.data_criacao,
     };
   }
@@ -69,10 +89,25 @@ export class TutorService {
       throw new AppError('Tutor não encontrado', 404);
     }
 
-    const updateData: { nome?: string; senha_hash?: string } = {};
+    const updateData: {
+      nome?: string;
+      telefone?: string | null;
+      bio?: string | null;
+      timezone?: string | null;
+      senha_hash?: string;
+    } = {};
 
-    if (data.nome) {
-      updateData.nome = data.nome;
+    if (data.nome !== undefined) {
+      updateData.nome = data.nome.trim();
+    }
+    if (data.telefone !== undefined) {
+      updateData.telefone = data.telefone.trim();
+    }
+    if (data.bio !== undefined) {
+      updateData.bio = data.bio.trim();
+    }
+    if (data.timezone !== undefined) {
+      updateData.timezone = data.timezone.trim();
     }
 
     if (data.novaSenha) {
@@ -98,6 +133,56 @@ export class TutorService {
       id: updatedTutor.id,
       nome: updatedTutor.nome,
       email: updatedTutor.email,
+      telefone: (updatedTutor as any).telefone ?? null,
+      bio: (updatedTutor as any).bio ?? null,
+      timezone: (updatedTutor as any).timezone ?? 'America/Sao_Paulo',
+      avatarUrl: (updatedTutor as any).avatarUrl ?? null,
+      avatarThumb128: (updatedTutor as any).avatarThumb128 ?? null,
+      avatarThumb256: (updatedTutor as any).avatarThumb256 ?? null,
+      data_criacao: updatedTutor.data_criacao,
+    };
+  }
+
+  public async updateAvatar(id: string, buffer: Buffer, mimetype: string): Promise<TutorResponse> {
+    const tutor = await prisma.tutor.findUnique({
+      where: { id },
+    });
+
+    if (!tutor) {
+      throw new AppError('Tutor não encontrado', 404);
+    }
+
+    // Limpar fotos antigas do storage para evitar acúmulo de lixo
+    const currentAvatarUrl = (tutor as any).avatarUrl;
+    const currentThumb128 = (tutor as any).avatarThumb128;
+    const currentThumb256 = (tutor as any).avatarThumb256;
+
+    if (currentAvatarUrl || currentThumb128 || currentThumb256) {
+      await storageService.deleteAvatarFiles([currentAvatarUrl, currentThumb128, currentThumb256]);
+    }
+
+    // Salvar nova imagem com redimensionamento de thumbnails (128x128 e 256x256)
+    const processed = await storageService.saveAvatar(id, buffer, mimetype);
+
+    const updatedTutor = await prisma.tutor.update({
+      where: { id },
+      data: {
+        avatarUrl: processed.avatarUrl,
+        avatarThumb128: processed.avatarThumb128,
+        avatarThumb256: processed.avatarThumb256,
+      },
+    });
+
+    return {
+      id: updatedTutor.id,
+      nome: updatedTutor.nome,
+      email: updatedTutor.email,
+      telefone: (updatedTutor as any).telefone ?? null,
+      bio: (updatedTutor as any).bio ?? null,
+      timezone: (updatedTutor as any).timezone ?? 'America/Sao_Paulo',
+      avatarUrl: (updatedTutor as any).avatarUrl ?? null,
+      avatarThumb128: (updatedTutor as any).avatarThumb128 ?? null,
+      avatarThumb256: (updatedTutor as any).avatarThumb256 ?? null,
       data_criacao: updatedTutor.data_criacao,
     };
   }

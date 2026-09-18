@@ -15,6 +15,7 @@ router.get('/health', (_req, res) => {
 
 // Rotas da aplicação
 router.use('/tutores', tutorRoutes);
+router.use('/users', tutorRoutes);
 router.use('/auth', authRoutes);
 
 export default router;
