@@ -1,0 +1,122 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Tutor {
+  id                  String               @id @default(uuid()) @db.Uuid
+  nome                String               @db.VarChar(100)
+  email               String               @unique @db.VarChar(150)
+  senha_hash          String               @db.VarChar(255)
+  tokenVersion        Int                  @default(1) @map("token_version")
+  data_criacao        DateTime             @default(now()) @map("data_criacao")
+  pets                Pet[]
+  passwordResetTokens PasswordResetToken[]
+
+  @@map("tutor")
+}
+
+model PasswordResetToken {
+  id        String    @id @default(uuid()) @db.Uuid
+  tutorId   String    @map("tutor_id") @db.Uuid
+  tokenHash String    @unique @map("token_hash") @db.VarChar(255)
+  expiresAt DateTime  @map("expires_at")
+  usedAt    DateTime? @map("used_at")
+  createdAt DateTime  @default(now()) @map("data_criacao")
+
+  tutor     Tutor     @relation(fields: [tutorId], references: [id], onDelete: Cascade)
+
+  @@index([tutorId])
+  @@map("password_reset_token")
+}
+
+enum PetSex {
+  MACHO
+  FEMEA
+  NAO_INFORMADO
+}
+
+model Pet {
+  id             String   @id @default(uuid()) @db.Uuid
+  tutorId        String   @map("tutor_id") @db.Uuid
+  nome           String   @db.VarChar(80)
+  especie        String   @db.VarChar(50)
+  raca           String?  @db.VarChar(80)
+  sexo           PetSex   @default(NAO_INFORMADO)
+  dataNascimento DateTime @map("data_nascimento") @db.Date
+  createdAt      DateTime @default(now()) @map("data_criacao")
+  updatedAt      DateTime @updatedAt @map("data_atualizacao")
+  tutor          Tutor    @relation(fields: [tutorId], references: [id], onDelete: Cascade)
+  eventos        Evento[]
+
+  @@index([tutorId])
+  @@map("pet")
+}
+
+enum TipoCuidado {
+  VACINA
+  VERMIFUGO
+  BANHO_E_TOSA
+  CONSULTA
+  REMEDIO
+}
+
+enum Recorrencia {
+  NENHUMA
+  SEMANAL
+  MENSAL
+  ANUAL
+  PERSONALIZADA
+}
+
+enum StatusEvento {
+  PENDENTE
+  CONCLUIDO
+  CANCELADO
+}
+
+model Evento {
+  id          String        @id @default(uuid()) @db.Uuid
+  petId       String        @map("pet_id") @db.Uuid
+  clinicaId   String?       @map("clinica_id") @db.Uuid
+  tipoCuidado TipoCuidado   @map("tipo_cuidado")
+  dataHora    DateTime      @map("data_hora")
+  recorrencia Recorrencia   @default(NENHUMA) @map("recorrencia")
+  status      StatusEvento  @default(PENDENTE) @map("status")
+  descricao   String?       @db.VarChar(255) @map("descricao")
+  createdAt   DateTime      @default(now()) @map("data_criacao")
+  updatedAt   DateTime      @updatedAt @map("data_atualizacao")
+
+  pet         Pet           @relation(fields: [petId], references: [id], onDelete: Cascade)
+  clinica     Clinica?      @relation(fields: [clinicaId], references: [id], onDelete: SetNull)
+
+  @@index([petId])
+  @@index([clinicaId])
+  @@index([dataHora])
+  @@map("evento")
+}
+
+model Clinica {
+  id                  String    @id @default(uuid()) @db.Uuid
+  nome                String    @db.VarChar(120)
+  telefone            String    @db.VarChar(25)
+  email               String?   @db.VarChar(150)
+  endereco            String    @db.VarChar(255)
+  cidade              String    @db.VarChar(100)
+  estado              String    @db.VarChar(2)
+  horarioFuncionamento String?  @map("horario_funcionamento") @db.VarChar(150)
+  servicos            String[]  @default([])
+  descricao           String?   @db.VarChar(500)
+  createdAt           DateTime  @default(now()) @map("data_criacao")
+  updatedAt           DateTime  @updatedAt @map("data_atualizacao")
+  eventos             Evento[]
+
+  @@index([cidade])
+  @@index([nome])
+  @@map("clinica")
+}
+

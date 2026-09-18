@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>PetAgenda — Meus pets</title><link rel="stylesheet" href="/css/style.css"><link rel="stylesheet" href="/css/integration.css"><script src="/js/pets.js" type="module"></script></head>
+<body><aside class="sidebar"><div class="logo"><div class="logo-icon">🐾</div><div class="logo-text"><h1>PetAgenda</h1><span>Gestão de cuidados para pets</span></div></div>
+<nav class="menu" aria-label="Principal"><a class="menu-item" href="/pets.html" aria-current="page">Meus pets</a><button class="menu-item" type="button" id="logout">Sair da conta</button></nav></aside>
+<main class="main-content"><header class="header"><div><h2>Meus pets</h2><span>Organize os animais que fazem parte da sua família.</span></div><p id="tutorName"></p></header>
+<p id="message" role="status" aria-live="polite"></p>
+<section aria-labelledby="petsHeading"><h3 id="petsHeading">Pets cadastrados</h3><p id="empty">Carregando seus pets…</p><div id="petList" class="pet-list"></div></section>
+<section class="pet-form" aria-labelledby="formHeading"><h3 id="formHeading">Cadastrar pet</h3>
+<form id="petForm">
+<div class="form-group"><label for="nome">Nome</label><input id="nome" name="nome" required maxlength="80"></div>
+<div class="form-group"><label for="especie">Espécie</label><input id="especie" name="especie" required maxlength="50" placeholder="Ex.: cachorro"></div>
+<div class="form-group"><label for="raca">Raça (opcional)</label><input id="raca" name="raca" maxlength="80"></div>
+<div class="form-group"><label for="sexo">Sexo</label><select id="sexo" name="sexo"><option value="NAO_INFORMADO">Não informado</option><option value="FEMEA">Fêmea</option><option value="MACHO">Macho</option></select></div>
+<div class="form-group"><label for="nascimento">Data de nascimento</label><input type="date" id="nascimento" name="dataNascimento" required></div>
+<button class="save-button" id="savePet" type="submit">Salvar pet</button><button class="save-button secondary" id="cancelEdit" type="button" hidden>Cancelar edição</button>
+</form></section>
+<footer class="footer"><span>Feito com carinho para quem cuida de quem ama.</span><span>🐾</span></footer>
+</main></body></html>

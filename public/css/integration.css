@@ -1,0 +1,21 @@
+[hidden] { display: none !important; }
+#message { min-height: 1.5em; margin: 20px 0; max-width: 650px; overflow-wrap: anywhere; }
+#message[data-error="true"] { color: #a02020; }
+#message[data-error="false"] { color: #195c39; }
+.secondary { background: #e0e7ed; color: #17375e; }
+button:disabled { opacity: .65; cursor: wait; }
+button:focus-visible, a:focus-visible, select:focus-visible { outline: 3px solid #e2a400; outline-offset: 3px; }
+.card { margin-bottom: 28px; }
+.pet-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr)); gap: 16px; margin: 18px 0; }
+.pet-card { background: white; padding: 20px; border-radius: 14px; overflow-wrap: anywhere; }
+.pet-card p { margin: 10px 0; }
+.pet-card button { padding: 10px 16px; border-radius: 8px; margin: 5px 8px 0 0; border: 1px solid #38598b; cursor: pointer; background: white; color: #17375e; }
+.pet-card button[data-action="delete"] { color: #a02020; border-color: #a02020; }
+.pet-form { width: 100%; max-width: 550px; }
+.form-group { margin: 16px 0; }
+.form-group input, .form-group select { width: 100%; height: 46px; border: 1px solid #c5ccd6; border-radius: 9px; padding: 0 12px; background: white; font: inherit; }
+.footer { position: static; margin-top: 48px; padding-bottom: 24px; }
+.main-content { padding-right: 40px; }
+.menu button { border: 0; cursor: pointer; font-family: inherit; }
+.logo-text span { color: #edf2f8; }
+@media(max-width: 700px) { .main-content { padding: 24px 16px; } .menu { margin-top: 16px; } }

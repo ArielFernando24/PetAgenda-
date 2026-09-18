@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>PetAgenda — Acesso</title><link rel="stylesheet" href="/css/auth.css"><link rel="stylesheet" href="/css/integration.css"><script src="/js/auth.js" type="module"></script></head>
+<body>
+<header class="header"><h1>PetAgenda</h1><p>Feito com carinho para quem cuida de quem ama.</p></header>
+<main class="main">
+<h2>Bem-vindo!</h2>
+<p id="message" role="status" aria-live="polite"></p>
+<section class="card" id="registerPanel">
+<h3>Cadastre-se hoje</h3>
+<form id="registerForm">
+<div class="row"><div class="field"><label for="nome">Nome</label><input id="nome" name="nome" required minlength="2" maxlength="50" autocomplete="given-name"></div>
+<div class="field"><label for="sobrenome">Sobrenome</label><input id="sobrenome" name="sobrenome" maxlength="49" autocomplete="family-name"></div></div>
+<div class="field full"><label for="email">E-mail</label><input id="email" name="email" type="email" required maxlength="150" autocomplete="email"></div>
+<div class="row"><div class="field"><label for="senha">Senha</label><input id="senha" name="senha" type="password" required minlength="6" maxlength="72" autocomplete="new-password"></div>
+<div class="field"><label for="confirmar">Confirmar senha</label><input id="confirmar" name="confirmar" type="password" required minlength="6" maxlength="72" autocomplete="new-password"></div></div>
+<button type="submit">Criar conta</button>
+</form><button class="secondary" id="showLogin" type="button">Já tenho conta</button></section>
+<section class="card" id="loginPanel" hidden>
+<h3>Entrar na sua conta</h3>
+<form id="loginForm"><div class="field"><label for="loginEmail">E-mail</label><input id="loginEmail" name="email" type="email" required autocomplete="email"></div>
+<div class="field"><label for="loginSenha">Senha</label><input id="loginSenha" name="senha" type="password" required autocomplete="current-password"></div>
+<button type="submit">Entrar</button></form><button class="secondary" id="showRegister" type="button">Criar uma conta</button>
+</section></main></body></html>
