@@ -1,12 +1,14 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { clinicasApi } from "../services/api";
 import cachorroBanho from "../assets/cachorrobanho-petagenda.png";
 
 function Servicos() {
-
   const navigate = useNavigate();
 
   const [busca, setBusca] = useState("");
+  const [clinicas, setClinicas] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [modalAnuncioAberto, setModalAnuncioAberto] = useState(false);
   const [propostaEnviada, setPropostaEnviada] = useState(false);
   const [dadosPetshop, setDadosPetshop] = useState({
@@ -14,26 +16,64 @@ function Servicos() {
     contato: "",
   });
 
-  const servicos = [
+  const fallbackServicos = [
     {
+      id: "f1",
       nome: "Clínica VetVida",
-      descricao: "Consulta • Vacinas • Segunda a sábado",
+      cidade: "São Paulo",
+      estado: "SP",
+      endereco: "Av. Paulista, 1000",
+      telefone: "(11) 98888-1111",
+      servicos: ["Consulta", "Vacinas"],
+      descricao: "Segunda a sábado",
     },
     {
+      id: "f2",
       nome: "Pet Shop Bicho Feliz",
-      descricao: "Banho & Tosa • Todos os dias",
+      cidade: "Campinas",
+      estado: "SP",
+      endereco: "Rua das Flores, 200",
+      telefone: "(19) 97777-2222",
+      servicos: ["Banho & Tosa"],
+      descricao: "Todos os dias",
+    },
+    {
+      id: "f3",
+      nome: "Clínica Vida Animal",
+      cidade: "São Paulo",
+      estado: "SP",
+      endereco: "Rua Augusta, 450",
+      telefone: "(11) 96666-3333",
+      servicos: ["Consulta", "Cirurgia", "Exames"],
+      descricao: "Atendimento 24h",
     },
   ];
 
-  const servicosFiltrados = servicos.filter((servico) =>
-    `${servico.nome} ${servico.descricao}`
-      .toLowerCase()
-      .includes(busca.toLowerCase())
-  );
+  useEffect(() => {
+    async function carregarClinicas() {
+      try {
+        const data = await clinicasApi.list();
+        if (Array.isArray(data) && data.length > 0) {
+          setClinicas(data);
+        } else {
+          setClinicas(fallbackServicos);
+        }
+      } catch (err) {
+        console.warn("Erro ao buscar clínicas, usando lista de referência:", err.message);
+        setClinicas(fallbackServicos);
+      } finally {
+        setLoading(false);
+      }
+    }
+    carregarClinicas();
+  }, []);
 
-  function solicitarServico() {
-    navigate("/novo-servico");
-  }
+  const clinicasFiltradas = clinicas.filter((clinica) => {
+    const textoCompleto = `${clinica.nome} ${clinica.cidade || ""} ${clinica.estado || ""} ${
+      Array.isArray(clinica.servicos) ? clinica.servicos.join(" ") : ""
+    } ${clinica.descricao || ""}`.toLowerCase();
+    return textoCompleto.includes(busca.toLowerCase());
+  });
 
   function handleEnviarInteresse(e) {
     e.preventDefault();
@@ -183,7 +223,7 @@ function Servicos() {
         <div className="servicos-search">
           <input
             type="text"
-            placeholder="Buscar..."
+            placeholder="Buscar por clínica, serviço ou cidade..."
             value={busca}
             onChange={(e) => setBusca(e.target.value)}
           />
@@ -195,34 +235,46 @@ function Servicos() {
       </div>
 
       <div className="servicos-list">
-        {servicosFiltrados.map((servico) => (
-          <div className="servico-card" key={servico.nome}>
-            <strong>{servico.nome}</strong>
-            <span>{servico.descricao}</span>
-          </div>
-        ))}
+        {loading ? (
+          <p style={{ padding: "20px", color: "#666" }}>Carregando serviços disponíveis...</p>
+        ) : clinicasFiltradas.length === 0 ? (
+          <p style={{ padding: "20px", color: "#666" }}>
+            Nenhum estabelecimento encontrado com os termos pesquisados.
+          </p>
+        ) : (
+          clinicasFiltradas.map((servico) => (
+            <div className="servico-card" key={servico.id || servico.nome}>
+              <strong>{servico.nome}</strong>
+              <span>
+                {Array.isArray(servico.servicos) ? servico.servicos.join(" • ") : servico.servicos}
+                {servico.cidade ? ` • ${servico.cidade}/${servico.estado}` : ""}
+                {servico.telefone ? ` • Tel: ${servico.telefone}` : ""}
+              </span>
+            </div>
+          ))
+        )}
       </div>
 
-  <button
-  className="solicitar-servico"
-  type="button"
-  onClick={() => navigate("/novo-servico")}
-  style={{
-    position: "relative",
-    zIndex: 9999,
-    pointerEvents: "auto",
-  }}
->
-  Solicitar serviço
-</button>
+      <button
+        className="solicitar-servico"
+        type="button"
+        onClick={() => navigate("/novo-servico")}
+        style={{
+          position: "relative",
+          zIndex: 9999,
+          pointerEvents: "auto",
+        }}
+      >
+        Solicitar serviço
+      </button>
 
-<div className="servicos-cena">
-  <img
-    src={cachorroBanho}
-    alt="Cachorro tomando banho"
-    className="cachorro-banho-servicos"
-  />
-</div>
+      <div className="servicos-cena">
+        <img
+          src={cachorroBanho}
+          alt="Cachorro tomando banho"
+          className="cachorro-banho-servicos"
+        />
+      </div>
 
       <div className="servicos-footer">
         <span>Feito com carinho para quem cuida de quem ama.</span>

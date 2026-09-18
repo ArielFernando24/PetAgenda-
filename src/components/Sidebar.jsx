@@ -1,9 +1,12 @@
 import { useEffect, useRef, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
 import logo from "../assets/logo-petagenda.png";
 
 function Sidebar() {
   const location = useLocation();
+  const navigate = useNavigate();
+  const { user, logout } = useAuth();
   const [menuContasAberto, setMenuContasAberto] = useState(false);
   const menuContasRef = useRef(null);
 
@@ -23,6 +26,13 @@ function Sidebar() {
       document.removeEventListener("mousedown", fecharAoClicarFora);
     };
   }, []);
+
+  function handleLogout() {
+    logout();
+    navigate("/login");
+  }
+
+  const nomeExibicao = user?.nome ? user.nome.split(" ")[0] : "Tutor";
 
   return (
     <aside className="sidebar">
@@ -84,15 +94,27 @@ function Sidebar() {
       >
         {menuContasAberto && (
           <>
-            <Link to="/login" className="item-conta item-conta-adicionar">
-              <span className="icone"></span>
-              <span>Adicionar conta</span>
+            <Link to="/perfil" className="item-conta item-conta-secundario">
+              <span className="icone">👤</span>
+              <span>Meu perfil</span>
             </Link>
 
-            <Link to="/dashboard" className="item-conta item-conta-secundario">
-              <span className="icone"></span>
-              <span>Usuário</span>
-            </Link>
+            <button
+              type="button"
+              className="item-conta item-conta-adicionar"
+              onClick={handleLogout}
+              style={{
+                width: "100%",
+                background: "none",
+                border: "none",
+                textAlign: "left",
+                cursor: "pointer",
+                color: "#ff6b6b",
+              }}
+            >
+              <span className="icone">🚪</span>
+              <span>Sair da conta</span>
+            </button>
           </>
         )}
 
@@ -102,8 +124,8 @@ function Sidebar() {
           onClick={() => setMenuContasAberto((aberto) => !aberto)}
           aria-expanded={menuContasAberto}
         >
-          <span className="icone"></span>
-          <span>Usuário</span>
+          <span className="icone">👤</span>
+          <span>{nomeExibicao}</span>
         </button>
       </div>
     </aside>
