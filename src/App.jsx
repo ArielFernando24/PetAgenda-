@@ -14,7 +14,7 @@ import Perfil from "./pages/Perfil";
 import AlterarPerfil from "./pages/AlterarPerfil";
 import Premium from "./pages/Premium";
 import MeusPets from "./pages/MeusPets";
-
+import RecuperarSenha from "./pages/RecuperarSenha";
 
 // Layout que inclui a barra lateral para as telas internas
 function LayoutComSidebar({ children }) {
@@ -97,6 +97,14 @@ function App() {
             element={
               <PublicOnlyRoute>
                 <CadastroUsuario />
+              </PublicOnlyRoute>
+            }
+          />
+          <Route
+            path="/recuperarSenha"
+            element={
+              <PublicOnlyRoute>
+                <RecuperarSenha />
               </PublicOnlyRoute>
             }
           />

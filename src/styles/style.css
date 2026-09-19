@@ -2632,6 +2632,7 @@ button:hover {
   color: #78827B;
 
   font-size: 11px;
+  line-height: 1;
 }
 
 .perfil-marca {
@@ -3564,7 +3565,7 @@ button:hover {
   position: absolute;
   width: 13px;
   height: 13px;
-  border: 2px solid #000;
+  border: 2px solid white;
   border-radius: 50%;
   left: 21px;
   top: 10px;
@@ -3575,7 +3576,7 @@ button:hover {
   position: absolute;
   width: 7px;
   height: 2px;
-  background: #000;
+  background: white;
   border-radius: 2px;
   transform: rotate(45deg);
   left: 34px;
@@ -4550,4 +4551,467 @@ button:hover {
   .image-cropper-btn-confirmar {
     width: 100%;
   }
+}
+
+/* =========================
+   Filtros de serviços
+========================= */
+
+.servicos-filtro-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+/* Botão de filtros */
+.servicos-search .servicos-filtro-button {
+  width: 59px;
+  height: 39px;
+  margin: 0;
+  border: none;
+  border-radius: 14px;
+  background: #004a7c;
+  color: white;
+  font-size: 19px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+/* Remove a lupa criada pelo CSS dos outros botões */
+.servicos-search .servicos-filtro-button::before,
+.servicos-search .servicos-filtro-button::after {
+  content: none;
+}
+
+.servicos-search .servicos-filtro-button:hover {
+  opacity: 0.9;
+}
+
+/* Popup */
+.servicos-filtro-popup {
+  position: absolute;
+  top: 49px;
+  right: 0;
+  z-index: 1000;
+
+  width: 340px;
+  padding: 20px;
+
+  background: white;
+  border: 1px solid #e0e5de;
+  border-radius: 14px;
+  box-shadow: 0 8px 25px rgba(20, 33, 26, 0.15);
+}
+
+.servicos-filtro-popup h3 {
+  margin-bottom: 18px;
+  color: #14211a;
+  font-size: 18px;
+}
+
+/* Campos */
+.servicos-filtro-campo {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  margin-bottom: 16px;
+}
+
+.servicos-filtro-campo label {
+  color: #14211a;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.servicos-filtro-campo select,
+.servicos-filtro-campo input {
+  width: 100%;
+  height: 39px;
+  padding: 0 11px;
+
+  border: 1px solid #d9ded9;
+  border-radius: 9px;
+  background: #f5f7f2;
+
+  color: #14211a;
+  font-family: inherit;
+  font-size: 13px;
+  outline: none;
+}
+
+.servicos-filtro-campo select:focus,
+.servicos-filtro-campo input:focus {
+  border-color: #38598b;
+}
+
+/* Período */
+.servicos-filtro-periodo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.servicos-filtro-periodo input {
+  min-width: 0;
+}
+
+.servicos-filtro-periodo span {
+  color: #6b7870;
+  font-size: 12px;
+}
+
+/* Botões inferiores */
+.servicos-filtro-acoes {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.servicos-search .servicos-filtro-acoes button {
+  width: auto;
+  height: 38px;
+  margin: 0;
+  padding: 0 16px;
+
+  border-radius: 9px;
+
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* Também impede a lupa nesses botões */
+.servicos-search .servicos-filtro-acoes button::before,
+.servicos-search .servicos-filtro-acoes button::after {
+  content: none;
+}
+
+.servicos-search .servicos-filtro-limpar {
+  background: #e7eaf6;
+  color: #14211a;
+}
+
+.servicos-search .servicos-filtro-aplicar {
+  background: #004a7c;
+  color: white;
+}
+
+/* =========================
+   Busca e filtros - Histórico
+========================= */
+
+/* Lupa padronizada com Serviços */
+.historico-search-button {
+  position: relative;
+  font-size: 0 !important;
+}
+
+/* círculo da lupa */
+.historico-search-button::before {
+  content: "";
+  position: absolute;
+  width: 13px;
+  height: 13px;
+  border: 2px solid white;
+  border-radius: 50%;
+  left: 20px;
+  top: 10px;
+}
+
+/* cabo da lupa */
+.historico-search-button::after {
+  content: "";
+  position: absolute;
+  width: 8px;
+  height: 2px;
+  background: white;
+  transform: rotate(45deg);
+  left: 33px;
+  top: 25px;
+  border-radius: 2px;
+}
+
+/* =========================
+   Filtros de historico
+========================= */
+
+.historico-filtro-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.historico-busca .historico-filtro-button {
+  width: 59px;
+  height: 40px;
+  margin: 0;
+  border: none;
+  border-radius: 13px;
+  background: #004a7c;
+  color: white;
+  font-size: 19px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.historico-filtro-popup {
+  position: absolute;
+  top: 50px;
+  right: 0;
+  z-index: 1000;
+
+  width: 340px;
+  padding: 20px;
+
+  background: white;
+  border: 1px solid #e0e5de;
+  border-radius: 14px;
+  box-shadow: 0 8px 25px rgba(20, 33, 26, 0.15);
+}
+
+.historico-filtro-popup h3 {
+  margin-bottom: 18px;
+  color: #14211a;
+  font-size: 18px;
+}
+
+.historico-filtro-campo {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  margin-bottom: 16px;
+}
+
+.historico-filtro-campo label {
+  color: #14211a;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.historico-filtro-campo select,
+.historico-filtro-campo input {
+  width: 100%;
+  height: 39px;
+  padding: 0 11px;
+  border: 1px solid #d9ded9;
+  border-radius: 9px;
+  background: #f5f7f2;
+  color: #14211a;
+  font-family: inherit;
+  font-size: 13px;
+  outline: none;
+}
+
+.historico-filtro-campo select:focus,
+.historico-filtro-campo input:focus {
+  border-color: #38598b;
+}
+
+.historico-filtro-periodo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.historico-filtro-periodo input {
+  min-width: 0;
+}
+
+.historico-filtro-periodo span {
+  color: #6b7870;
+  font-size: 12px;
+}
+
+.historico-filtro-acoes {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.historico-busca .historico-filtro-acoes button {
+  width: auto;
+  height: 38px;
+  margin: 0;
+  padding: 0 16px;
+  border-radius: 9px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.historico-busca .historico-filtro-limpar {
+  background: #e7eaf6;
+  color: #14211a;
+}
+
+.historico-busca .historico-filtro-aplicar {
+  background: #004a7c;
+  color: white;
+}
+
+/* =========================
+   Recuperar senha
+========================= */
+.recuperar-page {
+  width: 100%;
+  min-height: 100vh;
+  background: #e7eaf6;
+  color: #14211a;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Cabeçalho */
+
+.recuperar-header {
+  padding-top: 37px;
+  text-align: center;
+}
+
+.recuperar-header h1 {
+  margin: 0;
+  font-size: 32px;
+  line-height: 1;
+  font-weight: 700;
+}
+
+.recuperar-header p {
+  margin-top: 9px;
+  color: #6b7870;
+  font-size: 11px;
+  line-height: 1.2;
+}
+
+/* Área principal */
+
+.recuperar-main {
+  display: flex;
+  justify-content: center;
+  padding-top: 80px;
+}
+
+/* Card */
+
+.recuperar-card {
+  width: 565px;
+  min-height: 330px;
+  padding: 40px;
+
+  background: #ffffff;
+  border-radius: 18px;
+}
+
+.recuperar-card h2 {
+  margin: 0;
+  color: #14211a;
+  font-size: 25px;
+  font-weight: 700;
+}
+
+/* Texto auxiliar */
+
+.recuperar-descricao {
+  margin-top: 12px;
+  margin-bottom: 32px;
+
+  color: #6b7870;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+/* Formulário */
+
+.recuperar-form {
+  width: 100%;
+}
+
+.recuperar-campo {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 22px;
+}
+
+.recuperar-campo label {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.recuperar-campo input {
+  width: 100%;
+  height: 48px;
+
+  padding: 0 18px;
+
+  border: none;
+  border-radius: 10px;
+  outline: none;
+
+  background: #f5f7f5;
+  color: #14211a;
+
+  font-family: inherit;
+  font-size: 14px;
+}
+
+.recuperar-campo input::placeholder {
+  color: #6b7870;
+}
+
+.recuperar-campo input:focus {
+  outline: 2px solid rgba(0, 74, 124, 0.25);
+}
+
+/* Botão */
+
+.recuperar-botao {
+  width: 100%;
+  height: 50px;
+
+  margin-top: 10px;
+
+  border: none;
+  border-radius: 10px;
+
+  background: #004a7c;
+  color: #ffffff;
+
+  font-family: inherit;
+  font-size: 17px;
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+.recuperar-botao:hover {
+  opacity: 0.9;
+}
+
+.recuperar-botao:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+/* Mensagens */
+
+.recuperar-mensagem {
+  margin-top: 18px;
+  padding: 10px 14px;
+
+  border-radius: 8px;
+
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.recuperar-erro {
+  background: #ffebee;
+  color: #c62828;
+}
+
+.recuperar-sucesso {
+  background: #e8f5e9;
+  color: #2e7d32;
 }

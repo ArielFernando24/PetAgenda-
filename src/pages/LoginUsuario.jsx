@@ -122,9 +122,9 @@ function Login() {
             </button>
           </form>
 
-          <a className="login-link" href="#" onClick={handleEsqueciSenha}>
+          <Link className="login-link" to="/recuperarSenha">
             Esqueci minha senha
-          </a>
+          </Link>
 
           <Link className="login-link" to="/cadastro">
             Cadastre-se

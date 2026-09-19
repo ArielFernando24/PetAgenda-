@@ -1,12 +1,16 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { clinicasApi } from "../services/api";
 import cachorroBanho from "../assets/cachorrobanho-petagenda.png";
 
 function Servicos() {
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
 
-  const [busca, setBusca] = useState("");
+  const buscaInicial = searchParams.get("busca") || "";
+
+  const [busca, setBusca] = useState(buscaInicial);
+  const [buscaDebounce, setBuscaDebounce] = useState(buscaInicial);
   const [clinicas, setClinicas] = useState([]);
   const [loading, setLoading] = useState(true);
   const [modalAnuncioAberto, setModalAnuncioAberto] = useState(false);
@@ -15,6 +19,17 @@ function Servicos() {
     nome: "",
     contato: "",
   });
+  const [filtrosAberto, setFiltrosAberto] = useState(false);
+
+  const filtrosIniciais = {
+    status: searchParams.get("status") || "",
+    categoria: searchParams.get("categoria") || "",
+    dataInicio: searchParams.get("inicio") || "",
+    dataFim: searchParams.get("fim") || "",
+  };
+
+  const [filtros, setFiltros] = useState(filtrosIniciais);
+  const [filtrosAplicados, setFiltrosAplicados] = useState(filtrosIniciais);
 
   const fallbackServicos = [
     {
@@ -50,6 +65,45 @@ function Servicos() {
   ];
 
   useEffect(() => {
+    const timer = setTimeout(() => {
+      setBuscaDebounce(busca);
+    }, 300);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [busca]);
+
+  useEffect(() => {
+    setSearchParams((params) => {
+      const novosParams = new URLSearchParams(params);
+
+      if (buscaDebounce.trim()) {
+        novosParams.set("busca", buscaDebounce.trim());
+      } else {
+        novosParams.delete("busca");
+      }
+
+      return novosParams;
+    }, { replace: true });
+  }, [buscaDebounce, setSearchParams]);
+
+  useEffect(() => {
+    const buscaUrl = searchParams.get("busca") || "";
+    const filtrosUrl = {
+      status: searchParams.get("status") || "",
+      categoria: searchParams.get("categoria") || "",
+      dataInicio: searchParams.get("inicio") || "",
+      dataFim: searchParams.get("fim") || "",
+    };
+
+    setBusca(buscaUrl);
+    setBuscaDebounce(buscaUrl);
+    setFiltros(filtrosUrl);
+    setFiltrosAplicados(filtrosUrl);
+  }, [searchParams]);
+
+  useEffect(() => {
     async function carregarClinicas() {
       try {
         const data = await clinicasApi.list();
@@ -69,11 +123,79 @@ function Servicos() {
   }, []);
 
   const clinicasFiltradas = clinicas.filter((clinica) => {
+    const servicos = Array.isArray(clinica.servicos)
+      ? clinica.servicos
+      : clinica.servicos
+        ? [clinica.servicos]
+        : [];
+
     const textoCompleto = `${clinica.nome} ${clinica.cidade || ""} ${clinica.estado || ""} ${
-      Array.isArray(clinica.servicos) ? clinica.servicos.join(" ") : ""
+      servicos.join(" ")
     } ${clinica.descricao || ""}`.toLowerCase();
-    return textoCompleto.includes(busca.toLowerCase());
+
+    const termo = buscaDebounce.trim().toLowerCase();
+    const passaBusca = !termo || textoCompleto.includes(termo);
+
+    const categoriaNormalizada = filtrosAplicados.categoria.toLowerCase();
+    const passaCategoria =
+      !categoriaNormalizada ||
+      servicos.some((servico) => {
+        const nome = String(servico).toLowerCase();
+
+        if (categoriaNormalizada === "banho") {
+          return nome.includes("banho") || nome.includes("tosa");
+        }
+
+        if (categoriaNormalizada === "medicamento") {
+          return nome.includes("medicamento") || nome.includes("remedio") || nome.includes("remédio");
+        }
+
+        return nome.includes(categoriaNormalizada);
+      });
+
+    return passaBusca && passaCategoria;
   });
+
+  function aplicarFiltros() {
+    setFiltrosAplicados(filtros);
+
+    const params = new URLSearchParams(searchParams);
+
+    if (filtros.status) params.set("status", filtros.status);
+    else params.delete("status");
+
+    if (filtros.categoria) params.set("categoria", filtros.categoria);
+    else params.delete("categoria");
+
+    if (filtros.dataInicio) params.set("inicio", filtros.dataInicio);
+    else params.delete("inicio");
+
+    if (filtros.dataFim) params.set("fim", filtros.dataFim);
+    else params.delete("fim");
+
+    setSearchParams(params);
+    setFiltrosAberto(false);
+  }
+
+  function limparFiltros() {
+    const filtrosVazios = {
+      status: "",
+      categoria: "",
+      dataInicio: "",
+      dataFim: "",
+    };
+
+    setFiltros(filtrosVazios);
+    setFiltrosAplicados(filtrosVazios);
+
+    const params = new URLSearchParams(searchParams);
+    params.delete("status");
+    params.delete("categoria");
+    params.delete("inicio");
+    params.delete("fim");
+
+    setSearchParams(params);
+  }
 
   function handleEnviarInteresse(e) {
     e.preventDefault();
@@ -228,9 +350,120 @@ function Servicos() {
             onChange={(e) => setBusca(e.target.value)}
           />
 
-          <button type="button" className="search-button">
+    <button
+      type="button"
+      className="search-button"
+      aria-label="Buscar"
+    >
             🔍
           </button>
+
+    <div className="servicos-filtro-container">
+      <button
+        type="button"
+        className="servicos-filtro-button"
+        aria-label="Abrir filtros"
+        onClick={() => setFiltrosAberto(!filtrosAberto)}
+      >
+        ☰
+      </button>
+
+      {filtrosAberto && (
+        <div className="servicos-filtro-popup">
+          <h3>Filtros</h3>
+
+          <div className="servicos-filtro-campo">
+            <label htmlFor="filtro-status">Status</label>
+
+            <select
+              id="filtro-status"
+              value={filtros.status}
+              onChange={(e) =>
+                setFiltros({
+                  ...filtros,
+                  status: e.target.value,
+                })
+              }
+            >
+              <option value="">Todos</option>
+              <option value="pendente">Pendente</option>
+              <option value="cancelado">Cancelado</option>
+              <option value="completo">Completo</option>
+            </select>
+          </div>
+
+          <div className="servicos-filtro-campo">
+            <label htmlFor="filtro-categoria">Categoria</label>
+
+            <select
+              id="filtro-categoria"
+              value={filtros.categoria}
+              onChange={(e) =>
+                setFiltros({
+                  ...filtros,
+                  categoria: e.target.value,
+                })
+              }
+            >
+              <option value="">Todas</option>
+              <option value="vacina">Vacina</option>
+              <option value="banho">Banho & tosa</option>
+              <option value="vermifugo">Vermifugo</option>
+              <option value="consulta">Consulta</option>
+              <option value="medicamento">Medicamento</option>
+            </select>
+          </div>
+
+          <div className="servicos-filtro-campo">
+            <label>Período</label>
+
+            <div className="servicos-filtro-periodo">
+              <input
+                type="date"
+                value={filtros.dataInicio}
+                onChange={(e) =>
+                  setFiltros({
+                    ...filtros,
+                    dataInicio: e.target.value,
+                  })
+                }
+              />
+
+              <span>até</span>
+
+              <input
+                type="date"
+                value={filtros.dataFim}
+                onChange={(e) =>
+                  setFiltros({
+                    ...filtros,
+                    dataFim: e.target.value,
+                  })
+                }
+              />
+            </div>
+          </div>
+
+          <div className="servicos-filtro-acoes">
+            <button
+              type="button"
+              className="servicos-filtro-limpar"
+              onClick={limparFiltros}
+            >
+              Limpar
+            </button>
+
+            <button
+              type="button"
+              className="servicos-filtro-aplicar"
+              onClick={aplicarFiltros}
+            >
+              Aplicar
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
         </div>
       </div>
 
