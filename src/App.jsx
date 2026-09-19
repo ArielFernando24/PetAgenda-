@@ -11,8 +11,10 @@ import NovoServico from "./pages/NovoServico";
 import LoginUsuario from "./pages/LoginUsuario";
 import Dashboard from "./pages/Dashboard";
 import Perfil from "./pages/Perfil";
+import AlterarPerfil from "./pages/AlterarPerfil";
 import Premium from "./pages/Premium";
 import MeusPets from "./pages/MeusPets";
+
 
 // Layout que inclui a barra lateral para as telas internas
 function LayoutComSidebar({ children }) {
@@ -164,6 +166,15 @@ function App() {
               </ProtectedRoute>
             }
           />
+
+          <Route
+  path="/alterar-perfil"
+  element={
+    <ProtectedRoute>
+      <AlterarPerfil />
+    </ProtectedRoute>
+  }
+/>
           <Route
             path="/premium"
             element={
