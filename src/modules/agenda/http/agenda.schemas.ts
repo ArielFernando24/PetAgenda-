@@ -153,11 +153,48 @@ export const eventoIdParamSchema = z.object({
   id: z.string().uuid("O id do evento deve ser um UUID valido."),
 });
 
-export const listEventoQuerySchema = z
-  .object({
+export const listEventoQuerySchema = z.preprocess(
+  (arg) => {
+    if (arg && typeof arg === "object") {
+      const raw = arg as Record<string, unknown>;
+      return {
+        ...raw,
+        petId: raw.petId ?? raw.pet_id,
+        clinicaId: raw.clinicaId ?? raw.clinica_id,
+        q: raw.q ?? raw.busca ?? raw.search,
+        tipoCuidado: raw.tipoCuidado ?? raw.tipo_cuidado ?? raw.categoria,
+        status: raw.status,
+        dataInicio: raw.dataInicio ?? raw.data_inicio ?? raw.startDate ?? raw.start_date,
+        dataFim: raw.dataFim ?? raw.data_fim ?? raw.endDate ?? raw.end_date,
+        page: raw.page ?? 1,
+        limit: raw.limit ?? raw.pageSize ?? raw.page_size ?? 10,
+        sortBy: raw.sortBy ?? raw.sort_by ?? "dataHora",
+        sortOrder: raw.sortOrder ?? raw.sort_order ?? "asc",
+      };
+    }
+    return arg;
+  },
+  z.object({
     petId: z.string().uuid("O petId deve ser um UUID valido.").optional(),
-    pet_id: z.string().uuid("O pet_id deve ser um UUID valido.").optional(),
-  })
-  .transform((data) => ({
-    petId: data.petId ?? data.pet_id,
-  }));
+    clinicaId: z.string().uuid("O clinicaId deve ser um UUID valido.").optional(),
+    q: z.string().trim().optional(),
+    tipoCuidado: tipoCuidadoSchema.optional(),
+    status: statusSchema.optional(),
+    dataInicio: z
+      .string()
+      .trim()
+      .refine((val) => !Number.isNaN(new Date(val).getTime()), "dataInicio deve ser uma data valida.")
+      .optional(),
+    dataFim: z
+      .string()
+      .trim()
+      .refine((val) => !Number.isNaN(new Date(val).getTime()), "dataFim deve ser uma data valida.")
+      .optional(),
+    page: z.coerce.number().int().positive().default(1),
+    limit: z.coerce.number().int().positive().max(100).default(10),
+    sortBy: z.enum(["dataHora", "createdAt"]).default("dataHora"),
+    sortOrder: z.enum(["asc", "desc"]).default("asc"),
+  }),
+);
+
+export type ListEventoQueryInput = z.infer<typeof listEventoQuerySchema>;

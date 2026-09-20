@@ -54,10 +54,10 @@ describe("AgendaService (Unit)", () => {
     });
 
     const list = await service.list(TUTOR_A);
-    expect(list).toHaveLength(2);
+    expect(list.data).toHaveLength(2);
     // Deve estar ordenado cronologicamente (setembro antes de outubro)
-    expect(list[0].tipoCuidado).toBe("VACINA");
-    expect(list[1].tipoCuidado).toBe("BANHO_E_TOSA");
+    expect(list.data[0].tipoCuidado).toBe("VACINA");
+    expect(list.data[1].tipoCuidado).toBe("BANHO_E_TOSA");
   });
 
   it("impede agendar evento para pet inexistente ou de outro tutor", async () => {

@@ -1,5 +1,5 @@
 import type { PetRepository } from "../../pets/application/pet.repository";
-import type { AgendaRepository, ListEventosFilter } from "./agenda.repository";
+import type { AgendaRepository, ListEventosFilter, PaginatedResult } from "./agenda.repository";
 import type { CreateEventoData, Evento, UpdateEventoData } from "../domain/evento";
 import { EventoNotFoundError, PetForbiddenOrNotFoundError } from "../domain/agenda.errors";
 
@@ -17,7 +17,7 @@ export class AgendaService {
     return this.repository.create(data);
   }
 
-  async list(tutorId: string, filter?: ListEventosFilter): Promise<Evento[]> {
+  async list(tutorId: string, filter?: ListEventosFilter): Promise<PaginatedResult<Evento>> {
     if (filter?.petId) {
       const pet = await this.petRepository.findByIdForTutor(filter.petId, tutorId);
       if (!pet) {
@@ -25,8 +25,7 @@ export class AgendaService {
       }
     }
 
-    const eventos = await this.repository.findAllByTutor(tutorId, filter);
-    return eventos.sort((a, b) => new Date(a.dataHora).getTime() - new Date(b.dataHora).getTime());
+    return this.repository.findAllByTutor(tutorId, filter);
   }
 
   async getById(tutorId: string, id: string): Promise<Evento> {
