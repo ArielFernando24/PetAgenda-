@@ -1,5 +1,5 @@
 import { randomUUID } from "node:crypto";
-import type { AgendaRepository, ListEventosFilter } from "../application/agenda.repository";
+import type { AgendaRepository, ListEventosFilter, PaginatedResult } from "../application/agenda.repository";
 import type { CreateEventoData, Evento, UpdateEventoData } from "../domain/evento";
 
 interface InMemoryAgendaRepositoryOptions {
@@ -39,22 +39,68 @@ export class InMemoryAgendaRepository implements AgendaRepository {
     return { ...evento };
   }
 
-  async findAllByTutor(tutorId: string, filter?: ListEventosFilter): Promise<Evento[]> {
+  async findAllByTutor(tutorId: string, filter?: ListEventosFilter): Promise<PaginatedResult<Evento>> {
     const all = [...this.eventos.values()];
-    const result: Evento[] = [];
+    const filtered: Evento[] = [];
 
     for (const ev of all) {
       if (filter?.petId && ev.petId !== filter.petId) {
         continue;
       }
+      if (filter?.clinicaId && ev.clinicaId !== filter.clinicaId) {
+        continue;
+      }
+      if (filter?.tipoCuidado && ev.tipoCuidado !== filter.tipoCuidado) {
+        continue;
+      }
+      if (filter?.status && ev.status !== filter.status) {
+        continue;
+      }
+      if (filter?.dataInicio && new Date(ev.dataHora).getTime() < new Date(filter.dataInicio).getTime()) {
+        continue;
+      }
+      if (filter?.dataFim && new Date(ev.dataHora).getTime() > new Date(filter.dataFim).getTime()) {
+        continue;
+      }
+      if (filter?.q && filter.q.trim()) {
+        const term = filter.q.trim().toLowerCase();
+        const descMatch = (ev.descricao || "").toLowerCase().includes(term);
+        if (!descMatch) continue;
+      }
       if (this.getPetTutorId) {
         const petTutor = await this.getPetTutorId(ev.petId);
         if (petTutor !== tutorId) continue;
       }
-      result.push({ ...ev });
+      filtered.push({ ...ev });
     }
 
-    return result;
+    const sortBy = filter?.sortBy === "createdAt" ? "createdAt" : "dataHora";
+    const sortOrder = filter?.sortOrder === "desc" ? "desc" : "asc";
+
+    filtered.sort((a, b) => {
+      const timeA = new Date(a[sortBy] as any).getTime();
+      const timeB = new Date(b[sortBy] as any).getTime();
+      return sortOrder === "asc" ? timeA - timeB : timeB - timeA;
+    });
+
+    const page = filter?.page && filter.page > 0 ? filter.page : 1;
+    const limit = filter?.limit && filter.limit > 0 ? filter.limit : 10;
+    const total = filtered.length;
+    const totalPages = Math.ceil(total / limit);
+    const skip = (page - 1) * limit;
+    const paginated = filtered.slice(skip, skip + limit);
+
+    return {
+      data: paginated,
+      meta: {
+        total,
+        page,
+        limit,
+        totalPages,
+        hasNextPage: page < totalPages,
+        hasPrevPage: page > 1,
+      },
+    };
   }
 
   async findByIdForTutor(id: string, tutorId: string): Promise<Evento | null> {

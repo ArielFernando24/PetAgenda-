@@ -28,8 +28,8 @@ export class AgendaController {
   list = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const filter = listEventoQuerySchema.parse(req.query);
-      const eventos = await this.service.list(tutorIdFrom(req), filter);
-      res.status(200).json({ data: eventos });
+      const result = await this.service.list(tutorIdFrom(req), filter);
+      res.status(200).json({ data: result.data, meta: result.meta });
     } catch (error) {
       next(error);
     }

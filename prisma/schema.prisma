@@ -103,6 +103,10 @@ model Evento {
   @@index([petId])
   @@index([clinicaId])
   @@index([dataHora])
+  @@index([status])
+  @@index([tipoCuidado])
+  @@index([petId, dataHora])
+  @@index([tipoCuidado, dataHora])
   @@map("evento")
 }
 

@@ -828,6 +828,230 @@
           }
         }
       ]
+    },
+    {
+      "name": "US06 - Listagem, Busca e Filtros Avançados",
+      "item": [
+        {
+          "name": "1. Buscar por Palavra-chave (q=vacina)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code é 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Retorna itens filtrados e metadados', function () {",
+                  "    const res = pm.response.json();",
+                  "    pm.expect(res).to.have.property('data');",
+                  "    pm.expect(res).to.have.property('meta');",
+                  "    pm.expect(res.meta).to.have.property('total');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/agenda?q=vacina",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "agenda"],
+              "query": [
+                {
+                  "key": "q",
+                  "value": "vacina"
+                }
+              ]
+            },
+            "description": "Busca parcial insensível a maiúsculas/minúsculas por palavras-chave na agenda."
+          }
+        },
+        {
+          "name": "2. Filtrar por Categoria e Status",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code é 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Retorna metadados de paginação', function () {",
+                  "    const res = pm.response.json();",
+                  "    pm.expect(res.meta).to.have.property('page');",
+                  "    pm.expect(res.meta).to.have.property('limit');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/agenda?tipoCuidado=VACINA&status=PENDENTE",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "agenda"],
+              "query": [
+                {
+                  "key": "tipoCuidado",
+                  "value": "VACINA"
+                },
+                {
+                  "key": "status",
+                  "value": "PENDENTE"
+                }
+              ]
+            },
+            "description": "Filtra registros por categoria de cuidado e status do evento."
+          }
+        },
+        {
+          "name": "3. Filtrar por Intervalo de Datas",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code é 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/agenda?dataInicio=2026-10-01T00:00:00.000Z&dataFim=2026-10-31T23:59:59.000Z",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "agenda"],
+              "query": [
+                {
+                  "key": "dataInicio",
+                  "value": "2026-10-01T00:00:00.000Z"
+                },
+                {
+                  "key": "dataFim",
+                  "value": "2026-10-31T23:59:59.000Z"
+                }
+              ]
+            },
+            "description": "Filtra eventos ocorrendo dentro de um intervalo de datas (dataInicio e dataFim)."
+          }
+        },
+        {
+          "name": "4. Paginação com Metadados (page=1&limit=5)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code é 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Metadados contêm paginação correta', function () {",
+                  "    const res = pm.response.json();",
+                  "    pm.expect(res.meta.page).to.eql(1);",
+                  "    pm.expect(res.meta.limit).to.eql(5);",
+                  "    pm.expect(res.meta).to.have.property('totalPages');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/agenda?page=1&limit=5",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "agenda"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "5"
+                }
+              ]
+            },
+            "description": "Paginação por offset com total, totalPages, hasNextPage e hasPrevPage."
+          }
+        },
+        {
+          "name": "5. Teste de Empty State",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code é 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Retorna array vazio com total 0 para empty state', function () {",
+                  "    const res = pm.response.json();",
+                  "    pm.expect(res.data).to.be.an('array').that.is.empty;",
+                  "    pm.expect(res.meta.total).to.eql(0);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/agenda?q=termo_inexistente_xyz_12345",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "agenda"],
+              "query": [
+                {
+                  "key": "q",
+                  "value": "termo_inexistente_xyz_12345"
+                }
+              ]
+            },
+            "description": "Retorna lista vazia e meta com total 0 sem falhar quando nenhum registro coincide."
+          }
+        }
+      ]
     }
   ]
 }
