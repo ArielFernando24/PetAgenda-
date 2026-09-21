@@ -5015,3 +5015,420 @@ button:hover {
   background: #e8f5e9;
   color: #2e7d32;
 }
+
+
+
+
+
+
+/* =========================================
+   PAINEL ADMINISTRATIVO — PETAGENDA
+   Baseado no layout do Figma
+   ========================================= */
+
+.admin-layout {
+  min-height: 100vh;
+  display: flex;
+  background: #f8f8f7;
+}
+
+/* =========================================
+   SIDEBAR ADMINISTRATIVA
+   ========================================= */
+
+.sidebar-adm {
+  width: 250px;
+  min-width: 250px;
+  height: 100vh;
+
+  background: #ffffff;
+  border-right: 1px solid #eeeeec;
+
+  display: flex;
+  flex-direction: column;
+
+  position: sticky;
+  top: 0;
+}
+
+/* =========================================
+   LOGO
+   ========================================= */
+
+.logo-adm {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  padding: 30px 28px 25px;
+}
+
+.logo-adm-image-container {
+  width: 42px;
+  height: 42px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+}
+
+.logo-adm-image {
+  width: 42px;
+  height: 42px;
+
+  object-fit: contain;
+}
+
+.logo-adm > span {
+  color: #292929;
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 600;
+}
+
+/* =========================================
+   MENU
+   ========================================= */
+
+.menu-adm {
+  display: flex;
+  flex-direction: column;
+
+  gap: 8px;
+
+  padding: 28px 18px 0;
+}
+
+.menu-adm a {
+  width: 214px;
+  height: 44px;
+
+  box-sizing: border-box;
+
+  display: flex;
+  align-items: center;
+
+  padding: 0 14px;
+
+  border-radius: 8px;
+
+  color: #666666;
+  background: transparent;
+
+  text-decoration: none;
+
+  font-size: 13px;
+  font-weight: 500;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.menu-adm a:hover {
+  background: #f7f5f2;
+  color: #343434;
+}
+
+.menu-adm a.active {
+  background: #f0ece6;
+  color: #292929;
+  font-weight: 600;
+}
+
+/* =========================================
+   RODAPÉ DA SIDEBAR
+   ========================================= */
+
+.sidebar-adm-rodape {
+  margin-top: auto;
+
+  padding: 0 30px 30px;
+
+  color: #999999;
+
+  font-size: 10px;
+  line-height: 15px;
+}
+
+/* =========================================
+   ÁREA PRINCIPAL
+   ========================================= */
+
+.admin-conteudo {
+  flex: 1;
+  min-width: 0;
+
+  padding: 28px 40px 45px;
+}
+
+/* =========================================
+   CABEÇALHO
+   ========================================= */
+
+.admin-cabecalho {
+  min-height: 72px;
+
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  margin-bottom: 30px;
+}
+
+.admin-breadcrumb {
+  display: block;
+
+  margin-bottom: 5px;
+
+  color: #a0a0a0;
+
+  font-size: 11px;
+  font-weight: 400;
+}
+
+.admin-cabecalho h1 {
+  margin: 0;
+
+  color: #272727;
+
+  font-size: 25px;
+  line-height: 32px;
+  font-weight: 600;
+
+  letter-spacing: -0.3px;
+}
+
+.admin-cabecalho p {
+  margin: 4px 0 0;
+
+  color: #8b8b8b;
+
+  font-size: 12px;
+  line-height: 17px;
+}
+
+/* =========================================
+   USUÁRIO DO ADMIN
+   ========================================= */
+
+.admin-usuario {
+  min-width: 180px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 9px;
+
+  padding: 5px 9px 5px 6px;
+
+  border: none;
+  border-radius: 10px;
+
+  background: transparent;
+}
+
+.admin-avatar {
+  width: 34px;
+  height: 34px;
+
+  border-radius: 50%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: #ece8e1;
+  color: #57514a;
+
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.admin-usuario > div:nth-child(2) {
+  display: flex;
+  flex-direction: column;
+
+  gap: 1px;
+}
+
+.admin-usuario strong {
+  color: #383838;
+
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 600;
+}
+
+.admin-usuario > div:nth-child(2) span {
+  color: #999999;
+
+  font-size: 10px;
+  line-height: 13px;
+}
+
+.admin-chevron {
+  margin-left: auto;
+
+  color: #8e8e8e;
+
+  font-size: 15px;
+}
+
+/* =========================================
+   CARDS DO DASHBOARD
+   ========================================= */
+
+.admin-dashboard {
+  display: grid;
+
+  grid-template-columns: repeat(4, 1fr);
+
+  gap: 16px;
+
+  margin-bottom: 24px;
+}
+
+.admin-card {
+  min-height: 108px;
+
+  box-sizing: border-box;
+
+  padding: 18px 20px;
+
+  border: 1px solid #eae9e7;
+  border-radius: 10px;
+
+  background: #ffffff;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.admin-card span {
+  color: #858585;
+
+  font-size: 11px;
+  line-height: 15px;
+}
+
+.admin-card strong {
+  color: #282828;
+
+  font-size: 27px;
+  line-height: 30px;
+  font-weight: 600;
+}
+
+/* =========================================
+   SEÇÃO DE AGENDAMENTOS
+   ========================================= */
+
+.admin-secao {
+  background: #ffffff;
+
+  border: 1px solid #eae9e7;
+  border-radius: 10px;
+
+  overflow: hidden;
+}
+
+.admin-secao-cabecalho {
+  min-height: 69px;
+
+  box-sizing: border-box;
+
+  padding: 18px 20px;
+
+  border-bottom: 1px solid #eeeeec;
+
+  display: flex;
+  align-items: center;
+}
+
+.admin-secao-cabecalho h2 {
+  margin: 0;
+
+  color: #303030;
+
+  font-size: 15px;
+  line-height: 20px;
+  font-weight: 600;
+}
+
+.admin-secao-cabecalho p {
+  margin: 3px 0 0;
+
+  color: #969696;
+
+  font-size: 11px;
+  line-height: 15px;
+}
+
+.admin-tabela-vazia {
+  min-height: 175px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.admin-tabela-vazia p {
+  color: #a0a0a0;
+
+  font-size: 11px;
+}
+
+/* =========================================
+   RESPONSIVO
+   ========================================= */
+
+@media (max-width: 1100px) {
+  .admin-dashboard {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 800px) {
+  .sidebar-adm {
+    width: 220px;
+    min-width: 220px;
+  }
+
+  .menu-adm a {
+    width: 184px;
+  }
+
+  .admin-conteudo {
+    padding: 25px;
+  }
+
+  .admin-cabecalho {
+    gap: 20px;
+  }
+}
+
+@media (max-width: 650px) {
+  .sidebar-adm {
+    display: none;
+  }
+
+  .admin-conteudo {
+    padding: 20px;
+  }
+
+  .admin-dashboard {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-cabecalho {
+    flex-direction: column;
+  }
+
+  .admin-usuario {
+    align-self: flex-start;
+  }
+}
