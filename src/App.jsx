@@ -21,9 +21,16 @@ import RecuperarSenha from "./pages/RecuperarSenha";
    ========================================= */
 
 import DashboardADM from "./pages/ADM/DashboardADM";
+import RelatoriosADM from "./pages/ADM/RelatoriosADM";
 import EstabelecimentosADM from "./pages/ADM/EstabelecimentosADM";
 import NovoEstabelecimentoADM from "./pages/ADM/NovoEstabelecimentoADM";
+
+import EnderecoEstabelecimentoADM from "./pages/ADM/EnderecoEstabelecimentoADM";
+import ServicosEstabelecimentoADM from "./pages/ADM/ServicosEstabelecimentoADM";
+import HorariosEstabelecimentoADM from "./pages/ADM/HorariosEstabelecimentoADM";
+
 import ServicosADM from "./pages/ADM/ServicosADM";
+import NovoServicoADM from "./pages/ADM/NovoServicoADM";
 import HorariosADM from "./pages/ADM/HorariosADM";
 import AgendamentosADM from "./pages/ADM/AgendamentosADM";
 import UsuariosADM from "./pages/ADM/UsuariosADM";
@@ -255,6 +262,7 @@ function App() {
               ================================= */}
 
           {/* Dashboard */}
+
           <Route
             path="/admin"
             element={
@@ -263,8 +271,19 @@ function App() {
               </AdminRoute>
             }
           />
+          <Route
+  path="/admin/relatorios"
+  element={
+    <AdminRoute>
+      <RelatoriosADM />
+    </AdminRoute>
+  }
+/>
 
-          {/* Estabelecimentos */}
+          {/* =================================
+              ESTABELECIMENTOS
+              ================================= */}
+
           <Route
             path="/admin/estabelecimentos"
             element={
@@ -274,7 +293,11 @@ function App() {
             }
           />
 
-          {/* Novo estabelecimento */}
+          {/* =================================
+              NOVO ESTABELECIMENTO — ETAPA 1
+              INFORMAÇÕES
+              ================================= */}
+
           <Route
             path="/admin/estabelecimentos/novo"
             element={
@@ -284,7 +307,52 @@ function App() {
             }
           />
 
-          {/* Serviços */}
+          {/* =================================
+              NOVO ESTABELECIMENTO — ETAPA 2
+              ENDEREÇO
+              ================================= */}
+
+          <Route
+            path="/admin/estabelecimentos/novo/endereco"
+            element={
+              <AdminRoute>
+                <EnderecoEstabelecimentoADM />
+              </AdminRoute>
+            }
+          />
+
+          {/* =================================
+              NOVO ESTABELECIMENTO — ETAPA 3
+              SERVIÇOS
+              ================================= */}
+
+          <Route
+            path="/admin/estabelecimentos/novo/servicos"
+            element={
+              <AdminRoute>
+                <ServicosEstabelecimentoADM />
+              </AdminRoute>
+            }
+          />
+
+          {/* =================================
+              NOVO ESTABELECIMENTO — ETAPA 4
+              HORÁRIOS
+              ================================= */}
+
+          <Route
+            path="/admin/estabelecimentos/novo/horarios"
+            element={
+              <AdminRoute>
+                <HorariosEstabelecimentoADM />
+              </AdminRoute>
+            }
+          />
+
+          {/* =================================
+              ADMIN — SERVIÇOS
+              ================================= */}
+
           <Route
             path="/admin/servicos"
             element={
@@ -292,9 +360,22 @@ function App() {
                 <ServicosADM />
               </AdminRoute>
             }
+            
           />
 
-          {/* Horários */}
+          <Route
+  path="/admin/servicos/novo"
+  element={
+    <AdminRoute>
+      <NovoServicoADM />
+    </AdminRoute>
+  }
+/>
+
+          {/* =================================
+              ADMIN — HORÁRIOS
+              ================================= */}
+
           <Route
             path="/admin/horarios"
             element={
@@ -304,7 +385,10 @@ function App() {
             }
           />
 
-          {/* Agendamentos */}
+          {/* =================================
+              ADMIN — AGENDAMENTOS
+              ================================= */}
+
           <Route
             path="/admin/agendamentos"
             element={
@@ -314,7 +398,10 @@ function App() {
             }
           />
 
-          {/* Usuários */}
+          {/* =================================
+              ADMIN — USUÁRIOS
+              ================================= */}
+
           <Route
             path="/admin/usuarios"
             element={

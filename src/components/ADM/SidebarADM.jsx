@@ -63,10 +63,6 @@ function SidebarADM() {
           );
         })}
       </nav>
-
-      <div className="sidebar-adm-rodape">
-        MVP • PC / Desktop
-      </div>
     </aside>
   );
 }

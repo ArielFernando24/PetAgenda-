@@ -1,6 +1,9 @@
+import { useNavigate } from "react-router-dom";
 import SidebarADM from "../../components/ADM/SidebarADM";
 
 function DashboardADM() {
+  const navigate = useNavigate();
+
   return (
     <div className="admin-layout">
       <SidebarADM />
@@ -13,15 +16,25 @@ function DashboardADM() {
             <p>Bem-vindo ao painel do administrador.</p>
           </div>
 
-          <div className="admin-usuario">
-            <div className="admin-avatar">A</div>
+          <div className="admin-cabecalho-acoes">
+            <button
+              type="button"
+              className="admin-botao-relatorios"
+              onClick={() => navigate("/admin/relatorios")}
+            >
+              Relatórios
+            </button>
 
-            <div>
-              <strong>Administrador</strong>
-              <span>Admin</span>
+            <div className="admin-usuario">
+              <div className="admin-avatar">A</div>
+
+              <div>
+                <strong>Administrador</strong>
+                <span>Admin</span>
+              </div>
+
+              <span className="admin-chevron">⌄</span>
             </div>
-
-            <span className="admin-chevron">⌄</span>
           </div>
         </div>
 
