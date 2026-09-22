@@ -30,6 +30,11 @@
       "key": "clinicaId",
       "value": "",
       "type": "string"
+    },
+    {
+      "key": "notificationId",
+      "value": "",
+      "type": "string"
     }
   ],
   "item": [
@@ -1052,6 +1057,255 @@
           }
         }
       ]
+    },
+    {
+      "name": "US07 - Central de Notificações em Tempo Real",
+      "item": [
+        {
+          "name": "1. Criar Notificação (Disparo de Alerta)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code é 201', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "const res = pm.response.json();",
+                  "if (res.data && res.data.id) {",
+                  "    pm.collectionVariables.set('notificationId', res.data.id);",
+                  "}",
+                  "pm.test('Notificação gerada com sucesso', function () {",
+                  "    pm.expect(res.data).to.have.property('id');",
+                  "    pm.expect(res.data.title).to.eql('Vacina Antirrábica');",
+                  "    pm.expect(res.data.readAt).to.be.null;",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Vacina Antirrábica\",\n  \"body\": \"A dose do Rex está agendada para amanhã às 09:00.\",\n  \"type\": \"LEMBRETE_AGENDA\",\n  \"metadata\": {\n    \"petName\": \"Rex\",\n    \"urgencia\": \"alta\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/notifications",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "notifications"]
+            },
+            "description": "Cria e dispara uma notificação para o usuário em tempo real via SSE."
+          }
+        },
+        {
+          "name": "2. Listar Notificações (com Contador e Paginação)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code é 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Retorna lista e meta com unreadCount', function () {",
+                  "    const res = pm.response.json();",
+                  "    pm.expect(res).to.have.property('data');",
+                  "    pm.expect(res).to.have.property('meta');",
+                  "    pm.expect(res.meta.unreadCount).to.be.at.least(1);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/notifications?page=1&limit=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "notifications"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            },
+            "description": "Lista histórico de notificações com contagem de não lidas e metadados de paginação."
+          }
+        },
+        {
+          "name": "3. Obter Contador de Não Lidas (Badge)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code é 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Contador de não lidas disponível para badge', function () {",
+                  "    const res = pm.response.json();",
+                  "    pm.expect(res.data).to.have.property('unreadCount');",
+                  "    pm.expect(res.data.unreadCount).to.be.a('number');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/notifications/unread-count",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "notifications", "unread-count"]
+            },
+            "description": "Retorna rapidamente apenas o valor numérico de notificações não lidas para o sininho/badge da navbar."
+          }
+        },
+        {
+          "name": "4. Marcar Notificação como Lida",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code é 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Data de leitura atualizada', function () {",
+                  "    const res = pm.response.json();",
+                  "    pm.expect(res.data.readAt).to.not.be.null;",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/notifications/{{notificationId}}/read",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "notifications", "{{notificationId}}", "read"]
+            },
+            "description": "Marca uma notificação específica como lida no banco e emite evento SSE de decremento do badge."
+          }
+        },
+        {
+          "name": "5. Marcar Todas as Notificações como Lidas",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code é 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Contador unread zerado', function () {",
+                  "    const res = pm.response.json();",
+                  "    pm.expect(res.data.unreadCount).to.eql(0);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/notifications/read-all",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "notifications", "read-all"]
+            },
+            "description": "Marca em lote todas as notificações do usuário como lidas e zera o contador visual."
+          }
+        },
+        {
+          "name": "6. Filtrar Apenas Não Lidas pós Read-All (Empty State)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code é 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Retorna array vazio de não lidas e total 0', function () {",
+                  "    const res = pm.response.json();",
+                  "    pm.expect(res.data).to.be.an('array').that.is.empty;",
+                  "    pm.expect(res.meta.unreadCount).to.eql(0);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/notifications?unreadOnly=true",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "notifications"],
+              "query": [
+                {
+                  "key": "unreadOnly",
+                  "value": "true"
+                }
+              ]
+            },
+            "description": "Verifica estado vazio e consistência da lista após todas as mensagens serem marcadas como lidas."
+          }
+        }
+      ]
     }
   ]
 }
+

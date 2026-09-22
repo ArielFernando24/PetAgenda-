@@ -15,6 +15,10 @@ import type { ClinicaRepository } from './modules/clinicas/application/clinica.r
 import { ClinicaService } from './modules/clinicas/application/clinica.service';
 import { createClinicaRouter } from './modules/clinicas/http/clinica.routes';
 import { PrismaClinicaRepository } from './modules/clinicas/infrastructure/prisma-clinica.repository';
+import type { NotificationRepository } from './modules/notifications/application/notification.repository';
+import { NotificationService } from './modules/notifications/application/notification.service';
+import { createNotificationRouter } from './modules/notifications/http/notification.routes';
+import { PrismaNotificationRepository } from './modules/notifications/infrastructure/prisma-notification.repository';
 import { petTutorAuth } from './shared/auth/pet-tutor-auth.middleware';
 import { appErrorMiddleware } from './shared/http/app-error.middleware';
 
@@ -22,6 +26,7 @@ interface AppOptions {
   petRepository?: PetRepository;
   agendaRepository?: AgendaRepository;
   clinicaRepository?: ClinicaRepository;
+  notificationRepository?: NotificationRepository;
   authenticate?: RequestHandler;
 }
 export function createApp(options: AppOptions = {}) {
@@ -35,6 +40,7 @@ export function createApp(options: AppOptions = {}) {
   const petRepository = options.petRepository ?? new PrismaPetRepository();
   const agendaRepository = options.agendaRepository ?? new PrismaAgendaRepository();
   const clinicaRepository = options.clinicaRepository ?? new PrismaClinicaRepository();
+  const notificationRepository = options.notificationRepository ?? new PrismaNotificationRepository();
   const authMiddleware = options.authenticate ?? petTutorAuth;
 
   app.use('/api/pets', createPetRouter(
@@ -49,6 +55,13 @@ export function createApp(options: AppOptions = {}) {
     new ClinicaService(clinicaRepository),
     authMiddleware,
   ));
+
+  const notificationRouter = createNotificationRouter(
+    new NotificationService(notificationRepository),
+    authMiddleware,
+  );
+  app.use('/api/notifications', notificationRouter);
+  app.use('/notifications', notificationRouter);
   app.use('/uploads', express.static(path.resolve(__dirname, '../public/uploads')));
   app.use(express.static(path.resolve(__dirname, '../public')));
   app.use((_req, res) => {
