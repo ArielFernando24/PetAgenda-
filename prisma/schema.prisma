@@ -22,6 +22,7 @@ model Tutor {
   data_criacao        DateTime             @default(now()) @map("data_criacao")
   pets                Pet[]
   passwordResetTokens PasswordResetToken[]
+  notifications       Notification[]
 
   @@map("tutor")
 }
@@ -128,5 +129,22 @@ model Clinica {
   @@index([cidade])
   @@index([nome])
   @@map("clinica")
+}
+
+model Notification {
+  id        String    @id @default(uuid()) @db.Uuid
+  userId    String    @map("user_id") @db.Uuid
+  title     String    @db.VarChar(150)
+  body      String    @db.Text
+  type      String    @db.VarChar(50)
+  readAt    DateTime? @map("read_at")
+  metadata  Json?     @db.JsonB
+  createdAt DateTime  @default(now()) @map("data_criacao")
+
+  tutor     Tutor     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([userId, readAt])
+  @@map("notifications")
 }
 
