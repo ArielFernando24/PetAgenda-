@@ -233,16 +233,6 @@ function HorariosADM() {
             </span>
           </div>
 
-          <div className="admin-usuario">
-            <div className="admin-avatar">A</div>
-
-            <div>
-              <strong>Administrador</strong>
-              <span>Admin</span>
-            </div>
-
-            <span className="admin-chevron">⌄</span>
-          </div>
         </header>
 
         <section className="admin-horarios-intro">

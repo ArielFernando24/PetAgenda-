@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import SidebarADM from "../../components/ADM/SidebarADM";
 
@@ -6,8 +6,17 @@ function ServicosADM() {
   const navigate = useNavigate();
 
   const [busca, setBusca] = useState("");
+  const [buscaDebounce, setBuscaDebounce] = useState("");
   const [categoria, setCategoria] = useState("Todas");
   const [estabelecimento, setEstabelecimento] = useState("Todos");
+
+  useEffect(() => {
+  const timer = setTimeout(() => {
+    setBuscaDebounce(busca);
+  }, 300);
+
+  return () => clearTimeout(timer);
+}, [busca]);
 
   const servicos = [
     {
@@ -74,7 +83,7 @@ function ServicosADM() {
 
   const servicosFiltrados = useMemo(() => {
     return servicos.filter((servico) => {
-      const textoBusca = busca.toLowerCase().trim();
+      const textoBusca = buscaDebounce.toLowerCase().trim();
 
       const correspondeBusca =
         !textoBusca ||
@@ -111,15 +120,6 @@ function ServicosADM() {
             <h1>Serviços</h1>
           </div>
 
-          <div className="admin-usuario">
-            <div className="admin-avatar">A</div>
-
-            <div>
-              <strong>Admin</strong>
-            </div>
-
-            <span className="admin-chevron">⌄</span>
-          </div>
         </header>
 
         <section className="admin-servicos-intro">

@@ -141,6 +141,7 @@ function NovoServico() {
                   border: "none",
                   borderRadius: "6px",
                   cursor: "pointer",
+                  width: "352px"  
                 }}
               >
                 Cadastrar um pet agora

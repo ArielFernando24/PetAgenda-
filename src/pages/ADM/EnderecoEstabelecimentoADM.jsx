@@ -59,16 +59,7 @@ function EnderecoEstabelecimentoADM() {
             <p>Cadastre as informações do estabelecimento parceiro.</p>
           </div>
 
-          <div className="admin-usuario">
-            <div className="admin-avatar">AD</div>
-
-            <div>
-              <strong>Administrador</strong>
-              <span>Administrador</span>
-            </div>
-
-            <span className="admin-chevron">⌄</span>
-          </div>
+          
         </header>
 
         <div className="admin-stepper">

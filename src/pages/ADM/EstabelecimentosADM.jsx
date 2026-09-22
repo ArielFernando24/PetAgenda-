@@ -95,15 +95,7 @@ function EstabelecimentosADM() {
             </span>
           </div>
 
-          <div className="admin-usuario">
-            <div className="admin-avatar">A</div>
-
-            <div>
-              <strong>Admin</strong>
-            </div>
-
-            <span className="admin-chevron">⌄</span>
-          </div>
+          
         </header>
 
         <section className="admin-estabelecimentos-intro">

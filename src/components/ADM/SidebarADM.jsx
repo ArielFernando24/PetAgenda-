@@ -1,8 +1,35 @@
-import { Link, useLocation } from "react-router-dom";
+import { useEffect, useRef, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import logo from "../../assets/logo-petagenda.png";
 
 function SidebarADM() {
   const location = useLocation();
+  const navigate = useNavigate();
+
+  const [menuContasAberto, setMenuContasAberto] = useState(false);
+  const menuContasRef = useRef(null);
+
+  useEffect(() => {
+    function fecharAoClicarFora(event) {
+      if (
+        menuContasRef.current &&
+        !menuContasRef.current.contains(event.target)
+      ) {
+        setMenuContasAberto(false);
+      }
+    }
+
+    document.addEventListener("mousedown", fecharAoClicarFora);
+
+    return () => {
+      document.removeEventListener("mousedown", fecharAoClicarFora);
+    };
+  }, []);
+
+  function handleLogout() {
+    sessionStorage.removeItem("petagenda_admin");
+    navigate("/login");
+  }
 
   const links = [
     {
@@ -63,6 +90,44 @@ function SidebarADM() {
           );
         })}
       </nav>
+
+      <div
+        ref={menuContasRef}
+        className={`menu-contas ${menuContasAberto ? "aberto" : ""}`}
+      >
+        {menuContasAberto && (
+          <>
+            <Link
+              to="/admin"
+              className="item-conta-adm item-conta-secundario"
+            >
+              <span className="icone">👤</span>
+              <span>Administrador 1</span>
+            </Link>
+
+            <button
+              type="button"
+              className="item-conta-adm item-conta-adicionar"
+              onClick={handleLogout}
+            >
+              <span className="icone">🚪</span>
+              <span>Sair da conta</span>
+            </button>
+          </>
+        )}
+
+        <button
+          type="button"
+          className="item-conta-adm item-conta-principal"
+          onClick={() =>
+            setMenuContasAberto((aberto) => !aberto)
+          }
+          aria-expanded={menuContasAberto}
+        >
+          <span className="icone">👤</span>
+          <span>Administrador</span>
+        </button>
+      </div>
     </aside>
   );
 }
