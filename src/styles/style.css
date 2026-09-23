@@ -32,6 +32,8 @@ body {
 
   position: sticky;
   top: 0;
+
+  z-index: 100;
 }
 
 .logo {
@@ -9618,4 +9620,215 @@ input {
 .agendamentos-tabela .botao-remover-linha:hover {
   background: #A61F1F;
   transform: translateY(-50%) scale(1.06);
+}
+
+/* =========================
+   Sino e painel de notificações
+========================= */
+.menu-contas .item-conta-principal { 
+  padding-right: 55px; 
+}
+
+.notificacoes-container {
+   position:absolute; 
+   right:-7px; 
+   bottom:7px; 
+   z-index:60; 
+}
+
+.botao-notificacoes { 
+  width:25px; 
+  height:25px; 
+  margin:0; 
+  padding:0; 
+  border:0; 
+  border-radius:0; 
+  background:transparent; 
+  display:flex; 
+  align-items:center; 
+  justify-content:center; 
+}
+
+.botao-notificacoes:hover { 
+  background:transparent; 
+  opacity:.82; 
+}
+
+.icone-notificacao { 
+  position:relative; 
+  display:block; 
+  width:31px; 
+  height:31px; 
+
+  transform: scale(0.70);
+}
+
+.icone-notificacao .sino { 
+  position:absolute; 
+  left:5px; 
+  top:2px; 
+  width:20px; 
+  height:23px; 
+  background:#fff; 
+  border-radius:11px 11px 4px 4px; 
+}
+
+.icone-notificacao .sino::before { 
+  content:""; 
+  position:absolute; 
+  left:-5px; 
+  bottom:0; 
+  width:30px; 
+  height:7px; 
+  background:#fff; 
+  border-radius:50% 50% 2px 2px; 
+}
+
+.icone-notificacao .sino::after { 
+  content:""; 
+  position:absolute; 
+  left:8px; 
+  top:-2px; 
+  width:4px; 
+  height:5px; 
+  background:#fff; 
+  border-radius:50% 50% 0 0; 
+}
+
+.icone-notificacao .badalo { 
+  position:absolute; 
+  left:11px; 
+  bottom:0; 
+  width:8px; 
+  height:4px; 
+  background:#fff; 
+  border-radius:0 0 8px 8px; 
+}
+
+.notificacoes-container .painel-notificacoes { 
+  position:absolute; 
+  z-index: 1000;
+  right:calc(100% - 280px); 
+  bottom:-7px; 
+  width:214px; 
+  height:376px; 
+  min-height:0; 
+  padding:16px 13px; 
+  border-radius:9px; 
+  background:#EAEBFA; 
+  box-shadow:0 4px 80px rgba(0,0,0,.25); 
+  color:#000; 
+  display:flex; 
+  flex-direction:column; 
+  overflow:hidden; 
+  z-index:70; 
+}
+
+.notificacoes-container .painel-notificacoes h1 { 
+  flex:0 0 auto; 
+  margin:0 0 7px; 
+  font-size:25px; 
+  line-height:1.1; 
+  font-weight:700; 
+}
+
+.notificacoes-container .divisor { 
+  flex:0 0 1px; 
+  height:1px; 
+  margin:0 -8px 14px; 
+  background:#fff; 
+}
+
+.lista-notificacoes { 
+  min-height:0; 
+  flex:1; 
+  overflow-y:auto; 
+  overflow-x:hidden; 
+  scrollbar-width:none; 
+  -ms-overflow-style:none; 
+}
+
+.lista-notificacoes::-webkit-scrollbar { 
+  width:0; 
+  height:0; 
+  display:none; 
+}
+
+.notificacoes-container .notificacao { 
+  width:100%; 
+  min-height:42px; 
+  height:auto; 
+  margin:0; 
+  padding:6px 2px 6px 0; 
+  border:0; 
+  border-radius:5px; 
+  background:transparent; 
+  color:#000; 
+  display:flex; 
+  align-items:center; 
+  justify-content:space-between; 
+  font-family:Arial,Helvetica,sans-serif; 
+  text-align:left; 
+  transition:opacity .15s ease; 
+}
+
+.notificacoes-container .notificacao:hover { 
+  opacity:.65; 
+  background:transparent; 
+}
+
+.notificacao-conteudo { 
+  min-width:0; 
+  display:flex; 
+  flex-direction:column; 
+}
+
+.notificacao-conteudo strong { 
+  font-size:19px; 
+  line-height:1.1; 
+  font-weight:700; 
+}
+
+.notificacao-conteudo small { 
+  margin-top:4px; 
+  font-size:10px; 
+  line-height:1; 
+  font-weight:400;
+  color: #666666; 
+  padding-left: 10px;
+
+}
+
+.notificacoes-container .indicador { 
+  width:5px; 
+  height:5px; 
+  margin-right:2px; 
+  flex:0 0 5px; 
+  border-radius:50%; 
+  background:#38598B; 
+}
+
+
+
+/* Contador de notificações não clicadas */
+.icone-notificacao .contador-notificacoes {
+  position: absolute;
+  top: -12px;
+  right: -12px;
+  z-index: 5;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #38598B;
+  border-radius: 999px;
+  background: #E53935;
+  color: #FFFFFF;
+  font-size: 12px;
+  line-height: 1;
+  font-weight: 700;
+  box-sizing: border-box;
+  pointer-events: none;
 }
