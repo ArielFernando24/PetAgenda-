@@ -198,6 +198,7 @@ button:hover {
   color: #14211a;
 }
 
+
 .agenda-top p {
   color: #6b7870;
   font-size: 12px;
@@ -905,7 +906,7 @@ button:hover {
   width: 1000px;
   min-height: 900px;
   padding: 3px 118px 60px 0px;
-  background: #F5F7F2;
+  background: #EAEBFA;
   color: #14211A;
   font-family: Arial, Helvetica, sans-serif;
 }
@@ -1093,6 +1094,7 @@ button:hover {
   width: 300px;
   margin-top: 0;
   padding-top: 1px;
+  margin-left: 20px;
 }
 
 .dashboard-mensagem h3 {
@@ -1130,9 +1132,9 @@ button:hover {
 }
 
 /* =========================
-   Perfil
+   Perfil (obsoleto)
 ========================= */
-
+/*
 .perfil-page {
   width: 100%;
   max-width: 100%;
@@ -1144,6 +1146,7 @@ button:hover {
   color: #14211A;
   font-family: Arial, Helvetica, sans-serif;
 }
+*/
 
 /* =========================
    Cabeçalho
@@ -1225,9 +1228,9 @@ button:hover {
 }
 
 /* =========================
-   Perfil
+   Perfil (obsoleto)
 ========================= */
-
+/* 
 .perfil-page {
   width: 100%;
   max-width: 100%;
@@ -1239,6 +1242,7 @@ button:hover {
   color: #14211A;
   font-family: Arial, Helvetica, sans-serif;
 }
+*/
 
 /* =========================
    Cabeçalho
@@ -1378,7 +1382,7 @@ button:hover {
 
   box-sizing: border-box;
 
-  background: #F5F7F2;
+  background: #EAEBFA;
   color: #14211A;
 
   font-family: Arial, Helvetica, sans-serif;
@@ -3858,7 +3862,7 @@ button:hover {
 }
 
 .meus-pets-botao-cadastrar {
-  width: 210px;
+  width: 290px;
   background: #004a7c;
 }
 
@@ -4374,6 +4378,27 @@ button:hover {
   cursor: url("/src/assets/pata-cursor.png"), auto;
 }
 
+.menu-contas .item-conta-adm {
+  position: absolute;
+  left: 0;
+  width: 210px;
+  height: 44px;
+  margin: 10px 0 0 20px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0 15px;
+  border: 0;
+  border-radius: 9px;
+  background: #506D99;
+  color: #FFFFFF;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  text-align: left;
+  cursor: url("/src/assets/pata-cursor.png"), auto;
+}
+
 .item-conta:hover {
     background-color: #405A80;
 }
@@ -4407,8 +4432,8 @@ button:hover {
 }
 
 .menu-contas .icone {
-  width: 12px;
-  height: 12px;
+  width: 15px;
+  height: 15px;
   flex: 0 0 12px;
   background: white;
   border-radius: 8px
@@ -5229,6 +5254,7 @@ button:hover {
 .admin-conteudo {
   flex: 1;
   min-width: 0;
+  background-color: #e7eaf6;
 
   padding: 28px 40px 45px;
 }
@@ -5283,38 +5309,6 @@ button:hover {
    USUÁRIO DO ADMIN
    ========================================= */
 
-.admin-usuario {
-  min-width: 180px;
-
-  display: flex;
-  align-items: center;
-
-  gap: 9px;
-
-  padding: 5px 9px 5px 6px;
-
-  border: none;
-  border-radius: 10px;
-
-  background: transparent;
-}
-
-.admin-avatar {
-  width: 34px;
-  height: 34px;
-
-  border-radius: 50%;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  background: #ece8e1;
-  color: #57514a;
-
-  font-size: 12px;
-  font-weight: 600;
-}
 
 .admin-usuario > div:nth-child(2) {
   display: flex;
@@ -8862,4 +8856,766 @@ button:hover {
   .admin-servico-status {
     font-size: 7px;
   }
+}
+
+
+/* =========================
+   Usuários / Administração
+========================= */
+.usuarios-page {
+  min-height: 100vh;
+  padding: 56px 130px 80px 40px;
+  background: #e7eaf6;
+  color: #14211a;
+  font-family: Arial, Helvetica, sans-serif;
+}
+.usuarios-topo { 
+  display: flex; 
+  align-items: flex-start; 
+  justify-content: space-between; 
+}
+
+.usuarios-topo h1 { 
+  font-size: 27px; 
+  line-height: 1; 
+  font-weight: 700; 
+}
+
+.usuarios-topo p, .usuarios-gestao p, .usuarios-visao-geral > p {
+   color: #6b7870; 
+   font-size: 12px; 
+}
+.usuarios-topo p { 
+  margin-top: 5px; 
+}
+
+.usuarios-gestao { 
+  margin-top: 109px; 
+}
+.usuarios-gestao h2, .usuarios-visao-geral h2 { 
+  font-size: 27px; 
+  line-height: 1.1; 
+  font-weight: 700; 
+}
+
+.usuarios-gestao p { 
+  margin-top: 8px; 
+}
+
+.usuarios-visao-geral { 
+  margin-top: 43px; 
+}
+
+.usuarios-visao-geral > p { 
+  margin-top: 6px; 
+}
+
+.usuarios-tabela-container {
+
+  margin-top: 36px; 
+  width: 100%; 
+  background: #14211a; 
+  overflow-x: auto; 
+  min-height: 300px;
+}
+
+.usuarios-tabela { 
+  width: 100%; 
+  min-width: 850px; 
+  border-collapse: collapse; 
+  table-layout: fixed; 
+}
+
+.usuarios-tabela th, .usuarios-tabela td { 
+  text-align: left; 
+}
+
+.usuarios-tabela th { 
+  height: 65px; 
+  padding: 0 20px; 
+  color: #fff; 
+  font-size: 13px; 
+  font-weight: 700; 
+}
+
+.usuarios-tabela td { 
+  height: 58px; 
+  padding: 0 20px; 
+  color: #b8c7bd; 
+  font-size: 12px; 
+  font-weight: 400; 
+}
+
+.usuarios-tabela th:nth-child(1), .usuarios-tabela td:nth-child(1) { 
+  width: 21%; padding-left: 30px; 
+}
+
+.usuarios-tabela th:nth-child(2), .usuarios-tabela td:nth-child(2) {
+   width: 34%; 
+}
+
+.usuarios-tabela th:nth-child(3), .usuarios-tabela td:nth-child(3) {
+   width: 19%; 
+}
+
+.usuarios-tabela th:nth-child(4), .usuarios-tabela td:nth-child(4) {
+   width: 26%; 
+}
+
+.usuarios-acoes {
+   display: flex; align-items: center; gap: 110px; margin-top: 28px; 
+}
+
+.usuarios-acoes button {
+  width: auto; 
+  height: auto; 
+  margin: 0; 
+  padding: 0; 
+  border: 0; 
+  border-radius: 0;
+  background: transparent; 
+  color: #000; 
+  font-family: inherit; 
+  font-size: 13px;
+  font-weight: 700; 
+  cursor: pointer;
+}
+.usuarios-acoes button:hover { text-decoration: underline; opacity: 1; }
+
+@media (max-width: 900px) {
+  .usuarios-page { padding: 35px 25px; }
+  .usuarios-gestao { margin-top: 80px; }
+  .usuarios-acoes { gap: 35px; flex-wrap: wrap; }
+}
+@media (max-width: 600px) {
+  .usuarios-topo { gap: 25px; }
+  .usuarios-perfil { width: 150px; }
+  .usuarios-gestao h2, .usuarios-visao-geral h2 { font-size: 23px; }
+}
+
+/* =========================
+   Agendamentos
+========================= */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  min-height: 100vh;
+  background: #E7EAF6;
+  color: #14211A;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.agendamentos-page {
+  min-height: 700px;
+  min-width: 1275px;
+  padding: 56px 130px 80px 40px;
+  background-color: #e7eaf6;
+}
+
+.agendamentos-topo {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.agendamentos-titulo h1 {
+  font-size: 27px;
+  line-height: 1;
+  font-weight: 700;
+}
+
+.agendamentos-titulo p,
+.agendamentos-gestao p,
+.agendamentos-hoje > p {
+  color: #6B7870;
+  font-size: 12px;
+}
+
+.agendamentos-titulo p {
+  margin-top: 7px;
+}
+
+.agendamentos-gestao {
+  margin-top: 108px;
+}
+
+.agendamentos-gestao h2,
+.agendamentos-hoje h2 {
+  font-size: 27px;
+  line-height: 1.1;
+  font-weight: 700;
+}
+
+.agendamentos-gestao p {
+  margin-top: 8px;
+}
+
+.agendamentos-hoje {
+  margin-top: 43px;
+}
+
+.agendamentos-hoje > p {
+  margin-top: 6px;
+}
+
+.agendamentos-tabela-container {
+  width: 1020px;
+  max-width: 100%;
+  height: 330px;
+  margin-top: 7px;
+  background: #14211A;
+  overflow-x: auto;
+}
+
+.agendamentos-tabela {
+  width: 100%;
+  min-width: 900px;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.agendamentos-tabela th,
+.agendamentos-tabela td {
+  text-align: left;
+}
+
+.agendamentos-tabela th {
+  height: 65px;
+  padding: 0 20px;
+  color: #FFFFFF;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.agendamentos-tabela td {
+  height: 58px;
+  padding: 0 20px;
+  color: #B8C7BD;
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.agendamentos-tabela th:nth-child(1),
+.agendamentos-tabela td:nth-child(1) {
+  width: 19%;
+  padding-left: 30px;
+}
+
+.agendamentos-tabela th:nth-child(2),
+.agendamentos-tabela td:nth-child(2) {
+  width: 30%;
+}
+
+.agendamentos-tabela th:nth-child(3),
+.agendamentos-tabela td:nth-child(3) {
+  width: 32%;
+}
+
+.agendamentos-tabela th:nth-child(4),
+.agendamentos-tabela td:nth-child(4) {
+  width: 19%;
+}
+
+.agendamentos-acoes {
+  display: flex;
+  align-items: center;
+  gap: 75px;
+  margin-top: 28px;
+}
+
+.agendamentos-acoes button {
+  height: 10px;
+  width: 135px;
+  border: 0;
+  background: transparent;
+  color: #000000;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  text-align: left;
+  cursor: pointer;
+}
+
+.agendamentos-acoes button:hover{
+  text-decoration: underline;
+}
+
+.agendamentos-acoes button:nth-child(2) {
+  width: 135px;
+}
+
+.agendamentos-acoes button:nth-child(3) {
+  width: 150px;
+}
+
+@media (max-width: 900px) {
+  .agendamentos-page {
+    padding: 35px 25px 60px;
+  }
+
+  .agendamentos-perfil {
+    margin-right: 0;
+  }
+
+  .agendamentos-gestao {
+    margin-top: 80px;
+  }
+
+  .agendamentos-acoes {
+    gap: 30px;
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 600px) {
+  .agendamentos-topo {
+    gap: 20px;
+  }
+
+  .agendamentos-perfil {
+    width: 150px;
+  }
+
+  .agendamentos-gestao h2,
+  .agendamentos-hoje h2 {
+    font-size: 23px;
+  }
+}
+
+.mudar-data {
+  padding: 2px 2px 2px;
+  background: transparent;
+  color: black;
+  margin-top: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  text-align: left;
+}
+
+.btn-data {
+  width: auto;
+  height: auto;
+  padding: 0;
+  margin: 0;
+
+  background: transparent;
+  border: none;
+
+  color: #14211a;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.btn-data:hover {
+  opacity: 0.7;
+}
+
+.popup-calendario {
+  position: absolute;
+  padding: 12px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+} 
+
+/* =========================
+   Novo Pet
+========================= */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  min-height: 100vh;
+  background: #E7EAF6;
+  color: #14211A;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+.novo-pet-page {
+  min-height: 700px;
+  min-width: 1275px;
+  padding: 32px 40px 80px;
+  background-color: #e7eaf6;
+}
+
+.cabecalho h1 {
+  font-size: 34px;
+  line-height: 1.1;
+  font-weight: 700;
+}
+
+.cabecalho p {
+  margin-top: 2px;
+  color: #6B7870;
+  font-size: 12px;
+}
+
+.pet-card {
+  width: 650px;
+  min-height: 398px;
+  margin-top: 43px;
+  margin-left: -6px;
+  padding: 21px 22px 19px;
+  background: #FFFFFF;
+  border-radius: 15px;
+}
+
+.pet-card h2 {
+  font-size: 15px;
+  line-height: 1.2;
+  font-weight: 700;
+}
+
+.pet-form {
+  margin-top: 18px;
+}
+
+.campo {
+  display: flex;
+  flex-direction: column;
+}
+
+.campo label {
+  margin-bottom: 8px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.campo input {
+  width: 100%;
+  height: 42px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: 9px;
+  outline: none;
+  background: #F0F5F1;
+  color: #14211A;
+}
+
+.campo input:focus {
+  box-shadow: 0 0 0 2px rgba(51, 133, 82, 0.22);
+}
+
+.campo-nome {
+  width: 596px;
+}
+
+.linha-campos {
+  display: grid;
+  grid-template-columns: 285px 296px;
+  column-gap: 15px;
+  margin-top: 19px;
+}
+
+.novo-pet-adm-sexo{
+  width: 100%;
+  height: 42px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: 9px;
+  outline: none;
+  background: #F0F5F1;
+  color: #14211A;
+}
+
+.acoes {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 52px;
+  margin-right: 4px;
+}
+
+.acoes button {
+  width: 145px;
+  height: 42px;
+  padding: 0 16px;
+  border: 0;
+  border-radius: 9px;
+  color: #FFFFFF;
+  font-size: 13px;
+  font-weight: 700;
+  text-align: left;
+  cursor: pointer;
+}
+
+.btn-cancelar {
+  background: #14211A;
+}
+
+.btn-salvar {
+  background: #004A7C;
+}
+
+.acoes button:hover {
+  filter: brightness(1.08);
+}
+
+@media (max-width: 760px) {
+  .novo-pet-page {
+    padding: 28px 20px 50px;
+  }
+
+  .pet-card {
+    width: 100%;
+    min-height: auto;
+    margin-left: 0;
+    margin-top: 70px;
+  }
+
+  .campo-nome {
+    width: 100%;
+  }
+
+  .linha-campos {
+    grid-template-columns: 1fr;
+    gap: 19px;
+  }
+
+  .acoes {
+    margin-top: 35px;
+    flex-wrap: wrap;
+  }
+}
+
+
+/* =========================
+   Novo usuário
+========================= */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  min-height: 100vh;
+  background: #E7EAF6;
+  color: #14211A;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+/* Somente o conteúdo à direita da sidebar original de 250px. */
+.novo-usuario-page {
+  min-height: 700px;
+  min-width: 1275px;
+  padding: 32px 40px 80px;
+  background-color: #e7eaf6;
+}
+
+.novo-usuario-topo h1 {
+  font-size: 34px;
+  line-height: 1.1;
+  font-weight: 700;
+}
+
+.novo-usuario-topo p {
+  margin-top: 3px;
+  color: #6B7870;
+  font-size: 12px;
+}
+
+.novo-usuario-card {
+  width: 650px;
+  height: 398px;
+  margin-top: 43px;
+  margin-left: -6px;
+  padding: 21px 22px 19px;
+  border-radius: 15px;
+  background: #FFFFFF;
+}
+
+.novo-usuario-card h2 {
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.novo-usuario-form {
+  margin-top: 18px;
+}
+
+.linha-campos {
+  display: grid;
+  grid-template-columns: 285px 296px;
+  column-gap: 15px;
+}
+
+.campo {
+  display: flex;
+  flex-direction: column;
+}
+
+.campo label {
+  margin-bottom: 8px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.campo input {
+  width: 100%;
+  height: 42px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: 9px;
+  outline: none;
+  background: #F0F5F1;
+  color: #14211A;
+}
+
+.campo input:focus {
+  box-shadow: 0 0 0 2px rgba(51, 133, 82, 0.22);
+}
+
+.campo-email {
+  width: 596px;
+  margin-top: 19px;
+  margin-bottom: 19px;
+}
+
+.novo-usuario-acoes {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 52px;
+  margin-right: 4px;
+}
+
+.novo-usuario-acoes button {
+  width: 145px;
+  height: 42px;
+  padding: 0 16px;
+  border: 0;
+  border-radius: 9px;
+  color: #FFFFFF;
+  font-size: 13px;
+  font-weight: 700;
+  text-align: left;
+  cursor: pointer;
+}
+
+.cancelar {
+  background: #14211A;
+}
+
+.salvar {
+  background: #004A7C;
+}
+
+.novo-usuario-acoes button:hover {
+  filter: brightness(1.08);
+}
+
+@media (max-width: 760px) {
+  .novo-usuario-page {
+    padding: 28px 20px 50px;
+  }
+
+  .novo-usuario-card {
+    width: 100%;
+    height: auto;
+    margin-top: 70px;
+    margin-left: 0;
+  }
+
+  .linha-campos {
+    grid-template-columns: 1fr;
+    gap: 19px;
+  }
+
+  .campo-email {
+    width: 100%;
+  }
+
+  .novo-usuario-acoes {
+    margin-top: 35px;
+    flex-wrap: wrap;
+  }
+}
+
+
+/* =========================
+   Linhas removíveis das tabelas ADM
+========================= */
+
+.usuarios-tabela tbody tr,
+.agendamentos-tabela tbody tr {
+  transition: opacity 0.2s ease, background-color 0.2s ease;
+}
+
+.usuarios-tabela tbody tr:hover,
+.agendamentos-tabela tbody tr:hover {
+  opacity: 0.72;
+  background-color: rgba(255, 255, 255, 0.04);
+}
+
+.usuarios-tabela .celula-com-remover,
+.agendamentos-tabela .celula-com-remover {
+  position: relative;
+  padding-right: 58px;
+}
+
+.usuarios-tabela .botao-remover-linha,
+.agendamentos-tabela .botao-remover-linha {
+  position: absolute;
+  top: 50%;
+  right: 14px;
+  transform: translateY(-50%);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 50px !important;
+  height: 30px !important;
+  min-width: 30px;
+  margin: 0 !important;
+  padding: 0 !important;
+
+  border: 0;
+  border-radius: 7px;
+  background: #C62828;
+  color: #FFFFFF;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1;
+
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: auto;
+  cursor: pointer;
+
+  transition: opacity 0.15s ease, background-color 0.15s ease, transform 0.15s ease;
+}
+
+.usuarios-tabela tbody tr:hover .botao-remover-linha,
+.agendamentos-tabela tbody tr:hover .botao-remover-linha {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.usuarios-tabela .botao-remover-linha:hover,
+.agendamentos-tabela .botao-remover-linha:hover {
+  background: #A61F1F;
+  transform: translateY(-50%) scale(1.06);
 }
