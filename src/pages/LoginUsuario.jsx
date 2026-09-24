@@ -3,6 +3,9 @@ import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import { authApi } from "../services/api";
 
+const ADMIN_EMAIL = "admin@petagenda.com";
+const ADMIN_SENHA = "admin123";
+
 function Login() {
   const navigate = useNavigate();
   const { login } = useAuth();
@@ -12,15 +15,36 @@ function Login() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [aviso, setAviso] = useState("");
+  const [modoAdmin, setModoAdmin] = useState(false);
 
   async function entrar(event) {
     event.preventDefault();
+
     setError("");
     setAviso("");
     setLoading(true);
 
     try {
+      // ==========================================
+      // LOGIN ADMINISTRATIVO - SOMENTE FRONTEND
+      // ==========================================
+      if (modoAdmin) {
+        if (email !== ADMIN_EMAIL || senha !== ADMIN_SENHA) {
+          throw new Error("E-mail ou senha de administrador inválidos.");
+        }
+
+        // Marca o acesso administrativo no navegador.
+        sessionStorage.setItem("petagenda_admin", "true");
+
+        navigate("/admin");
+        return;
+      }
+
+      // ==========================================
+      // LOGIN NORMAL - BACKEND
+      // ==========================================
       await login(email, senha);
+
       navigate("/dashboard");
     } catch (err) {
       setError(err.message || "E-mail ou senha inválidos.");
@@ -31,18 +55,33 @@ function Login() {
 
   async function handleEsqueciSenha(event) {
     event.preventDefault();
+
     setError("");
     setAviso("");
 
-    const emailRecuperacao = email || window.prompt("Informe seu e-mail cadastrado:");
+    const emailRecuperacao =
+      email || window.prompt("Informe seu e-mail cadastrado:");
+
     if (!emailRecuperacao) return;
 
     try {
       await authApi.forgotPassword(emailRecuperacao);
-      setAviso("Se o e-mail estiver cadastrado, as instruções para redefinir a senha foram enviadas.");
+
+      setAviso(
+        "Se o e-mail estiver cadastrado, as instruções para redefinir a senha foram enviadas."
+      );
     } catch (err) {
       setError(err.message);
     }
+  }
+
+  function alternarModoAdmin() {
+    setModoAdmin((atual) => !atual);
+
+    setEmail("");
+    setSenha("");
+    setError("");
+    setAviso("");
   }
 
   return (
@@ -53,10 +92,22 @@ function Login() {
       </header>
 
       <main className="login-main">
-        <h2>Bem-vindo de volta!</h2>
+        <h2>
+          {modoAdmin ? "Acesso administrativo" : "Bem-vindo de volta!"}
+        </h2>
 
-        <section className="login-card" style={{ height: "auto", minHeight: "450px" }}>
-          <h3>Olá, tutor :)</h3>
+        <section
+          className="login-card"
+          style={{
+            height: "auto",
+            minHeight: "450px",
+          }}
+        >
+          <h3>
+            {modoAdmin
+              ? "Olá, administrador :)"
+              : "Olá, tutor :)"}
+          </h3>
 
           {error && (
             <div
@@ -93,10 +144,15 @@ function Login() {
           <form className="login-form" onSubmit={entrar}>
             <div className="login-campo">
               <label htmlFor="email">E-mail</label>
+
               <input
                 id="email"
                 type="email"
-                placeholder="tutor@petagenda.com"
+                placeholder={
+                  modoAdmin
+                    ? "admin@petagenda.com"
+                    : "tutor@petagenda.com"
+                }
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
@@ -106,6 +162,7 @@ function Login() {
 
             <div className="login-campo login-senha">
               <label htmlFor="senha">Senha</label>
+
               <input
                 id="senha"
                 type="password"
@@ -117,18 +174,51 @@ function Login() {
               />
             </div>
 
-            <button className="login-botao" type="submit" disabled={loading}>
-              {loading ? "Entrando..." : "Entrar"}
+            <button
+              className="login-botao"
+              type="submit"
+              disabled={loading}
+            >
+              {loading
+                ? "Entrando..."
+                : modoAdmin
+                  ? "Entrar como administrador"
+                  : "Entrar"}
             </button>
           </form>
 
-          <a className="login-link" href="#" onClick={handleEsqueciSenha}>
-            Esqueci minha senha
-          </a>
+          {!modoAdmin && (
+            <>
+              <Link className="login-link" to="/recuperarSenha">
+                Esqueci minha senha
+              </Link>
 
-          <Link className="login-link" to="/cadastro">
-            Cadastre-se
-          </Link>
+              <Link className="login-link" to="/cadastro">
+                Cadastre-se
+              </Link>
+            </>
+          )}
+
+          <button
+            type="button"
+            onClick={alternarModoAdmin}
+            disabled={loading}
+            style={{
+              marginTop: "20px",
+              background: "none",
+              border: "none",
+              color: "#38598b",
+              cursor: loading ? "not-allowed" : "pointer",
+              fontSize: "14px",
+              textDecoration: "underline",
+              width: "100%",
+              opacity: loading ? 0.6 : 1,
+            }}
+          >
+            {modoAdmin
+              ? "← Voltar para acesso do tutor"
+              : "Acesso administrativo"}
+          </button>
         </section>
       </main>
     </div>

@@ -11,10 +11,34 @@ import NovoServico from "./pages/NovoServico";
 import LoginUsuario from "./pages/LoginUsuario";
 import Dashboard from "./pages/Dashboard";
 import Perfil from "./pages/Perfil";
+import AlterarPerfil from "./pages/AlterarPerfil";
 import Premium from "./pages/Premium";
 import MeusPets from "./pages/MeusPets";
+import RecuperarSenha from "./pages/RecuperarSenha";
 
-// Layout que inclui a barra lateral para as telas internas
+/* =========================================
+   PÁGINAS ADMINISTRATIVAS
+   ========================================= */
+
+import DashboardADM from "./pages/ADM/DashboardADM";
+import RelatoriosADM from "./pages/ADM/RelatoriosADM";
+import EstabelecimentosADM from "./pages/ADM/EstabelecimentosADM";
+import NovoEstabelecimentoADM from "./pages/ADM/NovoEstabelecimentoADM";
+
+import EnderecoEstabelecimentoADM from "./pages/ADM/EnderecoEstabelecimentoADM";
+import ServicosEstabelecimentoADM from "./pages/ADM/ServicosEstabelecimentoADM";
+import HorariosEstabelecimentoADM from "./pages/ADM/HorariosEstabelecimentoADM";
+
+import ServicosADM from "./pages/ADM/ServicosADM";
+import NovoServicoADM from "./pages/ADM/NovoServicoADM";
+import HorariosADM from "./pages/ADM/HorariosADM";
+import AgendamentosADM from "./pages/ADM/AgendamentosADM";
+import UsuariosADM from "./pages/ADM/UsuariosADM";
+
+/* =========================================
+   LAYOUT COM SIDEBAR DO USUÁRIO
+   ========================================= */
+
 function LayoutComSidebar({ children }) {
   return (
     <div className="app">
@@ -24,7 +48,10 @@ function LayoutComSidebar({ children }) {
   );
 }
 
-// Rota protegida: exige login
+/* =========================================
+   ROTA PROTEGIDA — USUÁRIO
+   ========================================= */
+
 function ProtectedRoute({ children }) {
   const { isAuthenticated, loading } = useAuth();
 
@@ -53,7 +80,10 @@ function ProtectedRoute({ children }) {
   return <LayoutComSidebar>{children}</LayoutComSidebar>;
 }
 
-// Rota pública: redireciona para dashboard se já estiver logado
+/* =========================================
+   ROTA PÚBLICA
+   ========================================= */
+
 function PublicOnlyRoute({ children }) {
   const { isAuthenticated, loading } = useAuth();
 
@@ -68,12 +98,35 @@ function PublicOnlyRoute({ children }) {
   return children;
 }
 
+/* =========================================
+   ROTA EXCLUSIVA DO ADMINISTRADOR
+   ========================================= */
+
+function AdminRoute({ children }) {
+  const isAdmin =
+    sessionStorage.getItem("petagenda_admin") === "true";
+
+  if (!isAdmin) {
+    return <Navigate to="/login" replace />;
+  }
+
+  return children;
+}
+
+/* =========================================
+   APP
+   ========================================= */
+
 function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
         <Routes>
-          {/* Rotas de Acesso (Públicas) */}
+
+          {/* =================================
+              ROTAS DE ACESSO — PÚBLICAS
+              ================================= */}
+
           <Route
             path="/"
             element={
@@ -82,6 +135,7 @@ function App() {
               </PublicOnlyRoute>
             }
           />
+
           <Route
             path="/login"
             element={
@@ -90,6 +144,7 @@ function App() {
               </PublicOnlyRoute>
             }
           />
+
           <Route
             path="/cadastro"
             element={
@@ -99,7 +154,19 @@ function App() {
             }
           />
 
-          {/* Rotas Protegidas (Exigem autenticação) */}
+          <Route
+            path="/recuperarSenha"
+            element={
+              <PublicOnlyRoute>
+                <RecuperarSenha />
+              </PublicOnlyRoute>
+            }
+          />
+
+          {/* =================================
+              ROTAS PROTEGIDAS — USUÁRIO
+              ================================= */}
+
           <Route
             path="/dashboard"
             element={
@@ -108,6 +175,7 @@ function App() {
               </ProtectedRoute>
             }
           />
+
           <Route
             path="/meus-pets"
             element={
@@ -116,6 +184,7 @@ function App() {
               </ProtectedRoute>
             }
           />
+
           <Route
             path="/cadastro-pet"
             element={
@@ -124,6 +193,7 @@ function App() {
               </ProtectedRoute>
             }
           />
+
           <Route
             path="/agenda"
             element={
@@ -132,6 +202,7 @@ function App() {
               </ProtectedRoute>
             }
           />
+
           <Route
             path="/historico"
             element={
@@ -140,6 +211,7 @@ function App() {
               </ProtectedRoute>
             }
           />
+
           <Route
             path="/servicos"
             element={
@@ -148,6 +220,7 @@ function App() {
               </ProtectedRoute>
             }
           />
+
           <Route
             path="/novo-servico"
             element={
@@ -156,6 +229,7 @@ function App() {
               </ProtectedRoute>
             }
           />
+
           <Route
             path="/perfil"
             element={
@@ -164,6 +238,16 @@ function App() {
               </ProtectedRoute>
             }
           />
+
+          <Route
+            path="/alterar-perfil"
+            element={
+              <ProtectedRoute>
+                <AlterarPerfil />
+              </ProtectedRoute>
+            }
+          />
+
           <Route
             path="/premium"
             element={
@@ -173,8 +257,169 @@ function App() {
             }
           />
 
-          {/* Rota coringa: redireciona para login ou dashboard */}
-          <Route path="*" element={<Navigate to="/" replace />} />
+          {/* =================================
+              ÁREA ADMINISTRATIVA
+              ================================= */}
+
+          {/* Dashboard */}
+
+          <Route
+            path="/admin"
+            element={
+              <AdminRoute>
+                <DashboardADM />
+              </AdminRoute>
+            }
+          />
+          <Route
+  path="/admin/relatorios"
+  element={
+    <AdminRoute>
+      <RelatoriosADM />
+    </AdminRoute>
+  }
+/>
+
+          {/* =================================
+              ESTABELECIMENTOS
+              ================================= */}
+
+          <Route
+            path="/admin/estabelecimentos"
+            element={
+              <AdminRoute>
+                <EstabelecimentosADM />
+              </AdminRoute>
+            }
+          />
+
+          {/* =================================
+              NOVO ESTABELECIMENTO — ETAPA 1
+              INFORMAÇÕES
+              ================================= */}
+
+          <Route
+            path="/admin/estabelecimentos/novo"
+            element={
+              <AdminRoute>
+                <NovoEstabelecimentoADM />
+              </AdminRoute>
+            }
+          />
+
+          {/* =================================
+              NOVO ESTABELECIMENTO — ETAPA 2
+              ENDEREÇO
+              ================================= */}
+
+          <Route
+            path="/admin/estabelecimentos/novo/endereco"
+            element={
+              <AdminRoute>
+                <EnderecoEstabelecimentoADM />
+              </AdminRoute>
+            }
+          />
+
+          {/* =================================
+              NOVO ESTABELECIMENTO — ETAPA 3
+              SERVIÇOS
+              ================================= */}
+
+          <Route
+            path="/admin/estabelecimentos/novo/servicos"
+            element={
+              <AdminRoute>
+                <ServicosEstabelecimentoADM />
+              </AdminRoute>
+            }
+          />
+
+          {/* =================================
+              NOVO ESTABELECIMENTO — ETAPA 4
+              HORÁRIOS
+              ================================= */}
+
+          <Route
+            path="/admin/estabelecimentos/novo/horarios"
+            element={
+              <AdminRoute>
+                <HorariosEstabelecimentoADM />
+              </AdminRoute>
+            }
+          />
+
+          {/* =================================
+              ADMIN — SERVIÇOS
+              ================================= */}
+
+          <Route
+            path="/admin/servicos"
+            element={
+              <AdminRoute>
+                <ServicosADM />
+              </AdminRoute>
+            }
+            
+          />
+
+          <Route
+  path="/admin/servicos/novo"
+  element={
+    <AdminRoute>
+      <NovoServicoADM />
+    </AdminRoute>
+  }
+/>
+
+          {/* =================================
+              ADMIN — HORÁRIOS
+              ================================= */}
+
+          <Route
+            path="/admin/horarios"
+            element={
+              <AdminRoute>
+                <HorariosADM />
+              </AdminRoute>
+            }
+          />
+
+          {/* =================================
+              ADMIN — AGENDAMENTOS
+              ================================= */}
+
+          <Route
+            path="/admin/agendamentos"
+            element={
+              <AdminRoute>
+                <AgendamentosADM />
+              </AdminRoute>
+            }
+          />
+
+          {/* =================================
+              ADMIN — USUÁRIOS
+              ================================= */}
+
+          <Route
+            path="/admin/usuarios"
+            element={
+              <AdminRoute>
+                <UsuariosADM />
+              </AdminRoute>
+            }
+          />
+
+          {/* =================================
+              ROTA CORINGA
+              ================================= */}
+
+          <Route
+            path="*"
+            element={<Navigate to="/" replace />}
+          />
+
         </Routes>
       </BrowserRouter>
     </AuthProvider>

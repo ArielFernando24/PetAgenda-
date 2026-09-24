@@ -212,8 +212,36 @@ function CadastroPet() {
               />
             </div>
 
-            <div style={{ display: "flex", gap: "10px", marginTop: "10px" }}>
-              <button type="submit" disabled={loading} style={{ flex: 1 }}>
+            <div style={{ display: "flex", gap: "10px", marginTop: "10px", justifyContent: "flex-end"}}>
+
+              <button
+                type="button"
+                onClick={() => navigate("/meus-pets")}
+                style={{
+                  background: "#16251D",
+                  color: "white",
+                  border: "none",
+                  borderRadius: "10px",
+                  padding: "0 20px",
+                  cursor: "pointer",
+                  fontWeight: "600",
+                  width: "200px"
+                }}
+              >
+                Cancelar
+              </button>
+
+              <button type="submit" disabled={loading} 
+                style={{
+                  background: "#005288",
+                  color: "white",
+                  border: "none",
+                  borderRadius: "10px",
+                  padding: "0 20px",
+                  cursor: "pointer",
+                  fontWeight: "600",
+                  width: "200px"
+                }}>
                 {loading
                   ? "Salvando..."
                   : cadastrado
@@ -223,21 +251,6 @@ function CadastroPet() {
                   : "Salvar pet"}
               </button>
 
-              <button
-                type="button"
-                onClick={() => navigate("/meus-pets")}
-                style={{
-                  background: "#e2e8f0",
-                  color: "#475569",
-                  border: "none",
-                  borderRadius: "10px",
-                  padding: "0 20px",
-                  cursor: "pointer",
-                  fontWeight: "600",
-                }}
-              >
-                Cancelar
-              </button>
             </div>
           </form>
         </div>
