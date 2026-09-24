@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { clinicasApi } from "../services/api";
+import { normalizarTexto } from "../utils/clinica-wizard";
 import cachorroBanho from "../assets/cachorrobanho-petagenda.png";
 
 function Servicos() {
@@ -107,14 +108,32 @@ function Servicos() {
     async function carregarClinicas() {
       try {
         const data = await clinicasApi.list();
-        if (Array.isArray(data) && data.length > 0) {
-          setClinicas(data);
+        const locais = JSON.parse(
+          localStorage.getItem("petagenda_estabelecimentos_local") || "[]"
+        );
+
+        const lista = Array.isArray(data) ? data : [];
+        const locaisValidos = Array.isArray(locais) ? locais : [];
+        const combinada = [...lista, ...locaisValidos.filter(
+          (local) => !lista.some(
+            (item) =>
+              item.id === local.id ||
+              normalizarTexto(item.nome) === normalizarTexto(local.nome)
+          )
+        )];
+
+        if (combinada.length > 0) {
+          setClinicas(combinada);
         } else {
           setClinicas(fallbackServicos);
         }
       } catch (err) {
-        console.warn("Erro ao buscar clínicas, usando lista de referência:", err.message);
-        setClinicas(fallbackServicos);
+        const locais = JSON.parse(
+          localStorage.getItem("petagenda_estabelecimentos_local") || "[]"
+        );
+        const locaisValidos = Array.isArray(locais) ? locais : [];
+        setClinicas(locaisValidos.length > 0 ? locaisValidos : fallbackServicos);
+        console.warn("Erro ao buscar clínicas, usando lista local:", err.message);
       } finally {
         setLoading(false);
       }
@@ -129,25 +148,32 @@ function Servicos() {
         ? [clinica.servicos]
         : [];
 
-    const textoCompleto = `${clinica.nome} ${clinica.cidade || ""} ${clinica.estado || ""} ${
-      servicos.join(" ")
-    } ${clinica.descricao || ""}`.toLowerCase();
+    const textoCompleto = normalizarTexto(
+      `${clinica.nome} ${clinica.cidade || ""} ${clinica.estado || ""} ${
+        servicos.join(" ")
+      } ${clinica.descricao || ""}`
+    );
 
-    const termo = buscaDebounce.trim().toLowerCase();
+    const termo = normalizarTexto(buscaDebounce);
     const passaBusca = !termo || textoCompleto.includes(termo);
 
-    const categoriaNormalizada = filtrosAplicados.categoria.toLowerCase();
+    const categoriaNormalizada = normalizarTexto(filtrosAplicados.categoria);
     const passaCategoria =
       !categoriaNormalizada ||
       servicos.some((servico) => {
-        const nome = String(servico).toLowerCase();
+        const nome = normalizarTexto(servico);
 
         if (categoriaNormalizada === "banho") {
           return nome.includes("banho") || nome.includes("tosa");
         }
 
         if (categoriaNormalizada === "medicamento") {
-          return nome.includes("medicamento") || nome.includes("remedio") || nome.includes("remédio");
+          return (
+            nome.includes("medicamento") ||
+            nome.includes("remedio") ||
+            nome.includes("remedio") ||
+            nome.includes("remedio")
+          );
         }
 
         return nome.includes(categoriaNormalizada);

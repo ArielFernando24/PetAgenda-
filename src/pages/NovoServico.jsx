@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { petsApi, clinicasApi, agendaApi } from "../services/api";
+import { normalizarTexto } from "../utils/clinica-wizard";
 
 function NovoServico() {
   const navigate = useNavigate();
@@ -34,9 +35,25 @@ function NovoServico() {
           setPetId(listaPets[0].id);
         }
 
+        const locais = JSON.parse(
+          localStorage.getItem("petagenda_estabelecimentos_local") || "[]"
+        );
         const listaClinicas = Array.isArray(clinicasData) ? clinicasData : [];
-        setClinicas(listaClinicas);
+        const locaisValidos = Array.isArray(locais) ? locais : [];
+        const combinada = [...listaClinicas, ...locaisValidos.filter(
+          (local) => !listaClinicas.some(
+            (item) =>
+              item.id === local.id ||
+              normalizarTexto(item.nome) === normalizarTexto(local.nome)
+          )
+        )];
+        setClinicas(combinada);
       } catch (err) {
+        const locais = JSON.parse(
+          localStorage.getItem("petagenda_estabelecimentos_local") || "[]"
+        );
+        const locaisValidos = Array.isArray(locais) ? locais : [];
+        setClinicas(locaisValidos);
         setError(err.message || "Erro ao carregar dados iniciais.");
       } finally {
         setLoading(false);

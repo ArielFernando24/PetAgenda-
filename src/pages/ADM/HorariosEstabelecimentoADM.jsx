@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import SidebarADM from "../../components/ADM/SidebarADM";
+import { clinicasApi } from "../../services/api";
+import { buildClinicaPayloadFromWizard } from "../../utils/clinica-wizard";
 
 function HorariosEstabelecimentoADM() {
   const navigate = useNavigate();
@@ -41,21 +43,63 @@ function HorariosEstabelecimentoADM() {
     }));
   }
 
-  function finalizar() {
+  async function finalizar() {
     const dadosFinais = {
       ...dadosSalvos,
       horarios,
       status: "Ativo",
     };
 
-    localStorage.setItem(
-      "petagenda_novo_estabelecimento",
-      JSON.stringify(dadosFinais)
-    );
+    const payload = buildClinicaPayloadFromWizard(dadosFinais);
 
-    alert("Estabelecimento cadastrado com sucesso!");
+    try {
+      const clinicaCriada = await clinicasApi.create(payload);
 
-    navigate("/admin/estabelecimentos");
+      const locais = JSON.parse(
+        localStorage.getItem("petagenda_estabelecimentos_local") || "[]"
+      );
+
+      const arrayLocal = Array.isArray(locais) ? locais : [];
+      arrayLocal.push({
+        ...clinicaCriada,
+        id: clinicaCriada?.id || crypto.randomUUID(),
+        servicos: Array.isArray(clinicaCriada?.servicos)
+          ? clinicaCriada.servicos
+          : payload.servicos || [],
+      });
+      localStorage.setItem(
+        "petagenda_estabelecimentos_local",
+        JSON.stringify(arrayLocal)
+      );
+
+      localStorage.removeItem("petagenda_novo_estabelecimento");
+      alert("Estabelecimento cadastrado com sucesso!");
+      navigate("/admin/estabelecimentos");
+    } catch (error) {
+      const locais = JSON.parse(
+        localStorage.getItem("petagenda_estabelecimentos_local") || "[]"
+      );
+      const arrayLocal = Array.isArray(locais) ? locais : [];
+      arrayLocal.push({
+        id: crypto.randomUUID(),
+        nome: payload.nome,
+        telefone: payload.telefone,
+        email: payload.email,
+        endereco: payload.endereco,
+        cidade: payload.cidade,
+        estado: payload.estado,
+        descricao: payload.descricao,
+        servicos: payload.servicos,
+        horarioFuncionamento: payload.horarioFuncionamento,
+      });
+      localStorage.setItem(
+        "petagenda_estabelecimentos_local",
+        JSON.stringify(arrayLocal)
+      );
+      localStorage.removeItem("petagenda_novo_estabelecimento");
+      alert("Estabelecimento salvo localmente e ficará disponível para seleção do usuário.");
+      navigate("/admin/estabelecimentos");
+    }
   }
 
   return (

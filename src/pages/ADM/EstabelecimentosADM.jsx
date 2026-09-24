@@ -55,12 +55,30 @@ function EstabelecimentosADM() {
 
   const estabelecimentosFiltrados = useMemo(() => {
     return estabelecimentos.filter((estabelecimento) => {
-      const termo = busca.toLowerCase().trim();
+      const termo = busca
+        .trim()
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/[^a-z0-9\s]/g, " ")
+        .replace(/\s+/g, " ");
 
       const correspondeBusca =
         !termo ||
-        estabelecimento.nome.toLowerCase().includes(termo) ||
-        estabelecimento.localizacao.toLowerCase().includes(termo);
+        estabelecimento.nome
+          .toLowerCase()
+          .normalize("NFD")
+          .replace(/[\u0300-\u036f]/g, "")
+          .replace(/[^a-z0-9\s]/g, " ")
+          .replace(/\s+/g, " ")
+          .includes(termo) ||
+        estabelecimento.localizacao
+          .toLowerCase()
+          .normalize("NFD")
+          .replace(/[\u0300-\u036f]/g, "")
+          .replace(/[^a-z0-9\s]/g, " ")
+          .replace(/\s+/g, " ")
+          .includes(termo);
 
       const correspondeTipo =
         tipo === "Todos" || estabelecimento.tipo === tipo;

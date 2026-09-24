@@ -188,4 +188,18 @@ export const clinicasApi = {
     });
   },
   getById: (id) => request(`/api/clinicas/${id}`, { auth: false }),
+  create: (data) =>
+    request("/api/clinicas", {
+      method: "POST",
+      body: data,
+    }),
+  update: (id, data) =>
+    request(`/api/clinicas/${id}`, {
+      method: "PUT",
+      body: data,
+    }),
+  delete: (id) =>
+    request(`/api/clinicas/${id}`, {
+      method: "DELETE",
+    }),
 };
