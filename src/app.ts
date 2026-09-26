@@ -19,6 +19,7 @@ import type { NotificationRepository } from './modules/notifications/application
 import { NotificationService } from './modules/notifications/application/notification.service';
 import { createNotificationRouter } from './modules/notifications/http/notification.routes';
 import { PrismaNotificationRepository } from './modules/notifications/infrastructure/prisma-notification.repository';
+import { createReportsRouter } from './modules/reports/http/reports.routes';
 import { petTutorAuth } from './shared/auth/pet-tutor-auth.middleware';
 import { appErrorMiddleware } from './shared/http/app-error.middleware';
 
@@ -62,6 +63,11 @@ export function createApp(options: AppOptions = {}) {
   );
   app.use('/api/notifications', notificationRouter);
   app.use('/notifications', notificationRouter);
+
+  const reportsRouter = createReportsRouter(authMiddleware);
+  app.use('/api/reports', reportsRouter);
+  app.use('/api/export', reportsRouter);
+  app.use('/reports', reportsRouter);
   app.use('/uploads', express.static(path.resolve(__dirname, '../public/uploads')));
   app.use(express.static(path.resolve(__dirname, '../public')));
   app.use((_req, res) => {

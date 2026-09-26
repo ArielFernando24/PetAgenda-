@@ -1305,6 +1305,210 @@
           }
         }
       ]
+    },
+    {
+      "name": "US08 - Exportação de Relatórios e Auditoria de Dados (CSV/PDF)",
+      "item": [
+        {
+          "name": "1. Exportar Relatório em CSV (com UTF-8 BOM)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code é 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Content-Type é text/csv com UTF-8', function () {",
+                  "    pm.expect(pm.response.headers.get('Content-Type')).to.include('text/csv');",
+                  "});",
+                  "pm.test('Content-Disposition define anexo .csv', function () {",
+                  "    pm.expect(pm.response.headers.get('Content-Disposition')).to.include('attachment; filename=\"relatorio-agenda-');",
+                  "    pm.expect(pm.response.headers.get('Content-Disposition')).to.include('.csv\"');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/reports/agenda/csv",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "reports", "agenda", "csv"]
+            },
+            "description": "Exporta dados da agenda em formato CSV com streaming e prefixo BOM UTF-8 para compatibilidade perfeita com Microsoft Excel."
+          }
+        },
+        {
+          "name": "2. Exportar Relatório em CSV com Filtros e Colunas Selecionadas",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code é 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Content-Type é text/csv', function () {",
+                  "    pm.expect(pm.response.headers.get('Content-Type')).to.include('text/csv');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/reports/agenda/csv?tipoCuidado=VACINA&status=PENDENTE&columns=dataHora,petNome,tipoCuidado,status",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "reports", "agenda", "csv"],
+              "query": [
+                {
+                  "key": "tipoCuidado",
+                  "value": "VACINA"
+                },
+                {
+                  "key": "status",
+                  "value": "PENDENTE"
+                },
+                {
+                  "key": "columns",
+                  "value": "dataHora,petNome,tipoCuidado,status"
+                }
+              ]
+            },
+            "description": "Exporta CSV filtrado respeitando a seleção de colunas desejadas."
+          }
+        },
+        {
+          "name": "3. Exportar Relatório em PDF Formatado",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code é 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Content-Type é application/pdf', function () {",
+                  "    pm.expect(pm.response.headers.get('Content-Type')).to.include('application/pdf');",
+                  "});",
+                  "pm.test('Content-Disposition define anexo .pdf', function () {",
+                  "    pm.expect(pm.response.headers.get('Content-Disposition')).to.include('attachment; filename=\"relatorio-agenda-');",
+                  "    pm.expect(pm.response.headers.get('Content-Disposition')).to.include('.pdf\"');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/reports/agenda/pdf",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "reports", "agenda", "pdf"]
+            },
+            "description": "Exporta relatório estruturado em PDF com logotipo, tabela sumarizada, numeração de páginas e filtros aplicados."
+          }
+        },
+        {
+          "name": "4. Exportar Relatório em PDF com Filtros",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code é 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Content-Type é application/pdf', function () {",
+                  "    pm.expect(pm.response.headers.get('Content-Type')).to.include('application/pdf');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/reports/agenda/pdf?tipoCuidado=VACINA&status=PENDENTE",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "reports", "agenda", "pdf"],
+              "query": [
+                {
+                  "key": "tipoCuidado",
+                  "value": "VACINA"
+                },
+                {
+                  "key": "status",
+                  "value": "PENDENTE"
+                }
+              ]
+            },
+            "description": "Exporta relatório PDF aplicando filtros específicos de categoria e status."
+          }
+        },
+        {
+          "name": "5. Exportar via Rota Alternativa (Alias /api/export/csv)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code é 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/export/csv",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "export", "csv"]
+            },
+            "description": "Acesso rápido através do alias /api/export/csv."
+          }
+        }
+      ]
     }
   ]
 }
